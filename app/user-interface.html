@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Optiroom</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/UI.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/page-loading.js"></script>
+</head>
+<body>
+    <div id="menu">
+        <img src="img/logo.jpg">
+        <hr>
+        <nav>
+            <ul>
+                <li>
+                    <a class="mainElement" href="#" onclick="loadPage('overview')">Acceuil</a>
+                </li>
+                <li>
+                    <a class="mainElement" href="#" onclick="loadPage('rooms')">Classes</a>
+                    <a class="subElement rooms" href="#" onclick="loadSubPage('book')">Réserver</a>
+                    <a class="subElement rooms" href="#" onclick="loadSubPage('my-bookings')">Mes réservations</a>
+                </li>
+                <li>
+                    <a class="mainElement" href="index.html">Se déconnecter</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="content">
+
+    </div>
+</body>
+</html>
