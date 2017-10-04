@@ -1,0 +1,19 @@
+.room{
+    background-color: lightgrey;
+    border-radius: 5%;
+    padding: 1%;
+    background: linear-gradient(#70ec42, #5DBD37);
+    box-shadow: 2px -2px 5px #3d8830;
+    display: block;
+    margin: 1%;
+}
+.room h1{
+    font-size: 1em;
+}
+.room img{
+    width: 25%;
+    float:left;
+}
+.room h3{
+    font-size: 2em;
+}

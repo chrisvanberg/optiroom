@@ -38,10 +38,6 @@ html, body{
     font-size: 1.5em;
     display: table;
 }
-#menu nav a:focus{
-    background-color: #45a236;
-    text-decoration: none;
-}
 #menu nav a:hover{
     background-color: #45a236;
     text-decoration: none;
