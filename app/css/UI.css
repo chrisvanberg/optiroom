@@ -4,12 +4,8 @@ html, body{
     font-family: arial, sans-serif;
 }
 #menu{
-    display: block;
-    position: absolute;
     background-color: #5DBD37;
-    top: 0;
-    bottom: 0;
-    width:20%;
+    min-height: 100%;
 }
 #menu hr{
     width: 75%;
@@ -38,10 +34,6 @@ html, body{
     font-size: 1.5em;
     display: table;
 }
-#menu nav a:focus{
-    background-color: #45a236;
-    text-decoration: none;
-}
 #menu nav a:hover{
     background-color: #45a236;
     text-decoration: none;
@@ -53,13 +45,15 @@ html, body{
     font-size: 1em;
     display: none;
     color: white;
-    margin-left: 20%;
 }
 #menu img{
     width: 100%;
 }
-#content{
-    position: absolute;
-    left:20%;
-    width:80%;
+
+#top-banner{
+    background-color: #48ac3a;
+    padding: 5%;
+    color: white;
+    font-size:2em;
+    text-transform: uppercase;
 }
