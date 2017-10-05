@@ -24,9 +24,13 @@ $(document).ready(function() {
         var cat = "."+(this.classList[1]);
         if(cat != lastLoaded){
             $(".subElement").slideUp(400);
+            $(".mainElement").css("font-weight","normal");
         }
+
+        $(cat).css("font-weight","800");
         $(".subElement"+cat).slideDown(200, function () {
             $(".subElement"+cat).css("display", "table");
+
         });
 
     });

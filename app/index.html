@@ -18,10 +18,22 @@
                         <img id="logo" src="img/logo.jpg" width="100%">
                         <input type="text" class="form-control" placeholder="Identifiant">
                         <input type="password" class="form-control" placeholder="Mot de passe">
-                        <a href="user-interface.html"><input type="button"class="btn btn-success btn-sm" value="Valider"></a>
+                        <input id=stay-logged name="stay-logged" type="checkbox">
+                        <label for="stay-logged">Rester connecté</label><br>
+                        <a href="user-interface.html"><input type="button"class="btn btn-success btn-sm form-control" value="Log in"></a><br>
+                        <div id="links">
+                            <span class="loginFormLink"><a href="#">Mot de passe oublié</a></span>
+                        </div>
                     </form>
                 </div>
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <form>
+                    <a href="user-interface.html"><input type="button"class="btn btn-success btn-sm" id="signUp" value="Sign up"></a>
+                </form>
             </div>
         </div>
     </div>

@@ -1,11 +1,14 @@
+*{
+    font-family: Arial, sans-serif;
+}
 html, body{
     height: 100%;
     margin: 0;
-    font-family: arial, sans-serif;
 }
 #menu{
-    background-color: #5DBD37;
-    min-height: 100%;
+    background-color: white;
+    border-right: 1px solid #5DBD37;
+    height: 100vh;
 }
 #menu hr{
     width: 75%;
@@ -23,19 +26,22 @@ html, body{
 
 }
 #menu nav a{
+
+    color: #48ac3a;
     box-sizing: border-box;
-    margin: 0 auto 0 auto;
+    margin: 0 auto 0 5%;
     width: 100%;
-    padding: 3%;
-    color: white;
+    padding: 1%;
     text-decoration: none;
 }
+#menu hr{
+    border-top: 1px solid #48ac3a;
+}
 .mainElement{
-    font-size: 1.5em;
+    font-size: 1.3em;
     display: table;
 }
 #menu nav a:hover{
-    background-color: #45a236;
     text-decoration: none;
 }
 .subElement::before{
@@ -44,16 +50,25 @@ html, body{
 .subElement{
     font-size: 1em;
     display: none;
-    color: white;
 }
 #menu img{
-    width: 100%;
+    width: 106%;
+    height: 18%;
 }
 
+#content{
+    height:100%;
+}
 #top-banner{
-    background-color: #48ac3a;
-    padding: 5%;
-    color: white;
+    background-color: #5DBD37;
+    height: 9vh;
+}
+#lower-banner{
+    height: 9vh;
+    padding: 1% 0 0 3%;
+    color: #4e4e50;
+    font-weight: 500;
     font-size:2em;
     text-transform: uppercase;
+
 }

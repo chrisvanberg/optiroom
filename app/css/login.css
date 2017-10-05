@@ -4,20 +4,40 @@ body{
 }
 #loginForm{
     margin-top: 40%;
-    border: 1px solid #5DBD37;
     border-radius: 5%;
     background-color: white;
 }
 #logo{
+    margin-bottom: 3%;
     border-radius: 5% 5% 0 0;
 }
 .btn{
     width: 50%;
-    margin: 0 0 2% 25%;
+    margin: 0 0 2% 0;
     background-color: #5DBD37;
 }
 .form-control{
     text-align: center;
-    margin: 2% 0 2% 25%;
+    margin: 0% 0 2% 25%;
     width: 50%;
+}
+.loginFormLink{
+    color: #797985;
+}
+#signUp{
+    margin:7% 25%;
+    width:50%;
+}
+#links{
+    text-align: center;
+    margin: 1% 0;
+    padding: 2%;
+}
+#loginForm label{
+    font-weight : normal;
+    font-size: 0.97em;
+    color: #858594
+}
+#stay-logged{
+    margin: 0 0 0 25%;
 }
