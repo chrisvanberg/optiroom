@@ -60,7 +60,7 @@ if (empty($branch) || $target_branch !== $branch ) {
 $args = array(
 	'target' => './',
 	'git' => '/usr/local/bin/git',
-	'mailto' => false,
+	'mailto' => 'contact@chrosv.be',
 	'commands' => array(
 		'echo $PWD',
 		"git branch",
