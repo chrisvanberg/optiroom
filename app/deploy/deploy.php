@@ -6,8 +6,8 @@
  * @since deploy 0.1
  */
 
-$auth = md5('SUY^N&vv%np,._@vU"3%L+9M\_D+{SQF'); // set a private hash to validate against, result is your github secret
-$target_branch = 'dev'; // this is the absolute branch to track
+$auth = md5('SET_YOUR_SECRET'); // set a private hash to validate against, result is your github secret
+$target_branch = 'staging'; // this is the absolute branch to track
 $log_path = './deployment.log'; // path can be relative to this script or absolute
 $raw_post = NULL;
 
