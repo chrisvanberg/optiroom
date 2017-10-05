@@ -65,7 +65,7 @@ if (!empty(TOKEN) && isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && $token !== hash_
             try {
                 // pull
                 chdir(DIR);
-                shell_exec(GIT . " pull");
+                shell_exec(GIT . " git fetch --all && git checkout --force 'origin/master'");
 
                 // return OK to prevent timeouts on AFTER_PULL
                 ok();
