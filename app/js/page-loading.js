@@ -42,7 +42,7 @@ app.config(function($routeProvider) {
             templateUrl : "overview.html"
         })
         .when("/rooms", {
-            templateUrl : "rooms.html"
+            templateUrl : "rooms.php"
         })
         .when("/book", {
             templateUrl : "book.html"

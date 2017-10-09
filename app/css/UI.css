@@ -9,6 +9,7 @@ html, body{
     background-color: white;
     border-right: 1px solid #5DBD37;
     height: 100vh;
+    padding-right: 0;
 }
 #menu hr{
     width: 75%;
@@ -52,8 +53,6 @@ html, body{
     display: none;
 }
 #menu img{
-    width: 106%;
-    height: 18%;
 }
 
 #content{
