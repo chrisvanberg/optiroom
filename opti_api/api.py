@@ -9,7 +9,12 @@ api = Api(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.1.3'}
+        return {'state': 'up','version': '0.1.4', 'motd': 'N/A'}
+        
+@api.route('/motd')
+class System(Resource):
+    def get(self):
+        return {'motd': 'N/A'}
         
 @api.route('/rooms')
 class Rooms(Resource):
