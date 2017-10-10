@@ -1,14 +1,15 @@
-var rooms;
-
-
-function createList() {
+function createList(rooms) {
     for (i in rooms) {
-        $("<div class='room col-md-2 col-xs-3' data-room='" + i + "'></div>").appendTo("#roomList");
+        $("<div class='roomContainer col-md-6 col-xs-6' data-room='" + i + "'></div>").appendTo("#roomList");
+        $("<div class='room'></div>").appendTo(".roomContainer[data-room='" + i + "']");
+        var selector = $(".roomContainer[data-room='" + i + "'] > .room");
+            if(rooms[i].typeRoom == "1"){
+                selector.addClass("room_auditorium");
+            }
+           else if(rooms[i].typeRoom == "2"){
+                selector.addClass("room_regular");
+            }
 
-        var selector = $(".room[data-room='" + i + "']");
-        selector.append("<div class='row'>");
-        selector.append("<h3 class='col-md-12'>" + i + "</h3>");
-        selector.append("</div>");
-        selector.append("</div>");
+            selector.append("<h3 class='col-md-12'>" + i + "</h3>");
     }
 }

@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <title>Optiroom</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="css/UI.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
     <script src="js/page-loading.js"></script>
 </head>
-<body ng-app="optiroom">
-
-    <div class="row">
-        <div class="col-md-3" id="menu">
-            <img src="img/logo.jpg" width="100%">
-            <nav>
-                <ul>
-                    <li>
-                        <a class="mainElement overview" href="#">Acceuil</a>
-                    </li>
-                    <hr>
-                    <li>
-                        <a class="mainElement rooms" href="#!rooms" >Locaux</a>
-                        <a class="subElement rooms" href="#!book" >Réserver</a>
-                        <a class="subElement rooms" href="#!my-bookings" >Mes réservations</a>
-                    </li>
-                    <hr>
-                    <li>
-                        <a class="mainElement management" href="#!management">Gestion</a>
-                    </li>
-                    <hr>
-                    <li>
-                        <a class="mainElement logout" href="index.html">Se déconnecter</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="col-md-9" id="content">
-            <div ng-view></div>
+<body ng-app="optiroom" ng-controller="ctrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3" id="menu">
+                <img src="img/logo_grey.png" width="100%">
+                <nav>
+                    <ul>
+                        <li>
+                            <a class="mainElement overview" href="#">Acceuil</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a class="mainElement rooms" href="#!rooms" >Locaux</a>
+                            <a class="subElement rooms" href="#!book" >Réserver</a>
+                            <a class="subElement rooms" href="#!my-bookings" >Mes réservations</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a class="mainElement management" href="#!management">Gestion</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a class="mainElement logout" href="index.html">Se déconnecter</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-9" id="content">
+                <div id="top-bar"><span></span></div>
+                <div ng-view></div>
+            </div>
         </div>
     </div>
 </body>

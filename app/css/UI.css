@@ -1,13 +1,12 @@
 *{
-    font-family: Arial, sans-serif;
+    font-family: Verdana, sans-serif;
 }
 html, body{
-    height: 100%;
+    height: 100vh;
     margin: 0;
 }
 #menu{
-    background-color: white;
-    border-right: 1px solid #5DBD37;
+    background-color: #2D2D2D;
     height: 100vh;
     padding-right: 0;
 }
@@ -24,11 +23,9 @@ html, body{
 }
 #menu nav li{
     list-style-type: none;
-
 }
 #menu nav a{
-
-    color: #48ac3a;
+    color: white;
     box-sizing: border-box;
     margin: 0 auto 0 5%;
     width: 100%;
@@ -36,38 +33,38 @@ html, body{
     text-decoration: none;
 }
 #menu hr{
-    border-top: 1px solid #48ac3a;
+    border-top: 1px solid #4C4C4C;
 }
 .mainElement{
     font-size: 1.3em;
     display: table;
 }
 #menu nav a:hover{
+    color: #FFDB38;
     text-decoration: none;
-}
-.subElement::before{
-    content: " > ";
 }
 .subElement{
     font-size: 1em;
     display: none;
 }
-#menu img{
-}
 
 #content{
     height:100%;
+    padding:0;
+    margin:0;
 }
-#top-banner{
-    background-color: #5DBD37;
-    height: 9vh;
+#top-bar{
+    background-color: #81B636;
+    height:10vh;
+    width: 100%;
+    color:#567A22;
+    font-size: 1.5em;
+    display:table;
+    padding-left: 3vw;
 }
-#lower-banner{
-    height: 9vh;
-    padding: 1% 0 0 3%;
-    color: #4e4e50;
-    font-weight: 500;
-    font-size:2em;
-    text-transform: uppercase;
-
+#top-bar span{
+    display: table-cell;
+    vertical-align: middle;
+    height:100%;
+    width:100%;
 }
