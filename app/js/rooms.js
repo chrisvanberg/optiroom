@@ -25,18 +25,23 @@ function createList(rooms) {
        selector.append("<h4 class='col-md-12'>"+floor+"</h4>");
     }
 }
-
+var selectedRoom;
 function selectRoom(room_id){
-
-        $(".roomContainer").removeClass('col-md-8');
-        $(".roomContainer").addClass('col-md-4');
-        $(".roomContainer").css("height","33%");
-        $(".roomContainer").css("background-size","24%");
+    $(".roomContainer").removeClass('col-md-8');
+    $(".roomContainer").addClass('col-md-4');
+    $(".roomContainer").css("height","33%");
+    $(".roomContainer").css("background-size","24%");
+    if(room_id != selectedRoom){
+        selectedRoom = room_id;
         $(".roomContainer[data-room='"+room_id+"']").removeClass('col-md-4');
         $(".roomContainer[data-room='"+room_id+"']").addClass('col-md-8');
         $(".roomContainer[data-room='"+room_id+"']").css("height","66%");
         $(".roomContainer[data-room='"+room_id+"']").css("order","1");
         $(".roomContainer[data-room='"+room_id+"']>.room").css("background-size","12%");
+    }else{
+        selectedRoom = "";
+    }
+
 
 }
 

@@ -7,7 +7,6 @@
 var lastLoaded;
 
 $(document).ready(function() {
-
     //Animations du menu
     $(".mainElement").bind("click", function () {
         var cat = "."+(this.classList[2]);
