@@ -18,7 +18,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.1.6', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.1.7', 'motd': 'N/A'}
 
 @api.route('/test')
 class System(Resource):
@@ -54,13 +54,26 @@ class Rooms(Resource):
             'roomDescription': row[5]}
             rooms.append(room)
         return jsonify(rooms)
-           #return {'A10': {'numFloor': '0','idBuilding': '1','typeRoom': '1'},'L04': {'numFloor': '0','idBuilding': '1','typeRoom': '2'},'L35': {'numFloor': '0','idBuilding': '1','typeRoom': '2'}}
 
 @api.route('/rooms/full')
 class Rooms(Resource):
     def get(self):
-           return {'A10': {'numFloor': '0','idBuilding': '1','typeRoom': '1', 'opti_light': 'avaliable', 'opti_heat': 'avaliable', 'nbSeats': '250', 'projector' : 'true', 'soundSystem': 'true'},'L04': {'numFloor': '0','idBuilding': '1','typeRoom': '2', 'opti_light': 'false', 'opti_heat': 'avaliable', 'nbSeats': '70', 'projector' : 'true', 'soundSystem': 'false'},'L35': {'numFloor': '0','idBuilding': '1','typeRoom': '2', 'opti_light': 'avaliable', 'opti_heat': 'false', 'nbSeats': '40', 'projector' : 'false', 'soundSystem': 'true'}}
-
+        rooms = []
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM get_roomsFull")
+        for row in cur:
+            room = {
+            'building_id': row[0],
+            'building_name': row[1],
+            'room_id': row[2],
+            'floorNum': row[3],
+            'roomType': row[4],
+            'roomDescription': row[5],
+            'nbPlace': row[6],
+            'hasSpeaker': row[7],
+            'hasProjector': row[8]}
+            rooms.append(room)
+        return jsonify(rooms)
 
 @api.route('/room/<string:room_id>')
 class Room(Resource):
