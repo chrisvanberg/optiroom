@@ -8,6 +8,9 @@
 var lastLoaded;
 var path = new Array(2);
 $(document).ready(function() {
+
+
+
     //Animations du menu
     $(".mainElement").bind("click", function () {
         var cat = "."+(this.classList[1]);
@@ -65,3 +68,30 @@ app.config(function($routeProvider) {
 });
 app.controller('ctrl', function($scope) {
 });
+
+var mobile_menu;
+
+function showMenu(){
+    if(mobile_menu){
+        $("#menu").removeClass("visible-xs");
+        $("#menu").removeClass("visible-sm");
+        $("#menu").addClass("hidden-sm");
+        $("#menu").addClass("hidden-xs");
+        $("#content").removeClass("hidden-sm");
+        $("#content").removeClass("hidden-xs");
+        $("#content").addClass("visible-sm");
+        $("#content").addClass("visible-xs");
+        mobile_menu = false;
+    }else{
+        $("#menu").removeClass("hidden-xs");
+        $("#menu").removeClass("hidden-sm");
+        $("#menu").addClass("visible-sm");
+        $("#menu").addClass("visible-xs");
+        $("#content").removeClass("visible-sm");
+        $("#content").removeClass("visible-xs");
+        $("#content").addClass("hidden-sm");
+        $("#content").addClass("hidden-xs");
+        mobile_menu = true;
+    }
+
+}

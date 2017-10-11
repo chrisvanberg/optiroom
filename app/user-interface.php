@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!--<link rel="icon" type="image/jpg" href="img/logo.jpg" />-->
     <link rel="stylesheet" href="css/UI.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -16,10 +17,13 @@
     <script src="js/page-loading.js"></script>
 </head>
 <body ng-app="optiroom" ng-controller="ctrl">
+<div id="mobile_menu" class="visible-xs visible-sm hidden-md hidden-lg">
+    <img src="img/mobile_menu_icon.png" width="15%" onclick="showMenu()">
+</div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3" id="menu">
-                <img src="img/logo_grey.png" width="100%">
+            <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg" id="menu">
+                <a href="#"><img src="img/logo_grey.png" width="100%"></a>
                 <nav>
                     <ul>
                         <li>
