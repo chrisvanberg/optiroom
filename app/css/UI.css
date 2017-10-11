@@ -68,6 +68,20 @@ html, body{
     height:100%;
     width:100%;
 }
+@media (max-width: 768px) {
+    #top-bar{
+        padding-left : 15vw;
+    }
+}
 #mobile_menu{
-
+    position:absolute;
+    top: 2%;
+    left: 2%;
+    z-index: 1;
+}
+#mobile_menu img{
+    border: 1px solid grey;
+    background-color: grey;
+    border-radius: 50%;
+    padding: 2%;
 }

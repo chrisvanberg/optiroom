@@ -1,6 +1,6 @@
 <script src="js/rooms.js"></script>
 <?php
-    $rooms = file_get_contents("http://dev.optiroom.net:5000/rooms");
+    $rooms = file_get_contents("http://dev.optiroom.net:5000/rooms/full");
     echo "<script>createList(".$rooms.")</script>"
 ?>
 

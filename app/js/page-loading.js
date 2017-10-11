@@ -4,46 +4,50 @@
  *
  */
 
-
 var lastLoaded;
-var path = new Array(2);
+
 $(document).ready(function() {
-
-
 
     //Animations du menu
     $(".mainElement").bind("click", function () {
-        var cat = "."+(this.classList[1]);
+        var cat = "."+(this.classList[2]);
         if(cat != lastLoaded){
             $(".subElement").slideUp(400);
-            $(".mainElement").css("font-weight","normal");
-            $(".mainElement").css("color","white");
-            $(".subElement").css("color","white");
         }
-        $(cat).css("font-weight","800");
-        $(this).css("color","#FFDB38");
         $(".subElement"+cat).slideDown(200, function () {
             $(".subElement"+cat).css("display", "table");
         });
-        path[0] = this.text;
-        path[1] = "";
-        setPath();
-    });
-    $(".subElement").bind("click",function(){
-        $(".subElement").css("color","white");
-        path[1] = " / " + this.text;
-        $(this).css("color","#FFDB38");
-        setPath();
     });
 
 });
 
 //
 function setPath(){
-    $("#top-bar span").text("");
-    for(i in path){
-        $("#top-bar span").append(path[i]);
+    var path = $('[ng-controller="ctrl"]').scope().currentPage;
+    var page = path.replace("/","#!");
+    $("a.menu-item:not(a[href='"+page+"'])").css("font-weight","normal");
+    $("a.menu-item:not(a[href='"+page+"'])").css("color","white");
+    $("a[href='"+page+"']").css("font-weight","700");
+    $("a[href='"+page+"']").css("color","#FFDB38");
+    switch(path){
+        case "/" :
+            path = "Acceuil"
+            break;
+        case "/rooms":
+            path = "Locaux"
+            break;
+        case "/book":
+            path = "Réserver"
+            break;
+        case "/my-bookings":
+            path = "Mes réservations"
+            break;
+        case "/management":
+            path = "Gestion"
+            break;
     }
+    $("#top-bar span").text(path);
+
 }
 
 //Routes pour l'affichage des pages
@@ -66,13 +70,20 @@ app.config(function($routeProvider) {
             templateUrl : "management.html"
         });
 });
-app.controller('ctrl', function($scope) {
+app.controller('ctrl', function($scope,$location) {
+    $scope.$on('$routeChangeSuccess', function () {
+        $scope.currentPage = $location.path();
+        setPath();
+    });
 });
 
+
+//Gestion du menu sur mobile et tablette
 var mobile_menu;
 
 function showMenu(){
     if(mobile_menu){
+        rotateMenuImg();
         $("#menu").removeClass("visible-xs");
         $("#menu").removeClass("visible-sm");
         $("#menu").addClass("hidden-sm");
@@ -83,6 +94,7 @@ function showMenu(){
         $("#content").addClass("visible-xs");
         mobile_menu = false;
     }else{
+        rotateMenuImg();
         $("#menu").removeClass("hidden-xs");
         $("#menu").removeClass("hidden-sm");
         $("#menu").addClass("visible-sm");
@@ -94,4 +106,11 @@ function showMenu(){
         mobile_menu = true;
     }
 
+}
+function rotateMenuImg(){
+    $("#mobile_menu img").rotate({
+        duration:500,
+        angle: 0,
+        animateTo:180
+    });
 }

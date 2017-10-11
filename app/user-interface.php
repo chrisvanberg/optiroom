@@ -14,34 +14,35 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="js/jQueryRotate.js"></script>
     <script src="js/page-loading.js"></script>
 </head>
 <body ng-app="optiroom" ng-controller="ctrl">
-<div id="mobile_menu" class="visible-xs visible-sm hidden-md hidden-lg">
-    <img src="img/mobile_menu_icon.png" width="15%" onclick="showMenu()">
-</div>
     <div class="container-fluid">
+        <div id="mobile_menu" class="visible-xs visible-sm hidden-md hidden-lg">
+            <img src="img/mobile_menu_icon.png" width="12%" onclick="showMenu()">
+        </div>
         <div class="row">
             <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg" id="menu">
-                <a href="#"><img src="img/logo_grey.png" width="100%"></a>
+                <a href="#!"><img src="img/logo_grey.png" width="100%"></a>
                 <nav>
                     <ul>
                         <li>
-                            <a class="mainElement overview" href="#">Acceuil</a>
+                            <a class="menu-item mainElement overview" href="#!">Acceuil</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="mainElement rooms" href="#!rooms" >Locaux</a>
-                            <a class="subElement rooms" href="#!book" >Réserver</a>
-                            <a class="subElement rooms" href="#!my-bookings" >Mes réservations</a>
+                            <a class="menu-item mainElement rooms" href="#!rooms" >Locaux</a>
+                            <a class="menu-item subElement rooms book" href="#!book" >Réserver</a>
+                            <a class="menu-item subElement rooms my-bookings" href="#!my-bookings" >Mes réservations</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="mainElement management" href="#!management">Gestion</a>
+                            <a class="menu-item mainElement management" href="#!management">Gestion</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="mainElement logout" href="index.html">Se déconnecter</a>
+                            <a class="menu-item mainElement logout" href="index.html">Se déconnecter</a>
                         </li>
                     </ul>
                 </nav>
