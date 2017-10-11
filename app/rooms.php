@@ -1,9 +1,4 @@
 <script src="js/rooms.js"></script>
-<?php
-    $rooms = file_get_contents("http://dev.optiroom.net:5000/rooms/full");
-    echo "<script>createList(".$rooms.")</script>"
-?>
-
 <link rel="stylesheet" href="css/rooms.css">
 <div class="container-fluid">
     <div class="row" id="filters">
@@ -32,6 +27,5 @@
                 </div>
             </div>
         </div>
-        <!--<div class="col-md-4" id="selectedRoom"></div>-->
     </div>
 </div>

@@ -14,18 +14,18 @@
       <file leaf-file-name="user-interface.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/user-interface.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="26" column="27" lean-forward="false" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+            <state relative-caret-position="-406">
+              <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page-loading.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="page-loading.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/page-loading.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-198">
-              <caret line="16" column="57" lean-forward="false" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+            <state relative-caret-position="-234">
+              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -44,8 +44,18 @@
       <file leaf-file-name="rooms.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rooms.php">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="28" column="14" lean-forward="false" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="room-list.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/room-list.php">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="36">
-              <caret line="2" column="71" lean-forward="false" selection-start-line="2" selection-start-column="71" selection-end-line="2" selection-end-column="71" />
+              <caret line="2" column="58" lean-forward="false" selection-start-line="2" selection-start-column="58" selection-end-line="2" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -54,18 +64,28 @@
       <file leaf-file-name="rooms.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/rooms.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="990">
+            <state relative-caret-position="472">
               <caret line="55" column="1" lean-forward="false" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rooms.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rooms.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/rooms.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
+            <state relative-caret-position="360">
+              <caret line="23" column="68" lean-forward="false" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="room-infos.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/room-infos.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="36">
+              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -101,11 +121,13 @@
         <option value="$PROJECT_DIR$/js/drystone.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/test.html" />
-        <option value="$PROJECT_DIR$/js/rooms.js" />
-        <option value="$PROJECT_DIR$/rooms.php" />
         <option value="$PROJECT_DIR$/css/UI.css" />
         <option value="$PROJECT_DIR$/user-interface.php" />
         <option value="$PROJECT_DIR$/js/page-loading.js" />
+        <option value="$PROJECT_DIR$/room-infos.php" />
+        <option value="$PROJECT_DIR$/rooms.php" />
+        <option value="$PROJECT_DIR$/room-list.php" />
+        <option value="$PROJECT_DIR$/js/rooms.js" />
       </list>
     </option>
   </component>
@@ -201,12 +223,12 @@
       <workItem from="1507637190803" duration="500000" />
       <workItem from="1507652068805" duration="12292000" />
       <workItem from="1507715879379" duration="16139000" />
-      <workItem from="1507738847837" duration="5839000" />
+      <workItem from="1507738847837" duration="9536000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54198000" />
+    <option name="totallyTimeSpent" value="57895000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="31" y="27" width="1366" height="742" extended-state="6" />
@@ -243,22 +265,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/rooms.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/user-interface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/page-loading.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -552,33 +558,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/rooms.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="55" column="1" lean-forward="false" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/drystone.js" />
     <entry file="file://$PROJECT_DIR$/css/style.css" />
     <entry file="file://$PROJECT_DIR$/test.html" />
-    <entry file="file://$PROJECT_DIR$/js/rooms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rooms.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="71" lean-forward="false" selection-start-line="2" selection-start-column="71" selection-end-line="2" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/UI.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="454">
@@ -587,18 +569,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/room-infos.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rooms.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="14" lean-forward="false" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/rooms.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="55" column="1" lean-forward="false" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/room-list.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="58" lean-forward="false" selection-start-line="2" selection-start-column="58" selection-end-line="2" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/user-interface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="26" column="27" lean-forward="false" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+        <state relative-caret-position="-406">
+          <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/page-loading.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-198">
-          <caret line="16" column="57" lean-forward="false" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+        <state relative-caret-position="-234">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/rooms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="23" column="68" lean-forward="false" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
           <folding />
         </state>
       </provider>
