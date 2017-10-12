@@ -18,7 +18,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.1.7', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.1.9', 'motd': 'N/A'}
 
 @api.route('/test')
 class System(Resource):
@@ -56,7 +56,7 @@ class Rooms(Resource):
         return jsonify(rooms)
 
 @api.route('/rooms/full')
-class Rooms(Resource):
+class RoomsFull(Resource):
     def get(self):
         rooms = []
         cur = mysql.connection.cursor()
@@ -75,18 +75,33 @@ class Rooms(Resource):
             rooms.append(room)
         return jsonify(rooms)
 
+@api.route('/buildings')
+class Buildings(Resource):
+    def get(self):
+        buildings = []
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM get_buildings")
+        for building in cur:
+            building = {
+            'building_id': building[0],
+            'building_name': building[1],
+            'nb_floors': building[2] }
+            buildings.append(building)
+        return jsonify(buildings)
+
 @api.route('/room/<string:room_id>')
-class Room(Resource):
+class RoomID(Resource):
     def get(self, room_id):
         if room_id == 'A10':
             return {'A10': {'numFloor': '0','idBuilding': '1','typeRoom': '1', 'opti_light': 'avaliable', 'opti_heat': 'avaliable', 'nbSeats': '250', 'projector' : 'true', 'soundSystem': 'true'}}
+
         elif room_id == 'L04':
             return {'L04': {'numFloor': '0','idBuilding': '1', 'typeRoom': '2', 'opti_light': 'false', 'opti_heat': 'avaliable', 'nbSeats': '70', 'projector' : 'true', 'soundSystem': 'false'}}
         else:
         	return {'error':'Invalid room number'}, 404
 
 @api.route('/state/<string:room_id>')
-class Room(Resource):
+class RoomState(Resource):
     def get(self, room_id):
         if room_id == 'A10':
             return {'A10': {'state': 'busy'}}
