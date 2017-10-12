@@ -1,0 +1,38 @@
+DELIMITER |
+CREATE PROCEDURE get_rooms()      
+    
+BEGIN
+    SELECT numRoom, numFloor, idBuilding, typeRoom
+    FROM optiRoom; 
+END|            
+ 
+ 
+## Pour utiliser cette Pocedure : 
+CALL get_rooms()
+
+
+DELIMITER |
+CREATE PROCEDURE get_roomsFull()      
+    
+BEGIN
+    SELECT optiRoom.numRoom, numFloor, idBuilding, typeRoom, nbPlace, projector, speaker
+    FROM optiRoom JOIN optiRoomSpecs; 
+END|            
+
+
+## Pour utiliser cette Pocedure : 
+CALL get_roomsFull()
+
+
+DELIMITER | 
+CREATE PROCEDURE get_roomSpecsONidroom (IN p_room_id VARCHAR)  
+    
+BEGIN
+    SELECT optiRoom.numRoom, numFloor, idBuilding, typeRoom, nbPlace, projector, speaker
+    FROM optiRoom JOIN optiRoomSpecs;  
+    WHERE optiRoom.numRoom = p_room_id; 
+END |
+
+
+## Pour utiliser cette Pocedure : 
+CALL get_roomSpecsONidroom(A10)
