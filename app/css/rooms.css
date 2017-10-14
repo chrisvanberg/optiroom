@@ -1,4 +1,4 @@
-#roomList{
+#room-list{
     height: 80vh;
     margin-top: 1%;
     padding:1%;
@@ -6,12 +6,9 @@
     overflow-y: scroll;
 }
 
-.roomContainer{
+.room-container{
     padding: 1% 1%;
     height: 33%;
-}
-#divTest{
-    display: flex;
 }
 .room{
     background-color: #A1CD61;
@@ -24,10 +21,10 @@
 .room:hover{
     background-color: #b3eb76;
 }
-.room_regular{
+.room-regular{
     background-image: url("../img/room_regular.png");
 }
-.room_auditorium{
+.room-auditorium{
     background-image: url("../img/room_auditorium.png");
 }
 .room h1{

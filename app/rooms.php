@@ -21,10 +21,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div id="divTest">
-                <div class="container-fluid" id="roomList">
-
-                </div>
+            <div id="room-list">
             </div>
         </div>
     </div>

@@ -1,26 +1,8 @@
 /**
- *
  * Gestion des changements de page
- *
  */
 
-var lastLoaded;
-
-$(document).ready(function() {
-    //Animations du menu
-    $(".mainElement").bind("click", function () {
-        var cat = "."+(this.classList[2]);
-        if(cat != lastLoaded){
-            $(".subElement").slideUp(400);
-        }
-        $(".subElement"+cat).slideDown(200, function () {
-            $(".subElement"+cat).css("display", "table");
-        });
-    });
-
-});
-
-//
+//Animation du menu et affichage de la page courante dans le header
 function setPath(){
     var path = $('[ng-controller="ctrl"]').scope().currentPage;
     var page = path.replace("/","#!");
@@ -45,7 +27,7 @@ function setPath(){
             path = "Gestion"
             break;
     }
-    $("#top-bar span").text(path);
+    $("header span").text(path);
 
 }
 
@@ -78,7 +60,7 @@ app.controller('ctrl', function($scope,$location) {
 
 
 //Gestion du menu sur mobile et tablette
-var mobile_menu;
+var mobileMenu;
 
 function showMenu(){
     if(mobile_menu){
@@ -91,7 +73,7 @@ function showMenu(){
         $("#content").removeClass("hidden-xs");
         $("#content").addClass("visible-sm");
         $("#content").addClass("visible-xs");
-        mobile_menu = false;
+        mobileMenu = false;
     }else{
         rotateMenuImg();
         $("#menu").removeClass("hidden-xs");
@@ -102,12 +84,13 @@ function showMenu(){
         $("#content").removeClass("visible-xs");
         $("#content").addClass("hidden-sm");
         $("#content").addClass("hidden-xs");
-        mobile_menu = true;
+        mobileMenu = true;
     }
 
 }
+
 function rotateMenuImg(){
-    $("#mobile_menu img").rotate({
+    $("#mobile-menu img").rotate({
         duration:500,
         angle: 0,
         animateTo:180
