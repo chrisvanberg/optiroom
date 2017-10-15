@@ -18,7 +18,7 @@
 <body ng-app="optiroom" ng-controller="ctrl">
     <div class="container-fluid">
         <div id="mobile-menu" class="visible-xs visible-sm hidden-md hidden-lg">
-            <img src="img/mobile_menu_icon.png" width="12%" onclick="showMenu()">
+            <img src="img/mobile_menu_icon.png" width="10%" onclick="showMenu()">
         </div>
         <div class="row">
             <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg" id="menu">

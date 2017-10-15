@@ -29,6 +29,10 @@ function createList(rooms) {
         selector.append("<h2 class='col-md-12'>" + rooms[i].room_id + "</h2>");
         selector.append("<h3 class='col-md-12'>"+rooms[i].building_name+ "</h3>");
         selector.append("<h4 class='col-md-12'>"+floor+"</h4>");
+        selector.append("<div class='col-md-12 room-details'></div>");
+        selector.find(".room-details").append("<h4 class='col-md-12'>Nombre de places: X</h4>");
+        selector.find(".room-details").append("<h4 class='col-md-12'>Projecteur: oui / non</h4>");
+        selector.find(".room-details").append("<a href='#' role='button' class='btn btn-success col-md-6'>Réserver</a>");
     }
 }
 var selectedRoom;
@@ -37,6 +41,7 @@ function selectRoom(room_id){
     $(".room-container").addClass('col-md-4');
     $(".room-container").css("height","33%");
     $(".room-container").css("background-size","24%");
+    $(".room-container>.room>.room-details").css("visibility","hidden");
     if(room_id != selectedRoom){
         selectedRoom = room_id;
         $(".room-container[data-room='"+room_id+"']").removeClass('col-md-4');
@@ -44,6 +49,7 @@ function selectRoom(room_id){
         $(".room-container[data-room='"+room_id+"']").css("height","66%");
         $(".room-container[data-room='"+room_id+"']").css("order","1");
         $(".room-container[data-room='"+room_id+"']>.room").css("background-size","12%");
+        $(".room-container[data-room='"+room_id+"']>.room>.room-details").css("visibility","visible");
     }else{
         selectedRoom = "";
     }

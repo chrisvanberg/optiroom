@@ -55,6 +55,7 @@ app.controller('ctrl', function($scope,$location) {
     $scope.$on('$routeChangeSuccess', function () {
         $scope.currentPage = $location.path();
         setPath();
+        showMenu();
     });
 });
 
@@ -63,7 +64,7 @@ app.controller('ctrl', function($scope,$location) {
 var mobileMenu;
 
 function showMenu(){
-    if(mobile_menu){
+    if(mobileMenu){
         rotateMenuImg();
         $("#menu").removeClass("visible-xs");
         $("#menu").removeClass("visible-sm");
