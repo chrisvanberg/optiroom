@@ -3,6 +3,7 @@ from flask import abort
 from flask import jsonify
 from flask_mysqldb import MySQL
 from flask_restplus import Resource, Api
+from flask import request
 import socket
 
 app = Flask(__name__)
@@ -18,7 +19,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.1.9', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2', 'motd': 'N/A'}
 
 @api.route('/test')
 class System(Resource):
@@ -110,5 +111,13 @@ class RoomState(Resource):
         else:
         	return {'error':'Invalid room number'}, 404
 
+@api.route('/auth/login', methods=['POST'])
+class Login(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        un = json_data['username']
+        pw = json_data['password']
+
+        return {'usernameReceivied':un, 'pwdReceivied':pw}
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
