@@ -5,10 +5,12 @@ from flask_mysqldb import MySQL
 from flask_restplus import Resource, Api
 from flask import request
 from flask_cors import CORS
+from flask-bcrypt import Bcrypt
 import socket
 
 app = Flask(__name__)
 api = Api(app)
+bcrypt = Bcrypt(app)
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -21,7 +23,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.3', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2.4', 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
@@ -103,10 +105,20 @@ class RoomState(Resource):
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
     def post(self):
-        json_data = request.get_json(force=True)
-        un = json_data['username']
-        pw = json_data['password']
+        db_auth_id = "1"
+        db_auth_user="contact@chrisv.be"
+        db_auth_hash="$2y$10$x1RlWYILR5rJ9Rd.wtqSCOC68QcEDRonMlvXzsN8OFj6ejlMns6X2"
 
-        return {'usernameReceivied':un, 'pwdReceivied':pw}
+
+
+        json_data = request.get_json(force=True)
+        posted_username = json_data['username']
+        posted_password = json_data['password']
+
+        if bcrypt.check_password_hash(db_auth_hash, posted_password):
+            return {'status':'password_ok'}
+        else:
+            return {'status':'password_not_ok'}
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
