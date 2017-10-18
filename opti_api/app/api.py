@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import request
 from flask import abort
 from flask import jsonify
 from flask_mysqldb import MySQL
@@ -6,24 +7,29 @@ from flask_restplus import Resource, Api
 from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 import socket
 
 app = Flask(__name__)
 api = Api(app)
 bcrypt = Bcrypt(app)
 
+
+
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['JWT_SECRET_KEY'] = 'optiroom'  # Change this!
 app.config['MYSQL_HOST'] = 'dev.optiroom.net'
 app.config['MYSQL_USER'] = 'opti_api'
 app.config['MYSQL_PASSWORD'] = 'YFdcxYJS:ng3PcvndfGeIeRxhuOYiP'
 app.config['MYSQL_DB'] = 'optiroom'
 mysql.init_app(app)
+jwt = JWTManager(app)
 
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.5', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2.6', 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
@@ -104,6 +110,8 @@ class RoomState(Resource):
 
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
+
+
     def post(self):
         db_auth_id = "1"
         db_auth_user="contact@chrisv.be"
@@ -117,9 +125,11 @@ class Login(Resource):
 
         if db_auth_user == posted_username:
             if bcrypt.check_password_hash(db_auth_hash, posted_password) :
-                return {'status':'Successfuly logged'}
+                ret = {'access_token': create_access_token(identity=db_auth_user)}
+                return ret, 200
+
             else:
-                return {'error':'Wrong Password for'+posted_username},401
+                return {'error':'Wrong Password for '+posted_username},401
         else:
             return {'error':'Wrong Username'},401
 

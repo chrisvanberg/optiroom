@@ -2,3 +2,4 @@ flask-restplus
 flask-mysqldb
 Flask-Cors
 flask-bcrypt
+flask-jwt-extended
