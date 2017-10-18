@@ -1,7 +1,7 @@
 #Opti_api
 opti_api/opti_api-Cheatsheet
-opti_api/opti_api-run.sh
 
 #jetBrains IDE
 /app/.idea
+/opti_api/.idea
 
