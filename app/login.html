@@ -1,8 +1,11 @@
+<link rel="stylesheet" href="css/login.css">
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <div id="loginForm">
-                <form ng-submit="authLoginCtrl.onLogin()" novalidate>
+                <form ng-submit="authLoginCtrl.onLogin()">
                     <img id="logo" src="img/logo.jpg" width="100%">
                     <input type="text" class="form-control" placeholder="Identifiant" ng-model="authLoginCtrl.user.username" required>
                     <input type="password" class="form-control" placeholder="Mot de passe" ng-model="authLoginCtrl.user.password" required>

@@ -17,4 +17,14 @@ function authService($http,$window) {
             headers: {'Content-Type': 'application/json'}
         });
     };
+    this.ensureAuthenticated = function(token) {
+        return $http({
+            method: 'GET',
+            url: baseURL + 'user',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
+        });
+    };
 }

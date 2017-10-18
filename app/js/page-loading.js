@@ -30,7 +30,7 @@ function setPath(){
     $("header span").text(path);
 
 }
-
+/*
 //Routes pour l'affichage des pages
 var app = angular.module("optiroom", ["ngRoute"]);
 app.config(function($routeProvider) {
@@ -59,7 +59,7 @@ app.controller('ctrl', function($scope,$location) {
     });
 });
 
-
+*/
 //Gestion du menu sur mobile et tablette
 var mobileMenu;
 
