@@ -23,7 +23,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.4', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2.5', 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
@@ -115,10 +115,13 @@ class Login(Resource):
         posted_username = json_data['username']
         posted_password = json_data['password']
 
-        if bcrypt.check_password_hash(db_auth_hash, posted_password):
-            return {'status':'password_ok'}
+        if db_auth_user == posted_username:
+            if bcrypt.check_password_hash(db_auth_hash, posted_password) :
+                return {'status':'Successfuly logged'}
+            else:
+                return {'error':'Wrong Password for'+posted_username},401
         else:
-            return {'status':'password_not_ok'}
+            return {'error':'Wrong Username'},401
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
