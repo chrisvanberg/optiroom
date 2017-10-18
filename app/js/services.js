@@ -1,16 +1,13 @@
-steak = {
-    "id": "auth",
-    "response": {
-        "status": "success",
-        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODQ2NzY4MjEsImlhdCI6MTQ4MzQ2NzIyMSwic3ViIjoyfQ.hMcrXz-63iD4jX-ves3cZMznSS3UhZD4NCPry2zLkHo"
-    }
-};
 angular.module('tokenAuthApp.services', []).service('authService', authService);
 
-authService.$inject = ['$http'];
+authService.$inject = ['$http','$window'];
 
-function authService($http) {
-
+function authService($http,$window) {
+    this.parseJwt = function(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse($window.atob(base64));
+    }
     const baseURL = 'http://localhost:5000/auth/';
     this.login = function(user) {
         return $http({
