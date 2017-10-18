@@ -5,7 +5,7 @@ from flask_mysqldb import MySQL
 from flask_restplus import Resource, Api
 from flask import request
 from flask_cors import CORS
-from flask-bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 import socket
 
 app = Flask(__name__)
