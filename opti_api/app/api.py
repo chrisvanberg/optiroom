@@ -11,7 +11,7 @@ app = Flask(__name__)
 api = Api(app)
 
 mysql = MySQL()
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['MYSQL_HOST'] = 'dev.optiroom.net'
 app.config['MYSQL_USER'] = 'opti_api'
 app.config['MYSQL_PASSWORD'] = 'YFdcxYJS:ng3PcvndfGeIeRxhuOYiP'
@@ -21,7 +21,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.1', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2.2', 'motd': 'N/A'}
 
 @api.route('/test')
 class System(Resource):
