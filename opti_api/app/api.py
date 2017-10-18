@@ -21,20 +21,7 @@ mysql.init_app(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.2', 'motd': 'N/A'}
-
-@api.route('/test')
-class System(Resource):
-    def get(self):
-
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM opti_building")
-        row = cur.fetchone()
-        if row:
-            return {'state': row[1]}
-        else:
-            return {'state': 'Username and/or password incorrect.'}
-
+        return {'state': 'up','version': '0.2.3', 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
