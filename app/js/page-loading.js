@@ -3,6 +3,7 @@
  */
 
 //Animation du menu et affichage de la page courante dans le header
+/*
 function setPath(){
     var path = $('[ng-controller="ctrl"]').scope().currentPage;
     var page = path.replace("/","#!");
@@ -29,7 +30,7 @@ function setPath(){
     }
     $("header span").text(path);
 
-}
+}*/
 /*
 //Routes pour l'affichage des pages
 var app = angular.module("optiroom", ["ngRoute"]);

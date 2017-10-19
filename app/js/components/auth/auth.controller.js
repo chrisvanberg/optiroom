@@ -5,19 +5,18 @@ angular.module('tokenAuthApp.components.auth', [])
 authLoginController.$inject = ['authService'];
 authStatusController.$inject = ['authService'];
 
-function authLoginController(authService){
+function authLoginController(authService,$window){
     /*jshint validthis: true */
     const vm = this;
     vm.user = {};
     vm.user.username = "contact@chrisv.be";
     vm.user.password = "s@v@geCommando3TI";
-
     vm.onLogin = function() {
         console.log(authService.login(vm.user));
         authService.login(vm.user).then(function(user) {
 
             localStorage.setItem('token',user.data.access_token);
-
+            window.location.href = '#!/UI';
 
 
         },function(err){
@@ -45,6 +44,7 @@ function authStatusController(authService) {
             console.log(err);
     };*/
         vm.isLoggedIn = false;
+        vm.username = (authService.parseJwt(localStorage.getItem('token')).identity);
     }
-    vm.username = (authService.parseJwt(localStorage.getItem('token')).identity);
+
 }

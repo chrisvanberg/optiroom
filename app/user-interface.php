@@ -24,19 +24,19 @@
                 <nav>
                     <ul>
                         <li>
-                            <a class="menu-item main-element overview" href="#!/UI">Acceuil</a>
+                            <a class="menu-item main-element overview" title="UI" href="#!/UI">Acceuil</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="menu-item main-element rooms" href="#!/UI/rooms" >Locaux</a>
+                            <a class="menu-item main-element rooms" title="rooms" href="#!/UI/rooms" >Locaux</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="menu-item main-element management" href="#!/UI/management">Gestion</a>
+                            <a class="menu-item main-element management" title="management" href="#!/UI/management">Gestion</a>
                         </li>
                         <hr>
                         <li>
-                            <a class="menu-item main-element logout" href="#!/">Se déconnecter</a>
+                            <a class="menu-item main-element logout" onClick="localStorage.removeItem('token')" href="#!/">Se déconnecter</a>
                         </li>
                     </ul>
                 </nav>
