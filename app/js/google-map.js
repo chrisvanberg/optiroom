@@ -6,7 +6,7 @@ function initAutocomplete(){
     };
     var mapProp= {
         center:new google.maps.LatLng(50.665813, 4.612194),
-        zoom:13,
+        zoom:13
     };
     var map = new google.maps.Map(document.getElementById('google-map'),mapProp);
     var input = document.getElementById('pac-input');
@@ -24,17 +24,10 @@ function initAutocomplete(){
     });
 
     function searchButton(){
+        $("#google-map").css("display","block");
         var lat = (place.geometry.location.lat());
         var lng = (place.geometry.location.lng);
         map.setCenter(new google.maps.LatLng(lat,lng()));
-        $("#search-form").slideUp();
-        $("#new-search-btn").toggle();
-        if($("#google-map").css("display") == "none"){
-            $("#informations").toggle( "slide",function () {
-                $("#google-map").toggle( "slide" );
-                google.maps.event.trigger(map, 'resize');
-            });
-        }
         google.maps.event.trigger(map, 'resize');
     }
 }

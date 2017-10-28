@@ -2,57 +2,40 @@ angular.module('tokenAuthApp.config', ['ui.router']).config(appConfig).run(route
 
 function appConfig($stateProvider, $urlRouterProvider){
     $stateProvider
-        .state('login', {
+        .state('homepage', {
             url: '/',
-            templateUrl: 'homepage.html',
+            templateUrl: 'informations.html',
+            controller: 'authStatusController',
+            controllerAs: 'authStatusCtrl',
+            restrictions: {
+                ensureAuthenticated: false,
+                loginRedirect: false
+            }
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'login.html',
             controller: 'authLoginController',
             controllerAs: 'authLoginCtrl',
             restrictions: {
                 ensureAuthenticated: false,
                 loginRedirect: false
             }
+
         })
-        .state('UI', {
-            url: '/UI',
-            templateUrl: 'user-interface.php',
-            controller: 'authStatusController',
-            controllerAs: 'authStatusCtrl',
+        .state('map', {
+            url: '/map',
+            templateUrl: 'google-map.html',
+            controller: 'authLoginController',
+            controllerAs: 'authLoginCtrl',
             restrictions: {
-                ensureAuthenticated: true,
+                ensureAuthenticated: false,
                 loginRedirect: false
             }
 
         })
-        .state('UI.overview',{
-            url: '/',
-            templateUrl: 'overview.html',
-            restrictions: {
-                ensureAuthenticated: true,
-                loginRedirect: false
-            }
-            }
-        )
-        .state('UI.rooms',{
-            url: '/rooms',
-            templateUrl: 'rooms.php',
-            restrictions: {
-                ensureAuthenticated: true,
-                loginRedirect: false
-            }
-            }
-        )
-        .state('UI.management',{
-                url: '/management',
-                templateUrl: 'management.html',
-            restrictions: {
-                ensureAuthenticated: true,
-                loginRedirect: false
-            }
-            }
-        )
         ;
-
-    $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/');
 };
 
 
@@ -67,7 +50,7 @@ function routeStart($transitions) {
         }
         if (trans.to().restrictions.loginRedirect) {
             if (localStorage.getItem('token')) {
-                window.location.href = '#!/UI';
+                window.location.href = '#!/';
             }
         }
         setPath(trans);

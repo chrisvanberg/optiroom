@@ -14,11 +14,8 @@ function authLoginController(authService,$window){
     vm.onLogin = function() {
         console.log(authService.login(vm.user));
         authService.login(vm.user).then(function(user) {
-
             localStorage.setItem('token',user.data.access_token);
-            window.location.href = '#!/UI';
-
-
+            window.location.href = '#!/';
         },function(err){
             if(err.status == "401"){
                 document.getElementById('test').innerHTML = ("Echec");
@@ -43,7 +40,6 @@ function authStatusController(authService) {
     ,function(err) {
             console.log(err);
     };*/
-        vm.isLoggedIn = false;
         vm.username = (authService.parseJwt(localStorage.getItem('token')).identity);
     }
 

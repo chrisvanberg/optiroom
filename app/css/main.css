@@ -17,10 +17,6 @@
     padding: 2%;
     text-align: center;
 }
-#google-map{
-    display: none;
-    height: 60vh;
-}
 #search-form h1{
     font-weight: 500;
     color: white;
@@ -72,6 +68,10 @@
 #header-control{
     padding: 1%;
 }
-#new-search-btn{
+#new-search-btn {
     display: none;
+}
+#google-map{
+    display: none;
+    height: 80vh;
 }
