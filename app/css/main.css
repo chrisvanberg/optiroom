@@ -1,0 +1,77 @@
+*{
+    font-family: Helvetica, sans-serif;
+}
+.row{
+    margin-right: 0;
+}
+#homepage-header{
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-position: center;
+    padding-right: 0;
+}
+#search-form{
+    margin-bottom: 1vh;
+}
+#search-form form{
+    padding: 2%;
+    text-align: center;
+}
+#search-form h1{
+    font-weight: 500;
+    color: white;
+    margin: 0 0 2% 0;
+}
+#top-menu{
+    padding: 2%;
+}
+#top-menu a{
+    color: #e8e8e8;
+    font-weight: 600;
+    padding: 3%;
+    border-radius: 10%;
+}
+#top-menu h1{
+    color: white;
+    margin-top: 3%;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 3.8em;
+
+}
+#top-menu a:hover{
+    text-decoration: none;
+    background-color: rgba(0,0,0,0.3);
+
+}
+#lower-content{
+    padding: 0;
+    margin: 1% 0;
+    z-index:5;
+}
+#informations{
+    padding: 2%;
+    text-align: center;
+}
+#header-control span{
+    color: white;
+    text-align: center;
+    text-transform: lowercase;
+    border-radius: 10%;
+    background-color: rgba(0,0,0,0.3);
+    font-weight: 600;
+    cursor: pointer;
+}
+#header-control span:hover{
+    background-color: rgba(0,0,0,0.5);
+}
+#header-control{
+    padding: 1%;
+}
+#new-search-btn {
+    display: none;
+}
+#google-map{
+    display: none;
+    height: 80vh;
+}
