@@ -5,12 +5,10 @@ angular.module('tokenAuthApp.components.auth', [])
 authLoginController.$inject = ['authService'];
 authStatusController.$inject = ['authService'];
 
-function authLoginController(authService,$window){
+function authLoginController(authService){
     /*jshint validthis: true */
     const vm = this;
     vm.user = {};
-    vm.user.username = "contact@chrisv.be";
-    vm.user.password = "s@v@geCommando3TI";
     vm.onLogin = function() {
         console.log(authService.login(vm.user));
         authService.login(vm.user).then(function(user) {
@@ -41,6 +39,6 @@ function authStatusController(authService) {
             console.log(err);
     };*/
         vm.username = (authService.parseJwt(localStorage.getItem('token')).identity);
+        userAuthentificated(vm);
     }
-
 }

@@ -75,3 +75,6 @@
     display: none;
     height: 80vh;
 }
+.visible-online{
+    display: none;
+}

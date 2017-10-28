@@ -25,18 +25,20 @@
     <script type="text/javascript" src="js/google-map.js"></script>
 
 </head>
+
 <body ng-app="tokenAuthApp">
-    <script src="js/google-map.js"></script>
-    <script type="text/javascript" src="js/login-popup.js"></script>
     <div class='container-fluid' id="homepage-header">
         <div class='row'>
             <div class="col-md-12" id="top-menu">
                 <div class="row">
-                    <h1 class="col-md-4 col-md-offset-4">OPTI | ROOM</h1>
-                    <div class="col-md-2 col-md-offset-2">
-                        <a href="#!/login">Connexion</a>
-                        <a href="">Inscription</a>
+                    <div class="col-md-3">
+                        <a href="#!/login" class="visible-offline">Connexion</a>
+                        <a href="" class="visible-offline">Inscription</a>
+                        <a href="" class="visible-online">
+                            Mon compte (<span id="username"></span>)
+                        </a>
                     </div>
+                    <h1 class="col-md-4 col-md-offset-1">OPTI | ROOM</h1>
                 </div>
 
             </div>

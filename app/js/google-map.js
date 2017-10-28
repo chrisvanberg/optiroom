@@ -29,6 +29,9 @@ function initAutocomplete(){
         var lng = (place.geometry.location.lng);
         map.setCenter(new google.maps.LatLng(lat,lng()));
         google.maps.event.trigger(map, 'resize');
+        $("#search-form").slideUp();
+        $("#new-search-btn").show();
+        window.location.href = '#!/map';
     }
 }
 

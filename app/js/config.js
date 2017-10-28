@@ -19,7 +19,7 @@ function appConfig($stateProvider, $urlRouterProvider){
             controllerAs: 'authLoginCtrl',
             restrictions: {
                 ensureAuthenticated: false,
-                loginRedirect: false
+                loginRedirect: true
             }
 
         })
