@@ -28,7 +28,9 @@
 #top-menu a{
     color: #e8e8e8;
     font-weight: 600;
-    padding: 3%;
+    padding: 1%;
+    margin: 0 0.5%;
+    background-color: rgba(0,0,0,0.1);;
     border-radius: 10%;
 }
 #top-menu h1{
@@ -76,5 +78,13 @@
     height: 80vh;
 }
 .visible-online{
+    display: none;
+}
+#user-avatar img{
+    border-radius: 50%;
+    height: 4vh;
+    margin-right: 1%;
+}
+.account-controls{
     display: none;
 }
