@@ -8,7 +8,7 @@ function authService($http,$window) {
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
     }
-    const baseURL = 'http://localhost:5000/auth/';
+    const baseURL = 'https://localhost:5000/auth/';
     this.login = function(user) {
         return $http({
             method: 'POST',
