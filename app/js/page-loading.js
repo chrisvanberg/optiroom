@@ -8,4 +8,5 @@ $( document ).ready(function() {
     $("#user-name").bind( "click", function( event ) {
         $(".account-controls").show();
     });
+    $("#datetimepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 });
