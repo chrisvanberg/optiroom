@@ -1,4 +1,4 @@
-angular.module('tokenAuthApp.components.auth', [])
+angular.module('tokenAuthApp.auth', [])
     .controller('authLoginController', authLoginController)
     .controller('authStatusController', authStatusController);
 
@@ -10,7 +10,6 @@ function authLoginController(authService){
     const vm = this;
     vm.user = {};
     vm.onLogin = function() {
-        console.log(authService.login(vm.user));
         authService.login(vm.user).then(function(user) {
             localStorage.setItem('token',user.data.access_token);
             window.location.href = '#!/';
@@ -19,7 +18,6 @@ function authLoginController(authService){
                 document.getElementById('test').innerHTML = ("Echec");
             }
         });
-
     }
     ;
 

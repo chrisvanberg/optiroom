@@ -9,6 +9,7 @@ function authService($http,$window) {
         return JSON.parse($window.atob(base64));
     }
     const baseURL = 'http://localhost:5000/auth/';
+
     this.login = function(user) {
         return $http({
             method: 'POST',
@@ -17,6 +18,7 @@ function authService($http,$window) {
             headers: {'Content-Type': 'application/json'}
         });
     };
+
     this.ensureAuthenticated = function(token) {
         return $http({
             method: 'GET',

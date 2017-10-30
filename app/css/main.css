@@ -4,6 +4,7 @@
 .row{
     margin-right: 0;
 }
+
 #homepage-header{
     background-image: url("../img/background.jpg");
     background-size: cover;
@@ -21,6 +22,8 @@
     font-weight: 500;
     color: white;
     margin: 0 0 2% 0;
+    font-size: 2em;
+    text-align: center;
 }
 #top-menu{
     padding: 2%;
