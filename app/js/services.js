@@ -13,7 +13,7 @@ function authService($http,$window) {
     this.login = function(user) {
         return $http({
             method: 'POST',
-            url: baseURL + '/auth/login',
+            url: baseURL + 'auth/login',
             data: user,
             headers: {'Content-Type': 'application/json'}
         });
