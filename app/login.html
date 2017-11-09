@@ -1,27 +1,29 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div id="loginForm">
-                <form ng-submit="authLoginCtrl.onLogin()" novalidate>
-                    <img id="logo" src="img/logo.jpg" width="100%">
-                    <input type="text" class="form-control" placeholder="Identifiant" ng-model="authLoginCtrl.user.username" required>
-                    <input type="password" class="form-control" placeholder="Mot de passe" ng-model="authLoginCtrl.user.password" required>
-                    <input id=stay-logged name="stay-logged" type="checkbox">
-                    <label for="stay-logged">Rester connecté</label><br>
-                    <button type="submit" class="btn btn-success btn-sm form-control">Log in</button><br>
-                    <div id="links">
-                        <span class="loginFormLink"><a href="#">Mot de passe oublié</a></span>
-                    </div>
-                </form>
-            </div>
-
+<link rel="stylesheet" href="css/login.css">
+<div class='col-md-4 col-md-offset-4 slider-content'id="login-popup">
+    <h3>Connexion</h3>
+    <form ng-submit="authLoginCtrl.onLogin()">
+        <div class="input-group row">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </span>
+            <input type='text' class="form-control" placeholder="Identifiant" ng-model="authLoginCtrl.user.username" required>
         </div>
-    </div>
-    <!--<div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <form>
-                <a href="user-interface.php"><input type="button" class="btn btn-success btn-sm" id="signUp" value="Sign up"></a>
-            </form>
+        <div class="input-group row">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-lock"></span>
+                    </span>
+            <input type="password" class="form-control" placeholder="Mot de passe" ng-model="authLoginCtrl.user.password" required>
         </div>
-    </div>-->
+        <div class="input-group row">
+            <input id=stay-logged name="stay-logged" type="checkbox">
+            <label for="stay-logged">Rester connecté</label>
+        </div>
+        <div class="input-group row">
+            <button type="submit" class="btn btn-success btn-sm form-control">Log in</button><br>
+        </div>
+        <div class="input-group row">
+            <span class="login-form-link"><a href="#">Mot de passe oublié</a></span><br>
+            <span class="login-form-link"><a href="">S'inscrire</a></span>
+        </div>
+    </form>
 </div>

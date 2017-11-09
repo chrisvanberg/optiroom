@@ -8,13 +8,25 @@ function authService($http,$window) {
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
     }
-    const baseURL = 'http://localhost:5000/auth/';
+    const baseURL = 'https://54.36.181.116:5000/';
+
     this.login = function(user) {
         return $http({
             method: 'POST',
-            url: baseURL + 'login',
+            url: baseURL + 'auth/login',
             data: user,
             headers: {'Content-Type': 'application/json'}
+        });
+    };
+
+    this.ensureAuthenticated = function(token) {
+        return $http({
+            method: 'GET',
+            url: baseURL + 'user',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
         });
     };
 }
