@@ -15,7 +15,10 @@ function authLoginController(authService){
             window.location.href = '#!/';
         },function(err){
             if(err.status == "401"){
-                document.getElementById('test').innerHTML = ("Echec");
+                $("#login-form :input").blur();
+                $("#login-form").effect("shake");
+                $("#login-form :input:text").css("background-color","#ff988a");
+                $("#login-form :input:password").css("background-color","#ff988a");
             }
         });
     }
