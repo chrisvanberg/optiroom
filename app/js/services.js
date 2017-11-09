@@ -8,7 +8,7 @@ function authService($http,$window) {
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse($window.atob(base64));
     }
-    const baseURL = 'https://54.36.181.116:5000/';
+    const baseURL = 'https://dev.optiroom.net/api/';
 
     this.login = function(user) {
         return $http({

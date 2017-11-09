@@ -23,6 +23,17 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
+        .state('signup', {
+            url: '/signup',
+            templateUrl: 'signup.html',
+           /* controller: 'authLoginController',
+            controllerAs: 'authLoginCtrl',*/
+            restrictions: {
+                ensureAuthenticated: false,
+                loginRedirect: true
+            }
+
+        })
         .state('map', {
             url: '/map',
             templateUrl: 'google-map.html',
