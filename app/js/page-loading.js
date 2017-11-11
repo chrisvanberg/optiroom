@@ -1,7 +1,4 @@
 $( document ).ready(function() {
-    $("#user-name").bind( "click", function( event ) {
-        $(".account-controls").show();
-    });
     $("#datetimepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 });
 
@@ -10,4 +7,20 @@ function userAuthentificated(vm){
     $(".visible-online").show();
     $("#user-name").append(vm.username);
     $("#user-avatar").append("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
+}
+
+function hideSearchBar(bool){
+    if(bool){
+        $("#search-form").slideUp();
+    }else{
+        $("#search-form").slideDown();
+    }
+}
+
+function hideMap(bool) {
+    if(bool){
+        $("#google-map").hide();
+    }else{
+        $("#google-map").show();
+    }
 }

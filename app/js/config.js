@@ -23,6 +23,17 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
+        .state('my-account', {
+            url: '/my-account',
+            templateUrl: 'my-account.html',
+            controller: 'authLoginController',
+            controllerAs: 'authLoginCtrl',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            }
+
+        })
         .state('signup', {
             url: '/signup',
             templateUrl: 'signup.html',
@@ -52,6 +63,13 @@ function appConfig($stateProvider, $urlRouterProvider){
 
 function routeStart($transitions) {
     $transitions.onStart({}, function (trans) {
+        if(trans.to().url != "/"){
+            hideSearchBar(true);
+            hideMap(true)
+        }else{
+            hideSearchBar(false);
+            hideMap(false)
+        }
         if (trans.to().restrictions.ensureAuthenticated) {
             if (!localStorage.getItem('token')) {
                 console.log("Acces restriction")
