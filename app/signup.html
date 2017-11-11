@@ -4,27 +4,26 @@
 
     <form ng-submit="signupCtrl.onSignupFormSend()">
         <div class="input-group row">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </span>
-            <input type='text' class="form-control" placeholder="Nom" ng-model="signupCtrl.signupdata.name" required>
-
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-user"></span>
+            </span>
             <input type='text' class="form-control" placeholder="Prenom" ng-model="signupCtrl.signupdata.firstname" required>
+            <input type='text' class="form-control" placeholder="Nom" ng-model="signupCtrl.signupdata.name" required>
         </div>
 
         <div class="input-group row">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-envelope"></span>
-                    </span>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-envelope"></span>
+            </span>
             <input type='email' class="form-control" placeholder="Adresse mail" ng-model="signupCtrl.signupdata.mail" required>
 
             <input type='email' class="form-control" placeholder="Confirmez l'adresse mail" ng-model="signupCtrl.signupdata.mailConfirmation" required>
         </div>
 
         <div class="input-group row">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-lock"></span>
-                    </span>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-lock"></span>
+            </span>
             <input type="password" minlength="8" class="form-control" placeholder="Mot de passe" ng-model="signupCtrl.signupdata.password" title="Le mot de passe doit contenir au moins 8 caractères" required>
 
             <input type="password" minlength="8" class="form-control" placeholder="Retapez le mot de passe" ng-model="signupCtrl.signupdata.passwordConfirmation" title="Confirmation du mot de passe" required>
@@ -37,10 +36,6 @@
         <div class="input-group row">
             <button type="submit" class="btn btn-success btn-sm form-control">Inscription</button><br>
         </div>
-        <!--
-        <div class="input-group row">
-            <span class="login-form-link"><a href="#">Mot de passe oublié</a></span><br>
-            <span class="login-form-link"><a href="">S'inscrire</a></span>
-        </div>-->
+
     </form>
 </div>
