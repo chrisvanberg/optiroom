@@ -8,8 +8,8 @@ function signupController(signupService){
     vm.signupdata = {};
 
     vm.onSignupFormSend = function() {
-        signupService.sendSignupForm(vm.signupdata).then(function(signupdata) {
-            console.log("Retour ok");
+        signupService.sendSignupForm(vm.signupdata).then(function(returnMessage) {
+            console.log(returnMessage);
         },function(err){
             console.log("Erreur");
         });

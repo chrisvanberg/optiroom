@@ -38,10 +38,15 @@ function authService($http,$window) {
 }
 function signupService($http, $window) {
 
+    const baseURL = 'https://dev.optiroom.net/api/';
+
     this.sendSignupForm = function (signupdata) {
-        console.log("formulaire envoyé");
-        console.log(signupdata);
-        return true;
+        return $http({
+            method: 'POST',
+            url: baseURL + 'signin',
+            data: signupdata,
+            headers: {'Content-Type': 'application/json'}
+        });
     }
 
 }
