@@ -1,0 +1,46 @@
+
+#login-form{
+    background-color: rgba(255,255,255,0.4);
+    padding: 5%;
+    border-radius: 3%;
+}
+#register-form{
+    background-color: rgba(255,255,255,0.4);
+    padding: 5%;
+    display: none;
+}
+#logo{
+    margin-bottom: 3%;
+    border-radius: 5% 5% 0 0;
+}
+.btn{
+    width: 50%;
+    margin: 0 0 2% 0;
+    background-color: #5DBD37;
+}
+
+.login-formL-link{
+    color: #797985;
+    margin: auto;
+}
+#signUp{
+    margin:7% 25%;
+    width:50%;
+}
+#stay-logged{
+    margin: 0 ;
+}
+#login-popup h3{
+    text-align: center;
+    margin-bottom: 5%;
+}
+#login-popup .input-group{
+    margin: 2% auto;
+    width: 75%;
+}
+#login-popup .input-group label{
+    margin-left: 1%;
+    font-weight : normal;
+    font-size: 0.97em;
+    color: #858594
+}
