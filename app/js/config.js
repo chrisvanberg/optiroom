@@ -26,8 +26,8 @@ function appConfig($stateProvider, $urlRouterProvider){
         .state('my-account', {
             url: '/my-account',
             templateUrl: 'my-account.html',
-            controller: 'authLoginController',
-            controllerAs: 'authLoginCtrl',
+            controller: 'authStatusController',
+            controllerAs: 'authStatusCtrl',
             restrictions: {
                 ensureAuthenticated: true,
                 loginRedirect: false
@@ -56,6 +56,17 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
+        .state('add-optiroom', {
+            url: '/add-optiroom',
+            templateUrl: 'add-optiroom.html',
+            controller: 'authStatusController',
+            controllerAs: 'authStatusCtrl',
+            restrictions: {
+                ensureAuthenticated: false,
+                loginRedirect: false
+            }
+
+        })
         ;
         $urlRouterProvider.otherwise('/');
 };
@@ -72,12 +83,13 @@ function routeStart($transitions) {
         }
         if (trans.to().restrictions.ensureAuthenticated) {
             if (!localStorage.getItem('token')) {
-                console.log("Acces restriction")
+                trans.abort();
                 window.location.href = '#!/';
             }
         }
         if (trans.to().restrictions.loginRedirect) {
             if (localStorage.getItem('token')) {
+                trans.abort();
                 window.location.href = '#!/';
             }
         }
