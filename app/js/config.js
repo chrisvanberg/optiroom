@@ -59,10 +59,10 @@ function appConfig($stateProvider, $urlRouterProvider){
         .state('add-optiroom', {
             url: '/add-optiroom',
             templateUrl: 'add-optiroom.html',
-            controller: 'authStatusController',
-            controllerAs: 'authStatusCtrl',
+            controller: 'workspaceController',
+            controllerAs: 'workspaceCtrl',
             restrictions: {
-                ensureAuthenticated: false,
+                ensureAuthenticated: true,
                 loginRedirect: false
             }
 

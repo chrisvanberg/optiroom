@@ -28,19 +28,31 @@
     width:50%;
 }
 #stay-logged{
-    margin: 0 ;
+    margin: 0;
 }
-#login-popup h3{
+.login-popup h3{
     text-align: center;
     margin-bottom: 5%;
 }
-#login-popup .input-group{
+.login-popup .input-group{
     margin: 2% auto;
     width: 75%;
 }
-#login-popup .input-group label{
+.login-popup input[type=checkbox]{
+    width: 1vw;
+}
+
+.login-popup .input-group label{
     margin-left: 1%;
     font-weight : normal;
     font-size: 0.97em;
     color: #858594
+}
+.login-popup table{
+    border: 1px solid lightgray;
+    width:100%;
+    border-radius:10%;
+}
+.login-popup table td{
+    width: 1vw;
 }

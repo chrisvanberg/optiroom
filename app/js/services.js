@@ -1,7 +1,8 @@
-angular.module('tokenAuthApp.services', []).service('authService', authService).service('signupService',signupService);
+angular.module('tokenAuthApp.services', []).service('authService', authService).service('signupService',signupService).service('workspaceService',workspaceService);
 
 authService.$inject = ['$http','$window'];
-signupService.$inject = ['$http','$window'];
+signupService.$inject = ['$http'];
+workspaceService.$inject = ['$http'];
 
 function authService($http,$window) {
 
@@ -36,17 +37,22 @@ function authService($http,$window) {
     }
 
 }
-function signupService($http, $window) {
+function signupService($http) {
 
     const baseURL = 'https://dev.optiroom.net/api/';
 
     this.sendSignupForm = function (signupdata) {
         return $http({
             method: 'POST',
-            url: baseURL + 'signin',
+            url: baseURL + 'signup',
             data: signupdata,
             headers: {'Content-Type': 'application/json'}
         });
     }
 
+}
+function workspaceService($http){
+    this.test = function(){
+        console.log("");
+    }
 }

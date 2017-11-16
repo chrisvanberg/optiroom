@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
 
     <!-- JS -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -25,11 +26,12 @@
     <script type="text/javascript" src="js/services.js"></script>
     <script type="text/javascript" src="js/auth.controller.js"></script>
     <script type="text/javascript" src="js/signup.controller.js"></script>
+    <script type="text/javascript" src="js/workspace.controller.js"></script>
     <script type="text/javascript" src="js/google-map.js"></script>
 </head>
 
 <body ng-app="tokenAuthApp">
-    <div class='container-fluid' id="homepage-header">
+    <div class='container-fluid' id="homepage-header" ng-controller="authStatusController">
         <div class='row'>
             <div class="col-md-12" id="top-menu">
                 <div class="row">
