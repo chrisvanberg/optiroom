@@ -133,15 +133,15 @@ class Login(Resource):
         posted_username = json_data['username']
         posted_password = json_data['password']
 
-        if db_auth_user == posted_username:
-            if bcrypt.check_password_hash(db_auth_hash, posted_password) :
-                ret = {'access_token': create_access_token(identity=db_auth_user)}
+        #if db_auth_user == posted_username:
+            #if bcrypt.check_password_hash(db_auth_hash, posted_password) :
+                ret = {'access_token': create_access_token(identity=json_data['username'])}
                 return ret, 200
 
-            else:
-                return {'error':'Wrong Password for '+posted_username},401
-        else:
-            return {'error':'Wrong Username'},401
+            #else:
+             #   return {'error':'Wrong Password for '+posted_username},401
+        #else:
+         #   return {'error':'Wrong Username'},401
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
