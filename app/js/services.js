@@ -1,15 +1,13 @@
-angular.module('tokenAuthApp.services', []).service('authService', authService);
+angular.module('tokenAuthApp.services', []).service('authService', authService).service('signupService',signupService);
 
 authService.$inject = ['$http','$window'];
+signupService.$inject = ['$http','$window'];
 
 function authService($http,$window) {
-    this.parseJwt = function(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse($window.atob(base64));
-    }
-    const baseURL = 'https://54.36.181.116:5000/';
 
+    const baseURL = 'https://dev.optiroom.net/api/';
+
+    //Connexion
     this.login = function(user) {
         return $http({
             method: 'POST',
@@ -18,7 +16,7 @@ function authService($http,$window) {
             headers: {'Content-Type': 'application/json'}
         });
     };
-
+    //Check si l'user est authentifié
     this.ensureAuthenticated = function(token) {
         return $http({
             method: 'GET',
@@ -29,4 +27,26 @@ function authService($http,$window) {
             }
         });
     };
+
+    //Parser de token
+    this.parseJwt = function(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse($window.atob(base64));
+    }
+
+}
+function signupService($http, $window) {
+
+    const baseURL = 'https://dev.optiroom.net/api/';
+
+    this.sendSignupForm = function (signupdata) {
+        return $http({
+            method: 'POST',
+            url: baseURL + 'signin',
+            data: signupdata,
+            headers: {'Content-Type': 'application/json'}
+        });
+    }
+
 }

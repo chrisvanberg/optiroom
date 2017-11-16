@@ -23,11 +23,44 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
+        .state('my-account', {
+            url: '/my-account',
+            templateUrl: 'my-account.html',
+            controller: 'authStatusController',
+            controllerAs: 'authStatusCtrl',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            }
+
+        })
+        .state('signup', {
+            url: '/signup',
+            templateUrl: 'signup.html',
+            controller: 'signupController',
+            controllerAs: 'signupCtrl',
+            restrictions: {
+                ensureAuthenticated: false,
+                loginRedirect: true
+            }
+
+        })
         .state('map', {
             url: '/map',
             templateUrl: 'google-map.html',
             controller: 'authLoginController',
             controllerAs: 'authLoginCtrl',
+            restrictions: {
+                ensureAuthenticated: false,
+                loginRedirect: false
+            }
+
+        })
+        .state('add-optiroom', {
+            url: '/add-optiroom',
+            templateUrl: 'add-optiroom.html',
+            controller: 'authStatusController',
+            controllerAs: 'authStatusCtrl',
             restrictions: {
                 ensureAuthenticated: false,
                 loginRedirect: false
@@ -41,63 +74,24 @@ function appConfig($stateProvider, $urlRouterProvider){
 
 function routeStart($transitions) {
     $transitions.onStart({}, function (trans) {
-       // showMenu();
+        if(trans.to().url != "/"){
+            hideSearchBar(true);
+            hideMap(true)
+        }else{
+            hideSearchBar(false);
+            hideMap(false)
+        }
         if (trans.to().restrictions.ensureAuthenticated) {
             if (!localStorage.getItem('token')) {
-                console.log("Acces restriction")
+                trans.abort();
                 window.location.href = '#!/';
             }
         }
         if (trans.to().restrictions.loginRedirect) {
             if (localStorage.getItem('token')) {
+                trans.abort();
                 window.location.href = '#!/';
             }
         }
-        setPath(trans);
     });
 }
-
-function setPath(trans){
-
-    console.log(trans.to().url);
-    var path = trans.to().url;
-    var page = path.replace("/","");
-    console.log(page);
-    $("a.menu-item:not(a[title='"+page+"'])").css("font-weight","normal");
-    $("a.menu-item:not(a[title='"+page+"'])").css("color","white");
-    $("a[title='"+page+"']").css("font-weight","700");
-    $("a[title='"+page+"']").css("color","#FFDB38");
-    switch(path){
-        case "/UI" :
-            path = "Acceuil"
-            break;
-        case "/rooms":
-            path = "Locaux"
-            break;
-        case "/book":
-            path = "Réserver"
-            break;
-        case "/my-bookings":
-            path = "Mes réservations"
-            break;
-        case "/management":
-            path = "Gestion"
-            break;
-    }
-    $("header span").text(path);
-}
-/*
-function routeStart($rootScope, $location, $route) {
-    $rootScope.$on('$routeChangeStart', (event, next, current) => {
-        if (next.restrictions.ensureAuthenticated) {
-        if (!localStorage.getItem('token')) {
-            $location.path('/login');
-        }
-    }
-    if (next.restrictions.loginRedirect) {
-        if (localStorage.getItem('token')) {
-            $location.path('/status');
-        }
-    }
-});
-}*/
