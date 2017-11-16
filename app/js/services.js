@@ -53,6 +53,6 @@ function signupService($http) {
 }
 function workspaceService($http){
     this.test = function(){
-        console.log("");
+        console.log("Form envoyé");
     }
 }

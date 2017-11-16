@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     $("#datetimepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+    hideMap(true);
 });
 
 function userAuthentificated(vm){

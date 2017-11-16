@@ -7,6 +7,7 @@ function workspaceController(workspaceService){
     const vm = this;
     vm.workspaceData = {};
     vm.onAddWorkspace = function() {
-        console.log("Test");
+        $("#labase").css("display","none");
+        $("#retourEnvoi").css("display","block");
     };
 }
