@@ -108,7 +108,7 @@ class RoomState(Resource):
         else:
         	return {'error':'Invalid room number'}, 404
 
-@api.route('/signin')
+@api.route('/signup')
 class Signin(Resource):
     def post(self):
         json_data = request.get_json(force=True)
@@ -116,11 +116,11 @@ class Signin(Resource):
         posted_name = json_data['name']
         posted_firstname = json_data['firstname']
         posted_password = json_data['password']
-        data = (posted_firstname,posted_name,posted_username,posted_password)
-        signin = ("CALL sign_in(%s, %s, %s, %s)")
+        data = (posted_firstname,posted_name,posted_username, bcrypt.generate_password_hash(posted_password))
+        signup = ("CALL sign_up(%s, %s, %s, %s)")
         cur = mysql.connection.cursor()
-        cur.execute(signin,data)
-        return {'Status':'Success'}
+        cur.execute(signup,data)
+        return {'Status':'Success'}, 201
 
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
