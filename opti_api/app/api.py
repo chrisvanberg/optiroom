@@ -135,8 +135,8 @@ class Login(Resource):
 
         #if db_auth_user == posted_username:
             #if bcrypt.check_password_hash(db_auth_hash, posted_password) :
-                ret = {'access_token': create_access_token(identity=json_data['username'])}
-                return ret, 200
+        ret = {'access_token': create_access_token(identity=json_data['username'])}
+        return ret, 200
 
             #else:
              #   return {'error':'Wrong Password for '+posted_username},401
