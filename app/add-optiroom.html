@@ -5,12 +5,27 @@
     <form ng-submit="workspaceCtrl.onAddWorkspace()" class="col-md-8 col-md-offset-2 login-popup">
         <div class="input-group row">
             <span class="input-group-addon">
+                <span class="glyphicon 	glyphicon glyphicon-home"></span>
+            </span>
+            <input type='text' class="form-control" placeholder="Nom du batiment" ng-model="buildingName" required>
+            <input type='text' class="form-control" placeholder="Nom de l'espace de travail" ng-model="workspaceName" required>
+        </div>
+        <div class="input-group row">
+            <span class="input-group-addon">
+                <span class="glyphicon 	glyphicon glyphicon-align-left"></span>
+            </span>
+            <textarea class="form-control" placeholder="Description" ng-model="description">
+            </textarea>
+        </div>
+        <div class="input-group row">
+            <span class="input-group-addon">
                 <span class="glyphicon glyphicon-map-marker"></span>
             </span>
             <input type='text' class="form-control" placeholder="Rue" ng-model="street" required>
             <input type='text' class="form-control" placeholder="n°" ng-model="number" required>
             <input type='text' class="form-control" placeholder="Ville" ng-model="city" required>
             <input type='text' class="form-control" placeholder="Code postal" ng-model="cityCode" required>
+            <input type='text' class="form-control" placeholder="Pays" ng-model="country" required>
         </div>
         <div class="input-group row">
             <span class="input-group-addon">

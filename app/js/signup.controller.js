@@ -10,6 +10,8 @@ function signupController(signupService){
     vm.onSignupFormSend = function() {
         signupService.sendSignupForm(vm.signupdata).then(function(returnMessage) {
             console.log(returnMessage);
+            window.location.href = "#!/";
+            
         },function(err){
             console.log("Erreur");
         });
