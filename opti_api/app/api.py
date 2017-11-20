@@ -16,7 +16,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = True
-_version_ = "0.2.8"
+_version_ = "0.2.9"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -27,8 +27,6 @@ app.config['MYSQL_PASSWORD'] = 'YFdcxYJS:ng3PcvndfGeIeRxhuOYiP'
 app.config['MYSQL_DB'] = 'optiroom'
 mysql.init_app(app)
 jwt = JWTManager(app)
-
-
 
 @api.route('/system')
 class System(Resource):
@@ -144,23 +142,29 @@ class Signin(Resource):
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
     def post(self):
-        db_auth_id = "1"
-        db_auth_user="contact@chrisv.be"
-        db_auth_hash="$2y$10$x1RlWYILR5rJ9Rd.wtqSCOC68QcEDRonMlvXzsN8OFj6ejlMns6X2"
 
         json_data = request.get_json(force=True)
-        posted_username = json_data['username']
-        posted_password = json_data['password']
+        email = json_data['username']
+        password = json_data['password']
 
-        #if db_auth_user == posted_username:
-            #if bcrypt.check_password_hash(db_auth_hash, posted_password) :
-        ret = {'access_token': create_access_token(identity=json_data['username'])}
-        return ret, 200
+        cur = mysql.connection.cursor()
+        cur.callproc('getHash', [email])
 
-            #else:
-             #   return {'error':'Wrong Password for '+posted_username},401
-        #else:
-         #   return {'error':'Wrong Username'},401
+        if cur.rowcount is not 0:
+
+            result = cur.fetchone()
+            firstname = result[0]
+            lastname = result[1]
+            hash = result[2]
+
+            if bcrypt.check_password_hash(hash, password) :
+                token = create_access_token(identity=email)
+                ret = {'access_token': token}
+                return ret, 200
+            else:
+                return {'Status': 'Error', 'Code': 'L002'}, 401
+        else:
+            return {'Status': 'Error', 'Code': 'L001'}, 401
 
 if __name__ == '__main__':
     app.run(debug=_debug_, host='0.0.0.0', port=5000)
