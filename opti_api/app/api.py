@@ -29,7 +29,7 @@ jwt = JWTManager(app)
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.6', 'motd': 'N/A'}
+        return {'state': 'up','version': '0.2.7', 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
@@ -108,19 +108,29 @@ class RoomState(Resource):
         else:
         	return {'error':'Invalid room number'}, 404
 
-@api.route('/signup')
+@api.route('/signup', methods=['POST'])
 class Signin(Resource):
     def post(self):
+
         json_data = request.get_json(force=True)
         posted_username = json_data['mail']
         posted_name = json_data['name']
         posted_firstname = json_data['firstname']
         posted_password = json_data['password']
-        data = (posted_firstname,posted_name,posted_username, bcrypt.generate_password_hash(posted_password))
-        signup = ("CALL sign_up(%s, %s, %s, %s)")
-        cur = mysql.connection.cursor()
-        cur.execute(signup,data)
-        return {'Status':'Success'}, 201
+        hashedPwd = bcrypt.generate_password_hash(posted_password)
+
+        data = [posted_firstname, posted_name, posted_username, hashedPwd.decode('UTF-8')]
+
+        try:
+            cur = mysql.connection.cursor()
+            cur.callproc('sign_up', data)
+            mysql.connection.commit()
+            return {'Status': 'Success'}, 201
+        except (mysql.Error, mysql.Warning) as e:
+            return {'Status': 'Error'}, 500
+
+
+
 
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
