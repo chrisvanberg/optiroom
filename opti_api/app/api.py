@@ -8,13 +8,15 @@ from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-import socket
+global _debug_
+global _version_
 
 app = Flask(__name__)
 api = Api(app)
 bcrypt = Bcrypt(app)
 
-
+_debug_ = True
+_version_ = "0.2.8"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -26,10 +28,12 @@ app.config['MYSQL_DB'] = 'optiroom'
 mysql.init_app(app)
 jwt = JWTManager(app)
 
+
+
 @api.route('/system')
 class System(Resource):
     def get(self):
-        return {'state': 'up','version': '0.2.7', 'motd': 'N/A'}
+        return {'state': 'up','version': _version_, 'motd': 'N/A'}
 
 @api.route('/motd')
 class System(Resource):
@@ -126,8 +130,13 @@ class Signin(Resource):
             cur.callproc('sign_up', data)
             mysql.connection.commit()
             return {'Status': 'Success'}, 201
-        except (mysql.Error, mysql.Warning) as e:
-            return {'Status': 'Error'}, 500
+        except Exception as e:
+            if "Duplicate entry" in str(e):
+                return {'Status': 'Error', 'Code': 'S001'}, 409
+            elif _debug_:
+                return {'Status': 'Error', 'e': str(e)}, 409
+            else:
+                return {'Status': 'Error'}, 409
 
 
 
@@ -154,4 +163,4 @@ class Login(Resource):
          #   return {'error':'Wrong Username'},401
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=_debug_, host='0.0.0.0', port=5000)
