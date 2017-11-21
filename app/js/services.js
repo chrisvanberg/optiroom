@@ -52,7 +52,15 @@ function signupService($http) {
 
 }
 function workspaceService($http){
-    this.test = function(){
-        console.log("Form envoyé");
+
+    const baseURL = 'https://dev.optiroom.net/api/';
+
+    this.addWorkspace = function(workspacedata){
+        return $http({
+            method: 'POST',
+            url: baseURL + 'workspace/add',
+            data: workspacedata,
+            headers: {'Content-Type': 'application/json'}
+        });
     }
 }
