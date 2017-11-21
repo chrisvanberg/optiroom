@@ -16,7 +16,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = True
-_version_ = "0.2.9"
+_version_ = "0.2.10"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -135,6 +135,30 @@ class Signin(Resource):
                 return {'Status': 'Error', 'e': str(e)}, 409
             else:
                 return {'Status': 'Error'}, 409
+
+@api.route('/workspaces')
+class Workspaces(Resource):
+    def get(self):
+        workspaces = []
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM get_workspace")
+        for workspace in cur:
+            workspace = {
+            'address_id': workspace[0],
+            'building_name': workspace[1],
+            'country': workspace[2],
+            'city': workspace[3],
+            'street': workspace[4],
+            'postcode': workspace[5],
+            'building_number': workspace[6],
+            'workspace_name': workspace[7],
+            'nbPlace': workspace[8],
+            'description': workspace[9],
+            'hasProjector': workspace[10],
+            'hasWifi': workspace[11] }
+            workspaces.append(workspace)
+        return jsonify(workspaces)
+
 
 
 
