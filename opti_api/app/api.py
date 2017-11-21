@@ -16,7 +16,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = True
-_version_ = "0.2.11"
+_version_ = "0.2.12"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -38,77 +38,6 @@ class System(Resource):
     def get(self):
         return {'motd': 'N/A'}
 
-@api.route('/rooms')
-class Rooms(Resource):
-    def get(self):
-        rooms = []
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM get_rooms")
-        for row in cur:
-            room = {
-            'building_id': row[0],
-            'building_name': row[1],
-            'room_id': row[2],
-            'floorNum': row[3],
-            'roomType': row[4],
-            'roomDescription': row[5]}
-            rooms.append(room)
-        return jsonify(rooms)
-
-@api.route('/rooms/full')
-class RoomsFull(Resource):
-    def get(self):
-        rooms = []
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM get_roomsFull")
-        for row in cur:
-            room = {
-            'building_id': row[0],
-            'building_name': row[1],
-            'room_id': row[2],
-            'floorNum': row[3],
-            'roomType': row[4],
-            'roomDescription': row[5],
-            'nbPlace': row[6],
-            'hasSpeaker': row[7],
-            'hasProjector': row[8]}
-            rooms.append(room)
-        return jsonify(rooms)
-
-@api.route('/buildings')
-class Buildings(Resource):
-    def get(self):
-        buildings = []
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM get_buildings")
-        for building in cur:
-            building = {
-            'building_id': building[0],
-            'building_name': building[1],
-            'nb_floors': building[2] }
-            buildings.append(building)
-        return jsonify(buildings)
-
-@api.route('/room/<string:room_id>')
-class RoomID(Resource):
-    def get(self, room_id):
-        if room_id == 'A10':
-            return {'A10': {'numFloor': '0','idBuilding': '1','typeRoom': '1', 'opti_light': 'avaliable', 'opti_heat': 'avaliable', 'nbSeats': '250', 'projector' : 'true', 'soundSystem': 'true'}}
-
-        elif room_id == 'L04':
-            return {'L04': {'numFloor': '0','idBuilding': '1', 'typeRoom': '2', 'opti_light': 'false', 'opti_heat': 'avaliable', 'nbSeats': '70', 'projector' : 'true', 'soundSystem': 'false'}}
-        else:
-        	return {'error':'Invalid room number'}, 404
-
-@api.route('/state/<string:room_id>')
-class RoomState(Resource):
-    def get(self, room_id):
-        if room_id == 'A10':
-            return {'A10': {'state': 'busy'}}
-        elif room_id == 'L04':
-            return {'L04': {'state': 'available'}}
-        else:
-        	return {'error':'Invalid room number'}, 404
 
 @api.route('/signup', methods=['POST'])
 class Signin(Resource):
@@ -160,9 +89,55 @@ class Workspaces(Resource):
             workspaces.append(workspace)
         return jsonify(workspaces)
 
+@api.route('/workspace/add')
+class WorkspaceAdd(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        jsonAddress = json_data['address']
+        address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country']]
+        jsonWorkspace = json_data['workspace']
 
 
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAddressExist', address)
 
+        if cur.rowcount is not 0:
+            result = cur.fetchone()
+            addressId = result[0]
+            cur.close()
+
+            workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+
+
+            cur = mysql.connection.cursor()
+            cur.callproc('addWorkspace', workspace)
+            mysql.connection.commit()
+            cur.close()
+
+            return {},201
+
+        else:
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.callproc('addWorkspaceAddress', address)
+            mysql.connection.commit()
+            cur.close()
+
+            cur = mysql.connection.cursor()
+            cur.callproc('checkIfAddressExist', address)
+            result = cur.fetchone()
+            addressId = result[0]
+            cur.close()
+
+            workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+
+
+            cur = mysql.connection.cursor()
+            cur.callproc('addWorkspace', workspace)
+            mysql.connection.commit()
+            cur.close()
+
+            return {},201
 
 @api.route('/auth/login', methods=['POST'])
 class Login(Resource):
@@ -190,6 +165,42 @@ class Login(Resource):
                 return {'Status': 'Error', 'Code': 'L002'}, 401
         else:
             return {'Status': 'Error', 'Code': 'L001'}, 401
+
+### Old Optiroom
+@api.route('/buildings')
+class Buildings(Resource):
+    def get(self):
+        buildings = []
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM get_buildings")
+        for building in cur:
+            building = {
+            'building_id': building[0],
+            'building_name': building[1],
+            'nb_floors': building[2] }
+            buildings.append(building)
+        return jsonify(buildings)
+
+@api.route('/room/<string:room_id>')
+class RoomID(Resource):
+    def get(self, room_id):
+        if room_id == 'A10':
+            return {'A10': {'numFloor': '0','idBuilding': '1','typeRoom': '1', 'opti_light': 'avaliable', 'opti_heat': 'avaliable', 'nbSeats': '250', 'projector' : 'true', 'soundSystem': 'true'}}
+
+        elif room_id == 'L04':
+            return {'L04': {'numFloor': '0','idBuilding': '1', 'typeRoom': '2', 'opti_light': 'false', 'opti_heat': 'avaliable', 'nbSeats': '70', 'projector' : 'true', 'soundSystem': 'false'}}
+        else:
+        	return {'error':'Invalid room number'}, 404
+
+@api.route('/state/<string:room_id>')
+class RoomState(Resource):
+    def get(self, room_id):
+        if room_id == 'A10':
+            return {'A10': {'state': 'busy'}}
+        elif room_id == 'L04':
+            return {'L04': {'state': 'available'}}
+        else:
+        	return {'error':'Invalid room number'}, 404
 
 if __name__ == '__main__':
     app.run(debug=_debug_, host='0.0.0.0', port=5000)
