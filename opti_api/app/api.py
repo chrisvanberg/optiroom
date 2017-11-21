@@ -16,7 +16,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = True
-_version_ = "0.2.10"
+_version_ = "0.2.11"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -151,11 +151,12 @@ class Workspaces(Resource):
             'street': workspace[4],
             'postcode': workspace[5],
             'building_number': workspace[6],
-            'workspace_name': workspace[7],
-            'nbPlace': workspace[8],
-            'description': workspace[9],
-            'hasProjector': workspace[10],
-            'hasWifi': workspace[11] }
+            'workspace_id': workspace[7],
+            'workspace_name': workspace[8],
+            'nbPlace': workspace[9],
+            'description': workspace[10],
+            'hasProjector': workspace[11],
+            'hasWifi': workspace[12] }
             workspaces.append(workspace)
         return jsonify(workspaces)
 
