@@ -63,4 +63,21 @@ function workspaceService($http){
             headers: {'Content-Type': 'application/json'}
         });
     }
+    this.getWorkspaces = function(){
+        return $http({
+            method: 'GET',
+            url: baseURL + 'workspaces',
+            headers: {'Content-Type': 'application/json'}
+        });
+    }
+    this.getCoordsByAddress = function(googleAPIUrl){
+        return $http({
+            method: 'GET',
+            url: googleAPIUrl,
+            headers: {'Content-Type': 'application/json'}
+        });
+    }
+
+
 }
+//maps.googleapis.com/maps/api/geocode/json?address=6210+Rue+de+la+station+278+BE&key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ

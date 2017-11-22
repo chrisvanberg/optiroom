@@ -1,24 +1,8 @@
 var markers;
 var place;
 var map;
+var workspaces;
 function initAutocomplete(){
-    markers = {
-        "JB" :  {
-            position: new google.maps.LatLng(50.668813, 4.608194),
-            title:"JB's super fun house",
-            price: 45
-        },
-        "Max": {
-            position: new google.maps.LatLng(50.665813, 4.612194),
-            title:"L'auberge du ragnard",
-            price : 12
-        },
-        "Chris" : {
-            position: new google.maps.LatLng(50.669813, 4.613194),
-            title:"Chez Chris !",
-            price: 33
-        }
-    };
 
     var options = {
         types: ['(cities)'],
@@ -52,26 +36,61 @@ function initAutocomplete(){
         $("#search-form").slideUp();
         $("#new-search-btn").show();
         window.location.href = '#!/map';
-        drawMarkers();
+        getWorkspaces();
     }
-    drawMarkers();//Debug
-
 }
 
-function drawMarkers(){
-    var image = {
+function drawMarkers(workspacesSelection){
+    /*var image = {
         url: 'img/marker.png',
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32),
-        scaledSize: new google.maps.Size(35, 28)
-    };
-    for(i in markers){
+        scaledSize: new google.maps.Size(32, 40)
+    };*/
+    angular.forEach(workspacesSelection, function(value, key) {
         new google.maps.Marker({
-            position : markers[i].position,
+            position : workspacesSelection[key].position,
             map : map,
-            title : markers[i].title,
-            label : markers[i].price + " €",
-            icon : image
+            title : workspacesSelection[key].title
         });
+    });
+}
+function drawList(workspacesSelection){
+    $("#workspace-list").html("");
+    for(i in workspacesSelection){
+        $("#workspace-list").append("<div class='workspace' data-workspace="+i+"></div>");
+        $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg'>");
+        $('*[data-workspace="'+i+'"]').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
+        $('*[data-workspace="'+i+'"]').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
+        $('*[data-workspace="'+i+'"]').append("<h4>Prix: x €/h</h4>");
+        $('*[data-workspace="'+i+'"]').append("<div class='clearfix'></div>");
     }
+}
+var coords = [];
+var workspacesRt;
+function getWorkspaces(){
+    workspacesRt = {};
+    //Faut un range de xkm max
+        angular.element(document.body).injector().get("workspaceService").getWorkspaces().then(function(ws) {
+            workspaces = ws.data;
+            angular.forEach(workspaces, function(value, key) {
+                var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                googleAPIUrl += workspaces[key].postcode +"+";
+                googleAPIUrl += workspaces[key].city +"+";
+                googleAPIUrl += workspaces[key].street +"+";
+                googleAPIUrl += workspaces[key].building_number +"+";
+                googleAPIUrl += workspaces[key].country +"+";
+                googleAPIUrl += "&key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ";
+                angular.element(document.body).injector().get("workspaceService").getCoordsByAddress(googleAPIUrl).then(function(data){
+                    coords[key] = data.data.results[0].geometry.location;
+                    workspacesRt[key] = ({
+                        position: new google.maps.LatLng(coords[key].lat, coords[key].lng),
+                        title: workspaces[key].building_name,
+                        price: key
+                    });
+                    drawMarkers(workspacesRt);
+                    drawList(workspaces);
+                });
+            });
+        });
 }

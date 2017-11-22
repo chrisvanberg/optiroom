@@ -1,12 +1,12 @@
 $( document ).ready(function() {
     $("#datetimepicker").datepicker({ dateFormat: 'dd-mm-yy' });
     hideMap(true);
+    getWorkspaces();
 });
 
 function userAuthentificated(vm){
     $(".visible-offline").hide();
     $(".visible-online").show();
-    $("#user-name").html(vm.username);
     $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
 }
 
