@@ -8,6 +8,7 @@ from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+import os
 global _debug_
 global _version_
 
@@ -15,16 +16,16 @@ app = Flask(__name__)
 api = Api(app)
 bcrypt = Bcrypt(app)
 
-_debug_ = True
-_version_ = "0.2.12"
+_debug_ = os.environ['DEBUG']
+_version_ = "0.2.13"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['JWT_SECRET_KEY'] = 'optiroom'  # Change this!
-app.config['MYSQL_HOST'] = 'dev.optiroom.net'
-app.config['MYSQL_USER'] = 'opti_api'
-app.config['MYSQL_PASSWORD'] = 'YFdcxYJS:ng3PcvndfGeIeRxhuOYiP'
-app.config['MYSQL_DB'] = 'optiroom'
+app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
+app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
+app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
+app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
+app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
 mysql.init_app(app)
 jwt = JWTManager(app)
 

@@ -14,8 +14,12 @@ RUN pip install -r app/requirements.txt
 EXPOSE 5000
 
 # Define environment variable
-ENV NAME World
+ENV Name JWT_SECRET_KEY
+ENV Name MYSQL_HOST
+ENV Name MYSQL_USER
+ENV Name MYSQL_PASSWORD
+ENV Name MYSQL_DB
+ENV Name DEBUG
 
 # Run app.py when the container launches
 CMD ["python", "app/api.py"]
-
