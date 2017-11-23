@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8184390d-3cda-4225-b562-7dfb2476f2e4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/img/default-room.jpg" afterPath="$PROJECT_DIR$/app/img/default-room.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/css/main.css" afterPath="$PROJECT_DIR$/app/css/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/css/workspaces.css" afterPath="$PROJECT_DIR$/app/css/workspaces.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/google-map.html" afterPath="$PROJECT_DIR$/app/google-map.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/config.js" afterPath="$PROJECT_DIR$/app/js/config.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/google-map.js" afterPath="$PROJECT_DIR$/app/js/google-map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/page-loading.js" afterPath="$PROJECT_DIR$/app/js/page-loading.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/signup.html" afterPath="$PROJECT_DIR$/app/signup.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,8 +16,8 @@
       <file leaf-file-name="google-map.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/js/google-map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="62" column="35" lean-forward="false" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
+            <state relative-caret-position="130">
+              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -269,12 +260,12 @@
       <workItem from="1511301870697" duration="728000" />
       <workItem from="1511337763739" duration="24122000" />
       <workItem from="1511422707946" duration="4173000" />
-      <workItem from="1511430557818" duration="8683000" />
+      <workItem from="1511430557818" duration="8958000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71862000" />
+    <option name="totallyTimeSpent" value="72137000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1366" height="742" extended-state="6" />
@@ -666,8 +657,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/js/google-map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="62" column="35" lean-forward="false" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
+        <state relative-caret-position="130">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>

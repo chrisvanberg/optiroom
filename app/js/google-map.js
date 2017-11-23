@@ -105,6 +105,8 @@ function drawList(workspacesSelection){
         $(".more").not($(this).find(".more")).slideUp("slow");
         $(this).find(".more").slideDown("slow");
     });
+    google.maps.event.trigger(map, 'resize');
+
 }
 var coords = [];
 var workspacesRt;
