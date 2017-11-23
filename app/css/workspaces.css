@@ -4,8 +4,19 @@
 .workspace{
     border: 1px solid grey;
     margin: 2% 0;
+    padding: 2%;
+}
+.workspace .more{
+    display: none;
+}
+.workspace h2{
+    margin:0;
+}
+.workspace:hover{
+    background-color: #eeeeee;
 }
 .workspace img{
+    margin:2%;
     width: 20%;
     float: left;
 }

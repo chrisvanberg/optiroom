@@ -48,23 +48,53 @@ function drawMarkers(workspacesSelection){
         scaledSize: new google.maps.Size(32, 40)
     };*/
     angular.forEach(workspacesSelection, function(value, key) {
-        new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position : workspacesSelection[key].position,
             map : map,
-            title : workspacesSelection[key].title
+            title : workspacesSelection[key].title,
+            url: "marker"+key
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+            $('html, body').animate({
+                scrollTop: $("#marker"+key).offset().top-150
+            }, 1000);
         });
     });
 }
 function drawList(workspacesSelection){
     $("#workspace-list").html("");
     for(i in workspacesSelection){
-        $("#workspace-list").append("<div class='workspace' data-workspace="+i+"></div>");
-        $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg'>");
-        $('*[data-workspace="'+i+'"]').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
-        $('*[data-workspace="'+i+'"]').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
-        $('*[data-workspace="'+i+'"]').append("<h4>Prix: x €/h</h4>");
-        $('*[data-workspace="'+i+'"]').append("<div class='clearfix'></div>");
+        $("#workspace-list").append("<div class='workspace row' id='marker"+i+"' data-workspace="+i+"></div>");
+        $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg' class='col-md-4 firstCol'>");
+
+        $('*[data-workspace="'+i+'"]').append("<div class='col-md-4 secondCol'></div>");
+        $('*[data-workspace="'+i+'"]>.secondCol').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
+        $('*[data-workspace="'+i+'"]>.secondCol').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
+        $('*[data-workspace="'+i+'"]>.secondCol').append("<h4>Prix: x €/h</h4>");
+        $('*[data-workspace="'+i+'"]>.secondCol').append("<div class='clearfix'></div>");
+
+        $('*[data-workspace="'+i+'"]').append("<div class='col-md-4 thirdCol'></div>");
+        $('*[data-workspace="'+i+'"]>.thirdCol').append("<h4>Wifi:</h4>");
+        $('*[data-workspace="'+i+'"]>.thirdCol').append(
+            workspacesSelection[i].hasWifi == 1 ? "<p>Oui</p>" : "<p>Non</p>"
+        );
+        $('*[data-workspace="'+i+'"]>.thirdCol').append("<h4>Projecteur:</h4>");
+        $('*[data-workspace="'+i+'"]>.thirdCol').append(
+            workspacesSelection[i].hasProjector == 1 ? "<p>Oui</p>" : "<p>Non</p>"
+        );
+        $('*[data-workspace="'+i+'"]>.thirdCol').append("<div class='clearfix'></div>");
+
+
+        $('*[data-workspace="'+i+'"]').append("<div class='col-md-12 more'></div>");
+        $('*[data-workspace="'+i+'"]>.more').append("<h4>Description:</h4>");
+        $('*[data-workspace="'+i+'"]>.more').append("<p>"+workspacesSelection[i].description+"</p>");
+        $('*[data-workspace="'+i+'"]>.more').append("<button class='btn-success btn-sm form-control'>Réserver</button>");
+
     }
+    $(".workspace").click(function(){
+        $(".more").not($(this).find(".more")).slideUp("slow");
+        $(this).find(".more").slideDown("slow");
+    });
 }
 var coords = [];
 var workspacesRt;
