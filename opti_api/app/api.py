@@ -13,7 +13,8 @@ global _debug_
 global _version_
 
 app = Flask(__name__)
-api = Api(app)
+api = Api(app, doc='/api/')
+
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
