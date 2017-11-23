@@ -7,7 +7,7 @@ from flask_restplus import Resource, Api
 from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import *
 import os
 global _debug_
 global _version_
@@ -18,11 +18,13 @@ api = Api(app, doc='/api/')
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.2.14"
+_version_ = "0.2.16"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
+
 app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
 app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
 app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
@@ -43,7 +45,30 @@ class System(Resource):
 @api.route('/workspace/<string:workspace_id>')
 class RoomID(Resource):
     def get(self, workspace_id):
-        return {'message': 'workspace/{workspace_id} is not implemented yet', 'workspace_id': workspace_id},501
+
+        cur = mysql.connection.cursor()
+        cur.callproc('get_workspace_byWorkspaceId', workspace_id)
+        result = cur.fetchone()
+
+        workspace = {
+            'workspace_name': result[0],
+            'description': result[1],
+            'building_name': result[2],
+            'latitude': str(result[3]),
+            'longitude': str(result[4]),
+            'street': result[5],
+            'building_number': result[6],
+            'postcode': result[7],
+            'city': result[8],
+            'country': result[9],
+            'minPrice': str(result[10]),
+            'nbSeats': result[11],
+            'hasProjector': result[12],
+            'hasWifi': result[13] }
+
+        return jsonify(workspace)
+
+
 
 @api.route('/user/workspaces')
 class UserWorkspaces(Resource):
@@ -123,7 +148,7 @@ class WorkspaceAdd(Resource):
             addressId = result[0]
             cur.close()
 
-            workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+            workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
 
 
             cur = mysql.connection.cursor()
