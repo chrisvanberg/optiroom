@@ -75,10 +75,8 @@ function appConfig($stateProvider, $urlRouterProvider){
 function routeStart($transitions) {
     $transitions.onStart({}, function (trans) {
         if(trans.to().url != "/"){
-            hideSearchBar(true);
             hideMap(true)
         }else{
-            hideSearchBar(false);
             hideMap(false)
         }
         if (trans.to().restrictions.ensureAuthenticated) {

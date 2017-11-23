@@ -10,14 +10,6 @@ function userAuthentificated(vm){
     $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
 }
 
-function hideSearchBar(bool){
-    if(bool){
-        $("#search-form").slideUp();
-    }else{
-        $("#search-form").slideDown();
-    }
-}
-
 function hideMap(bool) {
     if(bool){
         $("#google-map").hide();

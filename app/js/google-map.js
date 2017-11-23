@@ -12,6 +12,7 @@ function initAutocomplete(){
         center:new google.maps.LatLng(50.665813, 4.612194),
         zoom:13
     };
+    google.maps.event.trigger(map, 'resize');
     map = new google.maps.Map(document.getElementById('google-map'),mapProp);
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -23,66 +24,75 @@ function initAutocomplete(){
 
     document.getElementById("search-button").addEventListener("click",function(){
         if(place != null){
-            searchButton();
+            search();
         }
     });
 
-    function searchButton(){
+    function search(){
         $("#google-map").css("display","block");
+        window.location.href = '#!/map';
         var lat = (place.geometry.location.lat());
         var lng = (place.geometry.location.lng);
         map.setCenter(new google.maps.LatLng(lat,lng()));
-        google.maps.event.trigger(map, 'resize');
-        $("#search-form").slideUp();
-        $("#new-search-btn").show();
-        window.location.href = '#!/map';
+        $('html, body').animate({
+            scrollTop: $("#google-map").offset().top-100
+        }, 1000);
         getWorkspaces();
+        google.maps.event.trigger(map, 'resize');
     }
 }
 
 function drawMarkers(workspacesSelection){
-    /*var image = {
+    var existingBuildings = [];
+    var image = {
         url: 'img/marker.png',
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32),
-        scaledSize: new google.maps.Size(32, 40)
-    };*/
+        scaledSize: new google.maps.Size(45, 32)
+    };
     angular.forEach(workspacesSelection, function(value, key) {
-        var marker = new google.maps.Marker({
-            position : workspacesSelection[key].position,
-            map : map,
-            title : workspacesSelection[key].title,
-            url: "marker"+key
-        });
-        google.maps.event.addListener(marker, 'click', function() {
-            $('html, body').animate({
-                scrollTop: $("#marker"+key).offset().top-150
-            }, 1000);
-        });
+        if(($.inArray(workspacesSelection[key].title, existingBuildings) == -1)){
+            existingBuildings.push(workspacesSelection[key].title);
+            var marker = new google.maps.Marker({
+                position : workspacesSelection[key].position,
+                map : map,
+                title : workspacesSelection[key].title,
+                url: "marker"+key,
+                label: {
+                    text : key +" €",
+                    color: "#FFFFFF"
+                },
+                icon : image
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                $('html, body').animate({
+                    scrollTop: $("#marker"+key).offset().top-150
+                }, 1000);
+            });
+        }
     });
 }
 function drawList(workspacesSelection){
     $("#workspace-list").html("");
     for(i in workspacesSelection){
-        $("#workspace-list").append("<div class='workspace row' id='marker"+i+"' data-workspace="+i+"></div>");
-        $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg' class='col-md-4 firstCol'>");
+        $("#workspace-list").append("<div class='row col-md-6 workspace nopadding' id='marker"+i+"' data-workspace="+i+"></div>");
+        $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg' class='col-md-12'>");
 
-        $('*[data-workspace="'+i+'"]').append("<div class='col-md-4 secondCol'></div>");
-        $('*[data-workspace="'+i+'"]>.secondCol').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
-        $('*[data-workspace="'+i+'"]>.secondCol').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
-        $('*[data-workspace="'+i+'"]>.secondCol').append("<h4>Prix: x €/h</h4>");
-        $('*[data-workspace="'+i+'"]>.secondCol').append("<div class='clearfix'></div>");
+        $('*[data-workspace="'+i+'"]').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
+        $('*[data-workspace="'+i+'"]').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
+       // $('*[data-workspace="'+i+'"]>.secondCol').append("<h4>Prix: x €/h</h4>");
 
-        $('*[data-workspace="'+i+'"]').append("<div class='col-md-4 thirdCol'></div>");
-        $('*[data-workspace="'+i+'"]>.thirdCol').append("<h4>Wifi:</h4>");
-        $('*[data-workspace="'+i+'"]>.thirdCol').append(
-            workspacesSelection[i].hasWifi == 1 ? "<p>Oui</p>" : "<p>Non</p>"
+        $('*[data-workspace="'+i+'"]').append("<span title='Wifi' class='glyphicon glyphicon-signal'></span>");
+        $('*[data-workspace="'+i+'"]').append(
+            workspacesSelection[i].hasWifi == 1 ? "<span>Oui</span>" : "<span>Non</span>"
         );
-        $('*[data-workspace="'+i+'"]>.thirdCol').append("<h4>Projecteur:</h4>");
-        $('*[data-workspace="'+i+'"]>.thirdCol').append(
-            workspacesSelection[i].hasProjector == 1 ? "<p>Oui</p>" : "<p>Non</p>"
+        $('*[data-workspace="'+i+'"]').append(" - <span title='Projecteur' class='glyphicon glyphicon-facetime-video'></span>");
+        $('*[data-workspace="'+i+'"]').append(
+            workspacesSelection[i].hasProjector == 1 ? "<span>Oui</span>" : "<span>Non</span>"
         );
-        $('*[data-workspace="'+i+'"]>.thirdCol').append("<div class='clearfix'></div>");
+        $('*[data-workspace="'+i+'"]').append("<br><span title='Nombre de places' class='glyphicon glyphicon-user'></span>");
+        $('*[data-workspace="'+i+'"]').append(workspacesSelection[i].nbPlace);
+
 
 
         $('*[data-workspace="'+i+'"]').append("<div class='col-md-12 more'></div>");
@@ -116,7 +126,7 @@ function getWorkspaces(){
                     workspacesRt[key] = ({
                         position: new google.maps.LatLng(coords[key].lat, coords[key].lng),
                         title: workspaces[key].building_name,
-                        price: key
+                        price: key,
                     });
                     drawMarkers(workspacesRt);
                     drawList(workspaces);

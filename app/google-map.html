@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="css/workspaces.css">
 <script>
     $("#google-map").show();
+    $('html, body').animate({
+        scrollTop: $("#google-map").offset().top-100
+    }, 1000);
 </script>
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-8">
     <div id="workspace-list">
     </div>
 </div>

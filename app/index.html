@@ -28,6 +28,7 @@
     <script type="text/javascript" src="js/signup.controller.js"></script>
     <script type="text/javascript" src="js/workspace.controller.js"></script>
     <script type="text/javascript" src="js/google-map.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body ng-app="tokenAuthApp">
@@ -61,10 +62,10 @@
                 <form class="row form-inline">
                     <h1>Trouver un espace de travail</h1>
                     <div class="input-group col-md-3">
-                        <input id=pac-input type='text' class="form-control" placeholder='Lieu'>
+                        <input id=pac-input type='text' class="form-control" placeholder='Lieu' required>
                     </div>
                     <div class='input-group date col-md-2' >
-                        <input type='text' id='datetimepicker' class="form-control">
+                        <input type='text' id='datetimepicker' class="form-control" required>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -87,10 +88,8 @@
     </div>
 
     <div id="lower-content" class="row">
-        <div class="row">
-            <div class='col-md-8 col-md-offset-2' id="google-map"></div>
-        </div>
         <div ui-view></div>
+        <div class='col-md-4' id="google-map"></div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ&libraries=places&callback=initAutocomplete"></script>
 </body>
