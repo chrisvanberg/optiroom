@@ -5,3 +5,6 @@ opti_api/opti_api-Cheatsheet
 /app/.idea
 /opti_api/.idea
 
+#rsaKeys
+opti_api/id_rsa-opti_api
+opti_api/id_rsa-opti_api.pub
