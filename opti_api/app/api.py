@@ -18,7 +18,7 @@ api = Api(app, doc='/api/')
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.2.17"
+_version_ = "0.2.18"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -41,6 +41,64 @@ class System(Resource):
 class System(Resource):
     def get(self):
         return {'motd': 'N/A'}
+
+@api.route('/workspace/availability')
+class addAvailability(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+
+        posted_workspace_id = json_data['workspace_id']
+        posted_openingDays = json_data['openingDays']
+        posted_monOpeningHour = json_data['monOpeningHour']
+        posted_monClosingHour = json_data['monClosingHour']
+        posted_tueOpeningHour = json_data['tueOpeningHour']
+        posted_tueOpeningHour = json_data['tueOpeningHour']
+        posted_wedOpeningHour = json_data['wedOpeningHour']
+        posted_wedClosingHour = json_data['wedClosingHour']
+        posted_thuOpeningHour = json_data['thuOpeningHour']
+        posted_thuClosingHour = json_data['thuClosingHour']
+        posted_friOpeningHour = json_data['friOpeningHour']
+        posted_friClosingHour = json_data['friClosingHour']
+        posted_satOpeningHour = json_data['satOpeningHour']
+        posted_satClosingHour = json_data['satClosingHour']
+        posted_sunOpeningHour = json_data['sunOpeningHour']
+        posted_sunClosingHour = json_data['sunClosingHour']
+
+        availability = [posted_workspace_id, posted_openingDays, posted_monOpeningHour, posted_monClosingHour, posted_tueOpeningHour, posted_tueOpeningHour, posted_wedOpeningHour, posted_wedClosingHour, posted_thuOpeningHour, posted_thuClosingHour, posted_friOpeningHour, posted_friClosingHour, posted_satOpeningHour, posted_satClosingHour, posted_sunOpeningHour, posted_sunClosingHour]
+
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAvailabilityExist', [posted_workspace_id])
+
+        if cur.rowcount is not 0:
+
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.callproc('updateAvailability', availability)
+            mysql.connection.commit()
+            cur.close()
+
+            return {},201
+
+        else:
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.callproc('checkIfWorkspaceExist', [posted_workspace_id])
+
+            if cur.rowcount is not 0:
+
+                cur.close()
+                cur = mysql.connection.cursor()
+                cur.callproc('addAvailability', availability)
+                mysql.connection.commit()
+                cur.close()
+
+                return {},201
+
+
+            else:
+                return {'Status': 'Error', 'Code': 'A001'}, 404
+
+
 
 @api.route('/workspace/<string:workspace_id>')
 class RoomID(Resource):
@@ -75,7 +133,7 @@ class UserWorkspaces(Resource):
     def get(self):
         return {'message': 'user/workspaces is not implemented'}, 501
 
-@api.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>/')
+@api.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>')
 class Search(Resource):
     def get(self, centerLatitude, centerLongitude, rangeInKm, day, minSeats):
         rangeInDegree = (rangeInKm / 40000) * 360
