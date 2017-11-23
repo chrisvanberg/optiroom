@@ -17,7 +17,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.2.13"
+_version_ = "0.2.14"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -38,6 +38,21 @@ class System(Resource):
 class System(Resource):
     def get(self):
         return {'motd': 'N/A'}
+
+@api.route('/workspace/<string:workspace_id>')
+class RoomID(Resource):
+    def get(self, workspace_id):
+        return {'message': 'workspace/{workspace_id} is not implemented yet', 'workspace_id': workspace_id},501
+
+@api.route('/user/workspaces')
+class UserWorkspaces(Resource):
+    def get(self):
+        return {'message': 'user/workspaces is not implemented'}, 501
+
+@api.route('/search/<string:latitude>/<string:longitude>/<string:range>/<int:day>/<int:nbSeat>/')
+class Search(Resource):
+    def get(self, latitude, longitude, range, day, nbSeat):
+        return {'message': 'search/lat/long/range/day/nbSeat is not implemented yet', 'lat': latitude, 'long': longitude, 'range': range, 'day': day, 'nbSeat': nbSeat},501
 
 
 @api.route('/signup', methods=['POST'])
