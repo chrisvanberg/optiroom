@@ -18,7 +18,7 @@ api = Api(app, doc='/api/')
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.2.18"
+_version_ = "0.2.19"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -98,6 +98,41 @@ class addAvailability(Resource):
             else:
                 return {'Status': 'Error', 'Code': 'A001'}, 404
 
+
+@api.route('/workspace/<string:workspace_id>/availability')
+class getWorkspaceAvailability(Resource):
+    def get(self, workspace_id):
+        posted_workspace_id = workspace_id
+
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAvailabilityExist', [posted_workspace_id])
+
+        if cur.rowcount is not 0:
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.callproc('get_availability_byWorkspaceId', workspace_id)
+            result = cur.fetchone()
+
+            availability = {
+                'workspace_id' : result[0],
+                'openingDays' : result[1],
+                'monOpeningHour' : str(result[2]),
+                'monClosingHour' : str(result[3]),
+                'tueOpeningHour' : str(result[4]),
+                'tueClosingHour' : str(result[5]),
+                'wedOpeningHour' : str(result[6]),
+                'wedClosingHour' : str(result[7]),
+                'thuOpeningHour' : str(result[8]),
+                'thuClosingHour' : str(result[9]),
+                'friOpeningHour' : str(result[10]),
+                'friClosingHour' : str(result[11]),
+                'satOpeningHour' : str(result[12]),
+                'satClosingHour' : str(result[13]),
+                'sunOpeningHour' : str(result[14]),
+                'sunClosingHour' : str(result[15])}
+            return jsonify(availability)
+        else:
+            return {'status': 'error', 'code': 'A001'}, 404
 
 
 @api.route('/workspace/<string:workspace_id>')
