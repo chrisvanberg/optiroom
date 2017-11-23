@@ -18,7 +18,7 @@ api = Api(app, doc='/api/')
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.2.16"
+_version_ = "0.2.17"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -75,10 +75,73 @@ class UserWorkspaces(Resource):
     def get(self):
         return {'message': 'user/workspaces is not implemented'}, 501
 
-@api.route('/search/<string:latitude>/<string:longitude>/<string:range>/<int:day>/<int:nbSeat>/')
+@api.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>/')
 class Search(Resource):
-    def get(self, latitude, longitude, range, day, nbSeat):
-        return {'message': 'search/lat/long/range/day/nbSeat is not implemented yet', 'lat': latitude, 'long': longitude, 'range': range, 'day': day, 'nbSeat': nbSeat},501
+    def get(self, centerLatitude, centerLongitude, rangeInKm, day, minSeats):
+        rangeInDegree = (rangeInKm / 40000) * 360
+        radiusInDegree = rangeInDegree / 2
+
+        openingDays = {}
+        openingDays['mon'] = "1______"
+        openingDays['tue'] = "_1_____"
+        openingDays['wed'] = "__1____"
+        openingDays['thu'] = "___1___"
+        openingDays['fri'] = "____1__"
+        openingDays['sat'] = "_____1_"
+        openingDays['sun'] = "______1"
+
+        minLatitude = centerLatitude - radiusInDegree
+        maxLatitude = centerLatitude + radiusInDegree
+
+        minLongitude = centerLongitude - radiusInDegree
+        maxLongitude = centerLongitude + radiusInDegree
+
+        searchInputs = [minLatitude, maxLatitude, minLongitude, maxLongitude, minSeats, openingDays[day.lower()]]
+        workspaces = []
+        cur = mysql.connection.cursor()
+        cur.callproc("simple_search", searchInputs)
+
+        for workspace in cur:
+            workspace = {
+                'address_id' : workspace[0],
+                'building_name' : workspace[1],
+                'street' : workspace[2],
+                'building_number' : workspace[3],
+                'postcode' : workspace[4],
+                'city' : workspace[5],
+                'country' : workspace[6],
+                'latitude' : str(workspace[7]),
+                'longitude' : str(workspace[8]),
+                'workspace_id' : workspace[9],
+                'workspace_name' : workspace[10],
+                'nbSeats' : workspace[11],
+                'description' : workspace[12],
+                'hasProjector' : workspace[13],
+                'hasWifi' : workspace[14],
+                'minPrice' : str(workspace[15]),
+                'openingDays' : workspace[16],
+                'monOpeningHour' : str(workspace[17]),
+                'monClosingHour' : str(workspace[18]),
+                'tueOpeningHour' : str(workspace[19]),
+                'tueClosingHour' : str(workspace[20]),
+                'wedOpeningHour' : str(workspace[21]),
+                'wedClosingHour' : str(workspace[22]),
+                'thuOpeningHour' : str(workspace[23]),
+                'thuClosingHour' : str(workspace[24]),
+                'friOpeningHour' : str(workspace[25]),
+                'friClosingHour' : str(workspace[26]),
+                'satOpeningHour' : str(workspace[27]),
+                'satClosingHour' : str(workspace[28]),
+                'sunOpeningHour' : str(workspace[29]),
+                'sunClosingHour' : str(workspace[30]),
+                'owner_id' : workspace[31],
+                'firstname' : workspace[32],
+                'lastName' : workspace[33],
+                'email' : workspace[34] }
+            workspaces.append(workspace)
+
+        return workspaces
+
 
 
 @api.route('/signup', methods=['POST'])
