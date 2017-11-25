@@ -1,7 +1,16 @@
 $( document ).ready(function() {
-    $("#datetimepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+    $("#datetimepicker").datepicker({
+        dateFormat: 'dd-mm-yy',
+    });
+    $("#datetimepicker").datepicker('setDate', new Date());
     hideMap(true);
-    getWorkspaces();
+
+    $(window).scroll(function() {
+        var height = $(window).scrollTop();
+        if(height > 316){
+            $('#google-map').css('top', $(this).scrollTop()-310);
+        }
+    });
 });
 
 function userAuthentificated(vm){

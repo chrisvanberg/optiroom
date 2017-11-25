@@ -63,10 +63,10 @@ function workspaceService($http){
             headers: {'Content-Type': 'application/json'}
         });
     }
-    this.getWorkspaces = function(){
+    this.getWorkspaces = function(lat,lng,range,dayOfWeek, seats){
         return $http({
             method: 'GET',
-            url: baseURL + 'workspaces',
+            url: baseURL + 'search/'+lat+'/'+lng+'/'+range+'/'+dayOfWeek+'/'+seats,
             headers: {'Content-Type': 'application/json'}
         });
     }
