@@ -23,4 +23,4 @@ ENV Name MYSQL_DB
 ENV Name DEBUG
 
 # Run app.py when the container launches
-CMD ["python", "api.py"]
+CMD ["python", "app.py"]
