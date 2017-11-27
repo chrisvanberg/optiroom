@@ -3,7 +3,7 @@ $( document ).ready(function() {
         dateFormat: 'dd-mm-yy',
     });
     $("#datetimepicker").datepicker('setDate', new Date());
-    hideMap(true);
+    showMap(false);
 
     $(window).scroll(function() {
         var height = $(window).scrollTop();
@@ -19,10 +19,11 @@ function userAuthentificated(vm){
     $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
 }
 
-function hideMap(bool) {
+function showMap(bool) {
     if(bool){
-        $("#google-map").hide();
-    }else{
         $("#google-map").show();
+        google.maps.event.trigger(map, 'resize');
+    }else{
+        $("#google-map").hide();
     }
 }

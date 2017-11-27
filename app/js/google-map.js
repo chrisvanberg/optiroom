@@ -3,6 +3,9 @@ var place;
 var map;
 var workspaces;
 var bounds;
+var image;
+var coords = [];
+var workspacesRt;
 var weekdays=new Array(7);
 weekdays[0]="mon";
 weekdays[1]="tue";
@@ -12,13 +15,20 @@ weekdays[4]="fri";
 weekdays[5]="sat";
 weekdays[6]="sun";
 function initAutocomplete(){
+
     var options = {
-        types: ['(cities)'],
+        types: ['(regions)'],
         componentRestrictions: {country: "be"}
     };
     var mapProp= {
         center:new google.maps.LatLng(50.665813, 4.612194),
         zoom: 8
+    };
+    image = {
+        url: 'img/marker.png',
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 32),
+        scaledSize: new google.maps.Size(60, 32)
     };
     google.maps.event.trigger(map, 'resize');
     map = new google.maps.Map(document.getElementById('google-map'),mapProp);
@@ -27,40 +37,37 @@ function initAutocomplete(){
     autocomplete.bindTo('bounds', map);
 
     autocomplete.addListener('place_changed', function() {
-        var bounds = new google.maps.LatLngBounds();
         place = autocomplete.getPlace();
-        if (place.geometry.viewport) {
-            // Only geocodes have viewport.
-            bounds.union(place.geometry.viewport);
-        } else {
-            bounds.extend(place.geometry.location);
-        }
-        map.fitBounds(bounds);
-        search();
     });
 
     document.getElementById("search-button").addEventListener("click",function(){
-        if(place != null){
-            search();
-        }
-    });
-    google.maps.event.addListenerOnce(map, 'idle', function () {
-        search();
+        window.location.href = '#!/map';
+        showMap(true);
+        $("#workspace-list").html("<img class='col-md-4 col-md-offset-4' style='width:20%;' src='img/loading.gif'>");
+        setTimeout(
+            function()
+            {
+                if(typeof place !== 'undefined'){
+                    search();
+                }
+            }, 1500);
+
     });
 }
 function search(){
-    $("#google-map").css("display","block");
-    window.location.href = '#!/map';
+    workspaces = [];
     var lat;
     var lng;
     if(typeof place !== 'undefined'){
         lat = (place.geometry.location.lat());
         lng = (place.geometry.location.lng());
     }else{
-        lat = map.getBounds().getCenter().lat();
-        lng = map.getBounds().getCenter().lng();
+        lat = 50.665813;
+        lng = 4.612194;
     }
     map.setCenter(new google.maps.LatLng(lat,lng));
+    map.setZoom(11);
+    google.maps.event.trigger(map, 'resize');
     var range = Math.round(((Math.abs(map.getBounds().getSouthWest().lat() - map.getBounds().getNorthEast().lat()))*110.574));
 
     var date = $("#datetimepicker").datepicker('getDate');
@@ -69,18 +76,17 @@ function search(){
     $('html, body').animate({
         scrollTop: $("#google-map").offset().top-100
     }, 1000);
-    getWorkspaces(lat,lng,range,dayOfWeek, seats);
-    google.maps.event.trigger(map, 'resize');
+    setTimeout(
+        function()
+        {
+            getWorkspaces(lat,lng,range,dayOfWeek, seats);
+        }, 1500);
+
 }
 
 function drawMarkers(workspacesSelection){
     var existingBuildings = [];
-    var image = {
-        url: 'img/marker.png',
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32),
-        scaledSize: new google.maps.Size(45, 32)
-    };
+
     angular.forEach(workspacesSelection, function(value, key) {
         if(($.inArray(workspacesSelection[key].title, existingBuildings) == -1)){
             existingBuildings.push(workspacesSelection[key].title);
@@ -99,7 +105,7 @@ function drawMarkers(workspacesSelection){
             google.maps.event.addListener(marker, 'click', function() {
                 $('html, body').animate({
                     scrollTop: $("#marker"+key).offset().top-150
-                }, 1000);
+                }, 500);
             });
         }
     });
@@ -138,8 +144,6 @@ function drawList(workspacesSelection){
     google.maps.event.trigger(map, 'resize');
 
 }
-var coords = [];
-var workspacesRt;
 function getWorkspaces(lat,lng,range,dayOfWeek, seats){
     workspacesRt = {};
     for (i in markers) {
@@ -148,24 +152,30 @@ function getWorkspaces(lat,lng,range,dayOfWeek, seats){
     markers = [];
         angular.element(document.body).injector().get("workspaceService").getWorkspaces(lat,lng,range,dayOfWeek, seats).then(function(ws) {
             workspaces = ws.data;
-            for(i in workspaces) {
-                var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-                googleAPIUrl += workspaces[i].postcode +"+";
-                googleAPIUrl += workspaces[i].city +"+";
-                googleAPIUrl += workspaces[i].street +"+";
-                googleAPIUrl += workspaces[i].building_number +"+";
-                googleAPIUrl += workspaces[i].country +"+";
-                googleAPIUrl += "&key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ";
-                angular.element(document.body).injector().get("workspaceService").getCoordsByAddress(googleAPIUrl).then(function(data){
-                    coords[i] = data.data.results[0].geometry.location;
-                    workspacesRt[i] = ({
-                        position: new google.maps.LatLng(coords[i].lat, coords[i].lng),
-                        title: workspaces[i].building_name,
-                        price: workspaces[i].minPrice,
+            if(workspaces.length == 0){
+                drawList(workspaces);
+                $("#workspace-list").html("<h3>Aucun résultat ne correspond à vos critères de recherche</h3>");
+            }else{
+                angular.forEach(workspaces, function(value, i) {
+                    var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+                    googleAPIUrl += workspaces[i].postcode +"+";
+                    googleAPIUrl += workspaces[i].city +"+";
+                    googleAPIUrl += workspaces[i].street +"+";
+                    googleAPIUrl += workspaces[i].building_number +"+";
+                    googleAPIUrl += workspaces[i].country +"+";
+                    googleAPIUrl += "&key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ";
+                    angular.element(document.body).injector().get("workspaceService").getCoordsByAddress(googleAPIUrl).then(function(data){
+                        coords[i] = data.data.results[0].geometry.location;
+                        workspacesRt[i] = ({
+                            position: new google.maps.LatLng(coords[i].lat, coords[i].lng),
+                            title: workspaces[i].building_name,
+                            price: workspaces[i].minPrice,
+                        });
+                        drawMarkers(workspacesRt);
+                        drawList(workspaces);
                     });
-                    drawMarkers(workspacesRt);
-                    drawList(workspaces);
                 });
-            };
+            }
+
         });
 }

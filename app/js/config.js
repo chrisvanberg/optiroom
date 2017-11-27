@@ -67,6 +67,17 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
+        .state('my-workspaces', {
+            url: '/my-workspaces',
+            templateUrl: 'my-workspaces.html',
+            controller: 'workspaceController',
+            controllerAs: 'workspaceCtrl',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            }
+
+        })
         ;
         $urlRouterProvider.otherwise('/');
 };
@@ -74,20 +85,19 @@ function appConfig($stateProvider, $urlRouterProvider){
 
 function routeStart($transitions) {
     $transitions.onStart({}, function (trans) {
-        if(trans.to().url != "/"){
-            hideMap(true)
+        if(trans.to().url != "/map"){
+            showMap(false);
         }else{
-            hideMap(false)
+            showMap(true);
         }
+        console.log(trans.to().url);
         if (trans.to().restrictions.ensureAuthenticated) {
             if (!localStorage.getItem('token')) {
-                trans.abort();
                 window.location.href = '#!/';
             }
         }
         if (trans.to().restrictions.loginRedirect) {
             if (localStorage.getItem('token')) {
-                trans.abort();
                 window.location.href = '#!/';
             }
         }

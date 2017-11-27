@@ -60,7 +60,10 @@ function workspaceService($http){
             method: 'POST',
             url: baseURL + 'workspace/add',
             data: workspacedata,
-            headers: {'Content-Type': 'application/json'}
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
         });
     }
     this.getWorkspaces = function(lat,lng,range,dayOfWeek, seats){
