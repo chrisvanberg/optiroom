@@ -21,7 +21,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.0"
+_version_ = "0.3.1"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -133,6 +133,46 @@ def getWorkspaceAvailability(workspace_id):
         return jsonify(availability)
     else:
         return jsonify({'status': 'error', 'code': 'A001'}), 404
+
+@app.route('/workspace/book', methods=['POST'])
+@jwt_required
+def workspaceBook():
+    json_data = request.get_json(force=True)
+
+    posted_workspace_id = json_data['workspace_id']
+    posted_startDateTime = json_data['startDateTime']
+    posted_enDateTime = json_data['endDateTime']
+    posted_price = json_data['price']
+
+    cur = mysql.connection.cursor()
+    data = [posted_workspace_id, posted_startDateTime, posted_enDateTime]
+
+
+    cur.callproc('checkIfScheduleIsIOK', data)
+
+    if cur.rowcount is not 0:
+
+        return jsonify({'Status': 'Error', 'Code': 'B001'}), 409
+
+    else:
+        cur.close()
+
+        cur = mysql.connection.cursor()
+        cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
+        result = cur.fetchone()
+        customer_id = result[0]
+        cur.close()
+        cur = mysql.connection.cursor()
+
+        data = [posted_workspace_id, customer_id, posted_startDateTime, posted_enDateTime, posted_price]
+        cur.callproc('addBooking', data)
+
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({'Status': 'ok'}),201
+
+
 
 
 @app.route('/workspace/<string:workspace_id>')
