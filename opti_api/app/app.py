@@ -14,7 +14,7 @@ import os
 global _debug_
 global _version_
 global _margin_
-global _tva_
+global _vat_
 api = Api()
 
 app = Flask(__name__)
@@ -25,8 +25,8 @@ bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
 _version_ = "0.3.5"
-_brutMargin_ = 0.30
-_vat_ = 0.21
+_brutMargin_ = float(0.30)
+_vat_ = float(0.21)
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -223,7 +223,7 @@ def workspaceId(workspace_id):
         'postcode': result[7],
         'city': result[8],
         'country': result[9],
-        'price': str((result[10]/(1-_brutMargin_))*(1+_VAT_)),
+        'price': str(round((float(result[10])/(1-_brutMargin_))*(1+_vat_),2)),
         'nbSeats': result[11],
         'hasProjector': result[12],
         'hasWifi': result[13] }
@@ -260,7 +260,7 @@ def UserWorkspaces():
             'postcode': workspace[8],
             'city': workspace[9],
             'country': workspace[10],
-            'minPrice': str(workspace[11]),
+            'price': str(round((float(result[11])/(1-_brutMargin_))*(1+_vat_),2)),
             'nbSeats': workspace[12],
             'hasProjector': workspace[13],
             'hasWifi': workspace[14] }
@@ -314,7 +314,7 @@ def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
             'description' : workspace[12],
             'hasProjector' : workspace[13],
             'hasWifi' : workspace[14],
-            'minPrice' : str(workspace[15]),
+            'price' : str(round((float(result[15])/(1-_brutMargin_))*(1+_vat_),2)),
             'openingDays' : workspace[16],
             'monOpeningHour' : str(workspace[17]),
             'monClosingHour' : str(workspace[18]),
