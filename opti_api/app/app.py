@@ -24,7 +24,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.5"
+_version_ = "0.3.6"
 _brutMargin_ = float(0.30)
 _vat_ = float(0.21)
 
@@ -270,7 +270,7 @@ def UserWorkspaces():
     return jsonify(workspaces)
 
 
-
+#/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<int:day>/<int:minSeats>
 @app.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>')
 def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
     rangeInDegree = (rangeInKm / 40000) * 360
@@ -313,7 +313,7 @@ def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
             'description' : workspace[12],
             'hasProjector' : workspace[13],
             'hasWifi' : workspace[14],
-            'price' : str(round((float(result[15])/(1-_brutMargin_))*(1+_vat_),2)),
+            'price' : str(round((float(workspace[15])/(1-_brutMargin_))*(1+_vat_),2)),
             'openingDays' : workspace[16],
             'monOpeningHour' : str(workspace[17]),
             'monClosingHour' : str(workspace[18]),
@@ -365,6 +365,57 @@ def Signin():
         else:
             return jsonify({'Status': 'Error'}), 409
 
+@app.route('/workspace/update', methods=['POST'])
+@jwt_required
+def workspaceUpdate():
+    json_data = request.get_json(force=True)
+    jsonAddress = json_data['address']
+    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
+    jsonWorkspace = json_data['workspace']
+
+
+    cur = mysql.connection.cursor()
+    cur.callproc('checkIfAddressExist', address)
+
+    if cur.rowcount is not 0:
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
+
+        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+    else:
+        cur.close()
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspaceAddress', address)
+        mysql.connection.commit()
+        cur.close()
+
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAddressExist', address)
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
+
+        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+
 @app.route('/workspaces')
 def Workspaces(self):
     workspaces = []
@@ -404,6 +455,7 @@ def WorkspaceAdd():
         result = cur.fetchone()
         addressId = result[0]
         cur.close()
+
 
         workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
 
