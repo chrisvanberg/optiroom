@@ -22,7 +22,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.1"
+_version_ = "0.3.2"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -325,9 +325,10 @@ def Signin():
     posted_name = json_data['name']
     posted_firstname = json_data['firstname']
     posted_password = json_data['password']
+    posted_phone = json_data['phone']
     hashedPwd = bcrypt.generate_password_hash(posted_password)
 
-    data = [posted_firstname, posted_name, posted_username, hashedPwd.decode('UTF-8')]
+    data = [posted_firstname, posted_name, posted_username, posted_phone hashedPwd.decode('UTF-8')]
 
     try:
         cur = mysql.connection.cursor()
