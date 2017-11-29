@@ -8,6 +8,7 @@ from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import *
+from enum import Enum
 import os
 global _debug_
 global _version_
@@ -34,6 +35,12 @@ app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
 app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
 mysql.init_app(app)
 jwt = JWTManager(app)
+
+class bookingStatus(Enum):
+    OK = 1
+    WAITING_FOR_PAYMENT = 2
+    PAYMENT_ERROR = 3
+    CANCELED = 4
 
 @app.route('/system', methods=['GET'])
 def system():
@@ -164,7 +171,7 @@ def workspaceBook():
         cur.close()
         cur = mysql.connection.cursor()
 
-        data = [posted_workspace_id, customer_id, posted_startDateTime, posted_enDateTime, posted_price]
+        data = [posted_workspace_id, customer_id, posted_startDateTime, posted_enDateTime, posted_price, bookingStatus.OK.value]
         cur.callproc('addBooking', data)
 
         mysql.connection.commit()
