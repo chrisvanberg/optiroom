@@ -75,8 +75,21 @@ function appConfig($stateProvider, $urlRouterProvider){
             restrictions: {
                 ensureAuthenticated: true,
                 loginRedirect: false
+            },
+            onEnter: function(){
+                buildWorkspaceList();
             }
 
+        })
+        .state('edit-workspace', {
+            url: '/edit-workspace',
+            templateUrl: 'edit-workspace.html',
+            controller: 'workspaceController',
+            controllerAs: 'workspaceCtrl',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            }
         })
         ;
         $urlRouterProvider.otherwise('/');
@@ -90,7 +103,6 @@ function routeStart($transitions) {
         }else{
             showMap(true);
         }
-        console.log(trans.to().url);
         if (trans.to().restrictions.ensureAuthenticated) {
             if (!localStorage.getItem('token')) {
                 window.location.href = '#!/';

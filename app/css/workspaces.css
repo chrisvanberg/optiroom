@@ -1,17 +1,26 @@
-#workspace-list{
+#workspace-list, #my-workspace-list{
     margin-top: 1vh;
 }
 .workspace{
     width: 46%;
     margin: 0 2% 2% 2%;
     box-shadow: 2px 2px 5px #888888;
-
 }
 .workspace .more{
     display: none;
 }
 .workspace h2{
     margin: 1%;
+}
+.workspace .price{
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    font-size: 1.8em;
+    border-radius:  0 3% 3% 0;
+    z-index: 10;
+    background-color: #88cf4c;
+    padding: 2%;
 }
 .workspace h3{
     margin: 1%;
@@ -20,7 +29,6 @@
     margin: 1%;
 }
 .workspace h4{
-    display:inline;
 }
 .more{
     padding: 1%;

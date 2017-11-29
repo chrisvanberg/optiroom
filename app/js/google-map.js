@@ -113,11 +113,12 @@ function drawList(workspacesSelection){
     $("#workspace-list").html("");
     for(i in workspacesSelection){
         $("#workspace-list").append("<div class='row col-md-6 workspace nopadding' id='marker"+i+"' data-workspace="+i+"></div>");
+
+        $('*[data-workspace="'+i+'"]').append("<div class='price'>"+workspacesSelection[i].price+" €</div>");
         $('*[data-workspace="'+i+'"]').append("<img src='img/default-room.jpg' class='col-md-12'>");
 
         $('*[data-workspace="'+i+'"]').append("<h2>"+workspacesSelection[i].building_name+"</h2>");
         $('*[data-workspace="'+i+'"]').append("<h3>"+workspacesSelection[i].workspace_name+"</h3>");
-       // $('*[data-workspace="'+i+'"]>.secondCol').append("<h4>Prix: x €/h</h4>");
 
         $('*[data-workspace="'+i+'"]').append("<span title='Wifi' class='glyphicon glyphicon-signal'></span>");
         $('*[data-workspace="'+i+'"]').append(
@@ -177,4 +178,14 @@ function getWorkspaces(lat,lng,range,dayOfWeek, seats){
             }
 
         });
+}
+function composeGoogleAPIUrl(postcode, city, street, number, country) {
+    var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    googleAPIUrl += postcode +"+";
+    googleAPIUrl += city +"+";
+    googleAPIUrl += street +"+";
+    googleAPIUrl += number +"+";
+    googleAPIUrl += country +"+";
+    googleAPIUrl += "&key=AIzaSyArx_F8KA-tYiYKkoDkAkOX3PJHPvn-vCQ";
+    return googleAPIUrl;
 }

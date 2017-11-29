@@ -1,9 +1,2 @@
 <h3 class="col-md-4 col-md-offset-4" style="text-align: center">Mes espaces de travail</h3>
-<div id="workspaces"></div>
-<script>
-    angular.element(document.body).injector().get("workspaceService").getWorkspacesByUser().then(function(ws) {
-        for(i in ws.data){
-            $("#workspaces").append(ws.data[i].description+"<br>");
-        }
-    });
-</script>
+<div id="my-workspace-list"></div>
