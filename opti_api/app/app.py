@@ -480,7 +480,7 @@ def WorkspaceAdd():
         addressId = result[0]
         cur.close()
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
 
 
         cur = mysql.connection.cursor()
