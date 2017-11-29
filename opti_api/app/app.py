@@ -260,7 +260,7 @@ def UserWorkspaces():
             'postcode': workspace[8],
             'city': workspace[9],
             'country': workspace[10],
-            'price': str(round((float(result[11])/(1-_brutMargin_))*(1+_vat_),2)),
+            'price': str(round((float(workspace[11])/(1-_brutMargin_))*(1+_vat_),2)),
             'nbSeats': workspace[12],
             'hasProjector': workspace[13],
             'hasWifi': workspace[14] }
@@ -270,7 +270,6 @@ def UserWorkspaces():
     return jsonify(workspaces)
 
 
-    return jsonify({'user_ID': owner_id})
 
 @app.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>')
 def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
