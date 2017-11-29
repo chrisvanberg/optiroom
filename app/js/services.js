@@ -1,3 +1,4 @@
+var token;
 angular.module('tokenAuthApp.services', []).service('authService', authService).service('signupService',signupService).service('workspaceService',workspaceService);
 
 authService.$inject = ['$http','$window'];
@@ -24,7 +25,7 @@ function authService($http,$window) {
             url: baseURL + 'user',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         });
     };
@@ -62,7 +63,7 @@ function workspaceService($http){
             data: workspacedata,
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         });
     }
@@ -71,6 +72,16 @@ function workspaceService($http){
             method: 'GET',
             url: baseURL + 'search/'+lat+'/'+lng+'/'+range+'/'+dayOfWeek+'/'+seats,
             headers: {'Content-Type': 'application/json'}
+        });
+    }
+    this.getWorkspacesByUser = function(){
+        return $http({
+            method: 'GET',
+            url: baseURL + 'user/workspaces',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
         });
     }
     this.getCoordsByAddress = function(googleAPIUrl){

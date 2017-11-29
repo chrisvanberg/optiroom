@@ -12,6 +12,7 @@ function authLoginController(authService){
     vm.onLogin = function() {
         authService.login(vm.user).then(function(user) {
             localStorage.setItem('token',user.data.access_token);
+            token = user.data.access_token;
             window.location.href = '#!/';
         },function(err){
             if(err.status == "401"){

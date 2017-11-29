@@ -15,7 +15,6 @@ weekdays[4]="fri";
 weekdays[5]="sat";
 weekdays[6]="sun";
 function initAutocomplete(){
-
     var options = {
         types: ['(regions)'],
         componentRestrictions: {country: "be"}
