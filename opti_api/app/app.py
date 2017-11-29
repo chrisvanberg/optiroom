@@ -12,7 +12,8 @@ from enum import Enum
 import os
 global _debug_
 global _version_
-
+global _margin_
+global _tva_
 api = Api()
 
 app = Flask(__name__)
@@ -22,7 +23,9 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.3"
+_version_ = "0.3.4"
+_brutMargin_ = 0.30
+_vat_ = 0.21
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -173,7 +176,7 @@ def workspaceBook():
     data = [posted_workspace_id, posted_startDateTime, posted_enDateTime]
 
 
-    cur.callproc('checkIfScheduleIsIOK', data)
+    cur.callproc('checkIfScheduleIsOK', data)
 
     if cur.rowcount is not 0:
 
@@ -218,7 +221,7 @@ def workspaceId(workspace_id):
         'postcode': result[7],
         'city': result[8],
         'country': result[9],
-        'minPrice': str(result[10]),
+        'price': str((result[10]/(1-_brutMargin_))*(1+_VAT_)),
         'nbSeats': result[11],
         'hasProjector': result[12],
         'hasWifi': result[13] }
@@ -384,12 +387,12 @@ def Workspaces(self):
         workspaces.append(workspace)
     return jsonify(workspaces)
 
-@app.route('/workspace/add')
+@app.route('/workspace/add', methods=['POST'])
 @jwt_required
 def WorkspaceAdd():
     json_data = request.get_json(force=True)
     jsonAddress = json_data['address']
-    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country']]
+    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
     jsonWorkspace = json_data['workspace']
 
 
@@ -401,7 +404,7 @@ def WorkspaceAdd():
         addressId = result[0]
         cur.close()
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
+        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
 
 
         cur = mysql.connection.cursor()
