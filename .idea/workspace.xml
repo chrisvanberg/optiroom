@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8184390d-3cda-4225-b562-7dfb2476f2e4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/edit-workspace.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/add-optiroom.html" afterPath="$PROJECT_DIR$/app/add-optiroom.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/css/workspaces.css" afterPath="$PROJECT_DIR$/app/css/workspaces.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/google-map.html" afterPath="$PROJECT_DIR$/app/google-map.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/config.js" afterPath="$PROJECT_DIR$/app/js/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/google-map.js" afterPath="$PROJECT_DIR$/app/js/google-map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/services.js" afterPath="$PROJECT_DIR$/app/js/services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/workspace.controller.js" afterPath="$PROJECT_DIR$/app/js/workspace.controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/my-workspaces.html" afterPath="$PROJECT_DIR$/app/my-workspaces.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/signup.html" afterPath="$PROJECT_DIR$/app/signup.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -49,7 +38,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/js/services.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
@@ -91,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workspace.controller.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="workspace.controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/js/workspace.controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="38" column="55" lean-forward="false" selection-start-line="38" selection-start-column="55" selection-end-line="38" selection-end-column="55" />
+            <state relative-caret-position="144">
+              <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -154,8 +143,8 @@
         <option value="$PROJECT_DIR$/app/add-optiroom.html" />
         <option value="$PROJECT_DIR$/app/edit-workspace.html" />
         <option value="$PROJECT_DIR$/app/js/config.js" />
-        <option value="$PROJECT_DIR$/app/js/workspace.controller.js" />
         <option value="$PROJECT_DIR$/app/js/services.js" />
+        <option value="$PROJECT_DIR$/app/js/workspace.controller.js" />
       </list>
     </option>
   </component>
@@ -283,12 +272,12 @@
       <workItem from="1511430557818" duration="9005000" />
       <workItem from="1511608534374" duration="7504000" />
       <workItem from="1511792944657" duration="9698000" />
-      <workItem from="1511963669719" duration="23267000" />
+      <workItem from="1511963669719" duration="24306000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112653000" />
+    <option name="totallyTimeSpent" value="113692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="31" y="27" width="1366" height="742" extended-state="6" />
@@ -681,18 +670,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/workspace.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="38" column="55" lean-forward="false" selection-start-line="38" selection-start-column="55" selection-end-line="38" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/js/services.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="61" column="28" lean-forward="false" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/js/workspace.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
           <folding />
         </state>
       </provider>

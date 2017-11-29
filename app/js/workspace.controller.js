@@ -20,6 +20,13 @@ function workspaceController(workspaceService, scope, params, $location){
         workspaceService.getCoordsByAddress(composeGoogleAPIUrl(vm.workspaceData.postcode, vm.workspaceData.city, vm.workspaceData.street, vm.workspaceData.number, vm.workspaceData.country)).then(function(data){
             vm.workspaceData.latitude = data.data.results[0].geometry.location.lat;
             vm.workspaceData.longitude = data.data.results[0].geometry.location.lng;
+            if(!vm.workspaceData.hasProjector){
+                vm.workspaceData.hasProjector = false;
+            }
+            console.log(vm.workspaceData.hasProjector);
+            if(!vm.workspaceData.hasWifi){
+                vm.workspaceData.hasWifi = false;
+            }
             vm.workspaceToAdd.address = {
                 "buildingName" : vm.workspaceData.buildingName,
                 "street" : vm.workspaceData.street,
