@@ -8,6 +8,7 @@ from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import *
+from datetime import timedelta
 from enum import Enum
 import os
 global _debug_
@@ -23,7 +24,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.4"
+_version_ = "0.3.5"
 _brutMargin_ = 0.30
 _vat_ = 0.21
 
@@ -36,6 +37,7 @@ app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
 app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
 app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
 app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 mysql.init_app(app)
 jwt = JWTManager(app)
 
