@@ -386,7 +386,7 @@ def workspaceUpdate():
 
 
         cur = mysql.connection.cursor()
-        cur.callproc('addWorkspace', workspace)
+        cur.callproc('updateWorkspace', workspace)
         mysql.connection.commit()
         cur.close()
 
@@ -395,7 +395,7 @@ def workspaceUpdate():
     else:
         cur.close()
         cur = mysql.connection.cursor()
-        cur.callproc('addWorkspaceAddress', address)
+        cur.callproc('updateWorkspaceAddress', address)
         mysql.connection.commit()
         cur.close()
 
@@ -409,7 +409,7 @@ def workspaceUpdate():
 
 
         cur = mysql.connection.cursor()
-        cur.callproc('addWorkspace', workspace)
+        cur.callproc('updateWorkspace', workspace)
         mysql.connection.commit()
         cur.close()
 
