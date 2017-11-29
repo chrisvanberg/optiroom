@@ -22,7 +22,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.2"
+_version_ = "0.3.3"
 
 mysql = MySQL()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -140,6 +140,24 @@ def getWorkspaceAvailability(workspace_id):
         return jsonify(availability)
     else:
         return jsonify({'status': 'error', 'code': 'A001'}), 404
+
+@app.route('/workspace/book/status', methods=['POST'])
+@jwt_required
+def workSpaceBookStatus():
+    json_data = request.get_json(force=True)
+
+    posted_booking_id = json_data['booking_id']
+    posted_status = json_data['status']
+
+    data = [posted_booking_id, posted_status]
+
+    cur = mysql.connection.cursor()
+    cur.callproc('updateBookingStatus', data)
+    mysql.connection.commit()
+    cur.close
+
+    return jsonify({'Status': 'ok'}),201
+
 
 @app.route('/workspace/book', methods=['POST'])
 @jwt_required
@@ -328,7 +346,7 @@ def Signin():
     posted_phone = json_data['phone']
     hashedPwd = bcrypt.generate_password_hash(posted_password)
 
-    data = [posted_firstname, posted_name, posted_username, posted_phone hashedPwd.decode('UTF-8')]
+    data = [posted_firstname, posted_name, posted_username, posted_phone, hashedPwd.decode('UTF-8')]
 
     try:
         cur = mysql.connection.cursor()
