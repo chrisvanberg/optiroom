@@ -365,6 +365,10 @@ def Signin():
         else:
             return jsonify({'Status': 'Error'}), 409
 
+#@app.route('/workspace/<int:workspace_id>/bookings')
+#def getBookingByWorkspaceID(workspace_id):
+
+
 @app.route('/workspace/update', methods=['POST'])
 @jwt_required
 def workspaceUpdate():
@@ -395,7 +399,7 @@ def workspaceUpdate():
     else:
         cur.close()
         cur = mysql.connection.cursor()
-        cur.callproc('updateWorkspaceAddress', address)
+        cur.callproc('addWorkspaceAddress', address)
         mysql.connection.commit()
         cur.close()
 
