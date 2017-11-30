@@ -380,7 +380,7 @@ def userBookings():
         }
 
         bookings.append(booking)
-    return jsonify(booking)
+    return jsonify(bookings)
 
 
 
