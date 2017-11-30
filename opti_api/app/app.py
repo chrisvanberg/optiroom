@@ -356,6 +356,34 @@ def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
 
     return jsonify(workspaces)
 
+@app.route('/user/bookings')
+@jwt_required
+def userBookings():
+    cur = mysql.connection.cursor()
+    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
+    result = cur.fetchone()
+    customer_id = result[0]
+    cur.close()
+    bookings = []
+
+    cur = mysql.connection.cursor()
+    cur.callproc('getBookingByCustomerId', [customer_id])
+
+    for booking in cur:
+        booking = {
+        'booking_id': booking[0],
+        'workspace_id': booking[1],
+        'customer_id': booking[2],
+        'startDate': booking[3],
+        'endDate': booking[4],
+        'price': str(booking[5])
+        }
+
+        bookings.append(booking)
+    return jsonify(booking)
+
+
+
 
 
 @app.route('/signup', methods=['POST'])
