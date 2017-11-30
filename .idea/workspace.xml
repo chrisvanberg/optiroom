@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8184390d-3cda-4225-b562-7dfb2476f2e4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/google-map.js" afterPath="$PROJECT_DIR$/app/js/google-map.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/page-loading.js" afterPath="$PROJECT_DIR$/app/js/page-loading.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/workspace.controller.js" afterPath="$PROJECT_DIR$/app/js/workspace.controller.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,6 +16,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="google-map.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/js/google-map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="274">
+              <caret line="156" column="118" lean-forward="false" selection-start-line="156" selection-start-column="118" selection-end-line="156" selection-end-column="118" />
+              <folding>
+                <marker date="1512000297627" expanded="true" signature="1324:1334" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="my-workspaces.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/my-workspaces.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -38,21 +53,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/js/services.js">
+      <file leaf-file-name="auth.controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/js/auth.controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="61" column="28" lean-forward="false" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+            <state relative-caret-position="432">
+              <caret line="43" column="31" lean-forward="true" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/login.html">
+      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/js/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="42" lean-forward="false" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
+            <state relative-caret-position="144">
+              <caret line="61" column="28" lean-forward="false" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -80,11 +95,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workspace.controller.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="workspace.controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/js/workspace.controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+            <state relative-caret-position="598">
+              <caret line="73" column="37" lean-forward="false" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="page-loading.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/js/page-loading.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="19" column="53" lean-forward="false" selection-start-line="19" selection-start-column="53" selection-end-line="19" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -93,8 +118,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="35" column="89" lean-forward="false" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="89" />
+            <state relative-caret-position="342">
+              <caret line="49" column="78" lean-forward="false" selection-start-line="49" selection-start-column="78" selection-end-line="49" selection-end-column="78" />
               <folding />
             </state>
           </provider>
@@ -131,20 +156,20 @@
         <option value="$PROJECT_DIR$/app/informations.html" />
         <option value="$PROJECT_DIR$/app/css/main.css" />
         <option value="$PROJECT_DIR$/app/my-account.html" />
-        <option value="$PROJECT_DIR$/app/js/page-loading.js" />
         <option value="$PROJECT_DIR$/app/js/auth.controller.js" />
         <option value="$PROJECT_DIR$/opti_api/app/api.py" />
         <option value="$PROJECT_DIR$/app/signup.html" />
         <option value="$PROJECT_DIR$/app/google-map.html" />
         <option value="$PROJECT_DIR$/app/css/workspaces.css" />
-        <option value="$PROJECT_DIR$/app/js/google-map.js" />
-        <option value="$PROJECT_DIR$/app/index.html" />
         <option value="$PROJECT_DIR$/app/my-workspaces.html" />
         <option value="$PROJECT_DIR$/app/add-optiroom.html" />
         <option value="$PROJECT_DIR$/app/edit-workspace.html" />
         <option value="$PROJECT_DIR$/app/js/config.js" />
         <option value="$PROJECT_DIR$/app/js/services.js" />
         <option value="$PROJECT_DIR$/app/js/workspace.controller.js" />
+        <option value="$PROJECT_DIR$/app/js/google-map.js" />
+        <option value="$PROJECT_DIR$/app/index.html" />
+        <option value="$PROJECT_DIR$/app/js/page-loading.js" />
       </list>
     </option>
   </component>
@@ -272,12 +297,12 @@
       <workItem from="1511430557818" duration="9005000" />
       <workItem from="1511608534374" duration="7504000" />
       <workItem from="1511792944657" duration="9698000" />
-      <workItem from="1511963669719" duration="24306000" />
+      <workItem from="1511963669719" duration="26516000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113692000" />
+    <option name="totallyTimeSpent" value="115902000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="31" y="27" width="1366" height="742" extended-state="6" />
@@ -539,14 +564,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/page-loading.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="24" column="49" lean-forward="false" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/my-account.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -581,14 +598,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/auth.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="33" column="16" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/css/workspaces.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -597,28 +606,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/google-map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="116" column="96" lean-forward="false" selection-start-line="116" selection-start-column="96" selection-end-line="116" selection-end-column="96" />
-          <folding>
-            <marker date="1511974360510" expanded="true" signature="1324:1334" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="29" lean-forward="true" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="35" column="89" lean-forward="false" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="89" />
           <folding />
         </state>
       </provider>
@@ -678,10 +669,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/js/google-map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="156" column="118" lean-forward="false" selection-start-line="156" selection-start-column="118" selection-end-line="156" selection-end-column="118" />
+          <folding>
+            <marker date="1512000297627" expanded="true" signature="1324:1334" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="49" column="78" lean-forward="false" selection-start-line="49" selection-start-column="78" selection-end-line="49" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/js/workspace.controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="25" column="55" lean-forward="false" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+        <state relative-caret-position="598">
+          <caret line="73" column="37" lean-forward="false" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/js/auth.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="43" column="31" lean-forward="true" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/js/page-loading.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="53" lean-forward="false" selection-start-line="19" selection-start-column="53" selection-end-line="19" selection-end-column="53" />
           <folding />
         </state>
       </provider>

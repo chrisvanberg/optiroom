@@ -23,7 +23,6 @@ function workspaceController(workspaceService, scope, params, $location){
             if(!vm.workspaceData.hasProjector){
                 vm.workspaceData.hasProjector = false;
             }
-            console.log(vm.workspaceData.hasProjector);
             if(!vm.workspaceData.hasWifi){
                 vm.workspaceData.hasWifi = false;
             }

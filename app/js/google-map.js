@@ -154,7 +154,7 @@ function getWorkspaces(lat,lng,range,dayOfWeek, seats){
             workspaces = ws.data;
             if(workspaces.length == 0){
                 drawList(workspaces);
-                $("#workspace-list").html("<h3>Aucun résultat ne correspond à vos critères de recherche</h3>");
+                $("#workspace-list").html("<h3>Aucun résultat correspondant à vos critères de recherche n'a été trouvé</h3>");
             }else{
                 angular.forEach(workspaces, function(value, i) {
                     var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
@@ -169,7 +169,7 @@ function getWorkspaces(lat,lng,range,dayOfWeek, seats){
                         workspacesRt[i] = ({
                             position: new google.maps.LatLng(coords[i].lat, coords[i].lng),
                             title: workspaces[i].building_name,
-                            price: workspaces[i].minPrice,
+                            price: workspaces[i].price,
                         });
                         drawMarkers(workspacesRt);
                         drawList(workspaces);

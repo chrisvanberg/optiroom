@@ -17,6 +17,7 @@ function userAuthentificated(vm){
     $(".visible-offline").hide();
     $(".visible-online").show();
     $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
+    $("#username").html("Mon compte ("+vm.username+")");
 }
 
 function showMap(bool) {
