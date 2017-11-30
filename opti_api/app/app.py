@@ -386,7 +386,7 @@ def workspaceUpdate():
         addressId = result[0]
         cur.close()
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
+        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
 
 
         cur = mysql.connection.cursor()
@@ -409,7 +409,7 @@ def workspaceUpdate():
         addressId = result[0]
         cur.close()
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
 
 
         cur = mysql.connection.cursor()
