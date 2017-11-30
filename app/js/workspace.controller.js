@@ -167,7 +167,7 @@ function getBookings(){
                 $("#my-bookings-list>.booking"+i).append("<hr style='border-bottom:1px solid #CCCCCC'>");
                 $("#my-bookings-list>.booking"+i).prepend("Workspace: " + address.data.workspace_name);
             });
-            $("#my-bookings-list>.booking"+i).append("<br>Contact: ");
+            $("#my-bookings-list>.booking"+i).append("<br>Contact: "+ ws.data[i].firstName + " "+ ws.data[i].lastName);
             $("#my-bookings-list>.booking"+i).append("<br>Email: "+ ws.data[i].email);
             $("#my-bookings-list>.booking"+i).append("<br>Telephone: "+ ws.data[i].phone);
 
