@@ -174,7 +174,9 @@ def workspaceBook():
 
     posted_nbHours = json_data['nbHours']
 
-    posted_endDateTime = (parser.parse(posted_startDateTime) + timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')
+    posted_endDateTime = datetime.strptime(posted_startDateTime, '%Y-%m-%d %H:%M:%S.%f') + timedelta(hours=2)
+
+
 
 
 
