@@ -4,7 +4,12 @@
 .row{
     margin-right: 0;
 }
-
+#logo{
+    padding-top: 4%;
+    text-align: center;
+}
+#logo img{
+}
 #homepage-header{
     background-image: url("../img/background.jpg");
     background-size: cover;
@@ -15,7 +20,7 @@
     margin-bottom: 1vh;
 }
 #search-form form{
-    padding: 2%;
+    padding: 0 2% 2% 2%;
     text-align: center;
 }
 #search-form h1{
