@@ -204,7 +204,7 @@ def workspaceBook():
 
 
 
-@app.route('/workspace/<string:workspace_id>')
+@app.route('/workspace/<int:workspace_id>')
 def workspaceId(workspace_id):
 
     cur = mysql.connection.cursor()
@@ -222,7 +222,7 @@ def workspaceId(workspace_id):
         'postcode': result[7],
         'city': result[8],
         'country': result[9],
-        'minPrice': result[10],
+        'minPrice': str(result[10]),
         'price': str(round((float(result[10])/(1-_brutMargin_))*(1+_vat_),2)),
         'nbSeats': result[11],
         'hasProjector': result[12],
