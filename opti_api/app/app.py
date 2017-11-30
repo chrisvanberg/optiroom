@@ -112,17 +112,16 @@ def addAvailability():
             return jsonify({'Status': 'Error', 'Code': 'A001'}), 404
 
 
-@app.route('/workspace/<string:workspace_id>/availability')
+@app.route('/workspace/<int:workspace_id>/availability')
 def getWorkspaceAvailability(workspace_id):
-    posted_workspace_id = workspace_id
-
+    posted_workspace_id = int(workspace_id)
     cur = mysql.connection.cursor()
     cur.callproc('checkIfAvailabilityExist', [posted_workspace_id])
 
     if cur.rowcount is not 0:
         cur.close()
         cur = mysql.connection.cursor()
-        cur.callproc('get_availability_byWorkspaceId', workspace_id)
+        cur.callproc('get_availability_byWorkspaceId', [posted_workspace_id])
         result = cur.fetchone()
 
         availability = {
@@ -209,7 +208,7 @@ def workspaceBook():
 def workspaceId(workspace_id):
 
     cur = mysql.connection.cursor()
-    cur.callproc('get_workspace_byWorkspaceId', workspace_id)
+    cur.callproc('get_workspace_byWorkspaceId', [workspace_id])
     result = cur.fetchone()
 
     workspace = {
