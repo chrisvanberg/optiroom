@@ -8,7 +8,8 @@ from flask import request
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import *
-from datetime import timedelta
+from datetime import timedelta, datetime
+from dateutil import parser
 from enum import Enum
 import os
 global _debug_
@@ -170,12 +171,28 @@ def workspaceBook():
 
     posted_workspace_id = json_data['workspace_id']
     posted_startDateTime = json_data['startDateTime']
-    posted_enDateTime = json_data['endDateTime']
-    posted_price = json_data['price']
+
+    posted_nbHours = json_data['nbHours']
+
+    posted_endDateTime = (parser.parse(posted_startDateTime) + timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')
+
+
+
+    #bookingDuration = timedelta(json_data['startDateTime'], json_data['endDateTime'])
 
     cur = mysql.connection.cursor()
-    data = [posted_workspace_id, posted_startDateTime, posted_enDateTime]
+    data = [posted_workspace_id]
+    cur.callproc('getMinPriceByWorkspaceId', data)
+    result = cur.fetchone()
+    price = str(round((float(result[0])/(1-_brutMargin_))*(1+_vat_),2))
+    cur.close()
 
+
+
+
+    cur = mysql.connection.cursor()
+    data = [posted_workspace_id, posted_startDateTime, posted_endDateTime]
+    #return jsonify(data)
 
     cur.callproc('checkIfScheduleIsOK', data)
 
@@ -193,7 +210,7 @@ def workspaceBook():
         cur.close()
         cur = mysql.connection.cursor()
 
-        data = [posted_workspace_id, customer_id, posted_startDateTime, posted_enDateTime, posted_price, bookingStatus.OK.value]
+        data = [posted_workspace_id, customer_id, posted_startDateTime, posted_endDateTime, price, bookingStatus.OK.value]
         cur.callproc('addBooking', data)
 
         mysql.connection.commit()
