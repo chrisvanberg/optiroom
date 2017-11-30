@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     $("#datetimepicker").datepicker({
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'yy-mm-dd',
     });
     $("#datetimepicker").datepicker('setDate', new Date());
     showMap(false);

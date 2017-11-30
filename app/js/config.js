@@ -91,6 +91,16 @@ function appConfig($stateProvider, $urlRouterProvider){
                 loginRedirect: false
             }
         })
+        .state('my-bookings', {
+            url: '/my-bookings',
+            templateUrl: 'my-bookings.html',
+            controller: 'workspaceController',
+            controllerAs: 'workspaceCtrl',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            }
+        })
         ;
         $urlRouterProvider.otherwise('/');
 };

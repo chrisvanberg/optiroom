@@ -134,7 +134,10 @@ function drawList(workspacesSelection){
         $('*[data-workspace="'+i+'"]').append("<div class='col-md-12 more'></div>");
         $('*[data-workspace="'+i+'"]>.more').append("<h4>Description:</h4>");
         $('*[data-workspace="'+i+'"]>.more').append("<p>"+workspacesSelection[i].description+"</p>");
-        $('*[data-workspace="'+i+'"]>.more').append("<button class='btn-success btn-sm form-control'>Réserver</button>");
+        $('*[data-workspace="'+i+'"]>.more').append("<form></form>");
+        $('*[data-workspace="'+i+'"]>.more>form').append("<input value='08:00' min='06:00' max='21:00' step='60' type='time' data-workspaceBeginning='workspace"+workspacesSelection[i].workspace_id+"' class='heureDebut' placeholder='Début'>");
+        $('*[data-workspace="'+i+'"]>.more>form').append("<input type='number' data-workspaceHour='workspace"+workspacesSelection[i].workspace_id+"' style='width:40%' step='1' class='heureFin' min='1' max='10' placeholder='Durée (h)'>");
+        $('*[data-workspace="'+i+'"]>.more>form').append("<button onclick='bookWorkspace("+workspacesSelection[i].workspace_id+")' type='submit' class='btn-success btn-sm form-control'>Réserver</button>");
 
     }
     $(".workspace").click(function(){

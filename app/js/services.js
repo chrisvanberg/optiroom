@@ -67,6 +67,17 @@ function workspaceService($http){
             }
         });
     }
+    this.editWorkspace = function(workspacedata){
+        return $http({
+            method: 'POST',
+            url: baseURL + 'workspace/update',
+            data: workspacedata,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+    }
     this.getWorkspaces = function(lat,lng,range,dayOfWeek, seats){
         return $http({
             method: 'GET',
@@ -98,6 +109,25 @@ function workspaceService($http){
             headers: {'Content-Type': 'application/json'}
         });
     }
-
-
+    this.bookWorkspace = function(data) {
+        return $http({
+            method: 'POST',
+            url: baseURL +'workspace/book',
+            data: data,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+    }
+    this.getBookings = function(){
+        return $http({
+            method: 'GET',
+            url: baseURL + 'user/bookings',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+    }
 }
