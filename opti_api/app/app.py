@@ -442,6 +442,13 @@ def Workspaces(self):
 @app.route('/workspace/add', methods=['POST'])
 @jwt_required
 def WorkspaceAdd():
+
+    cur = mysql.connection.cursor()
+    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
+    result = cur.fetchone()
+    customer_id = result[0]
+    cur.close()
+
     json_data = request.get_json(force=True)
     jsonAddress = json_data['address']
     address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
@@ -457,7 +464,7 @@ def WorkspaceAdd():
         cur.close()
 
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
+        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
 
 
         cur = mysql.connection.cursor()
@@ -480,7 +487,7 @@ def WorkspaceAdd():
         addressId = result[0]
         cur.close()
 
-        workspace = [jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
+        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
 
 
         cur = mysql.connection.cursor()
