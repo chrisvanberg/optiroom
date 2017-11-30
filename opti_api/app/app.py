@@ -376,7 +376,11 @@ def userBookings():
         'customer_id': booking[2],
         'startDate': booking[3],
         'endDate': booking[4],
-        'price': str(booking[5])
+        'price': str(booking[5]),
+        'firstname': booking[6],
+        'lastname': booking[7],
+        'email': booking[8],
+        'phone': booking[9]
         }
 
         bookings.append(booking)
