@@ -1,2 +1,10 @@
+#Opti_api
 opti_api/opti_api-Cheatsheet
-opti_api/opti_api-run.sh
+
+#jetBrains IDE
+/app/.idea
+/opti_api/.idea
+
+#rsaKeys
+opti_api/id_rsa-opti_api
+opti_api/id_rsa-opti_api.pub

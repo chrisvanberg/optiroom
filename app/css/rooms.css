@@ -1,0 +1,56 @@
+#room-list{
+    height: 80vh;
+    margin-top: 1%;
+    padding:1%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.room-container{
+    padding: 1% 1%;
+    height: 33%;
+}
+.room{
+    background-color: #A1CD61;
+    width:100%;
+    height:100%;
+    background-repeat: no-repeat;
+    background-size: 24%;
+    background-position: bottom 10% right 10%;
+}
+.room:hover{
+    background-color: #b3eb76;
+}
+.room-regular{
+    background-image: url("../img/room_regular.png");
+}
+.room-auditorium{
+    background-image: url("../img/room_auditorium.png");
+}
+.room h1{
+    font-size: 1em;
+}
+
+.room h2{
+    color: white;
+    font-size: 2em;
+}
+.room h3{
+    color: #4C4C4C;
+    font-size: 1.4em;
+    margin-top:1%;
+}
+.room h4{
+    color: #4C4C4C;
+    font-size: 1em;
+    margin-top:1%;
+}
+#filters select{
+    width:50%;
+    margin-left: 25%;
+    margin-top: 5%;
+    border-radius:5px;
+}
+.room-details{
+    visibility: hidden;
+}
