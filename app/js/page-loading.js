@@ -1,99 +1,30 @@
-/**
- * Gestion des changements de page
- */
+$( document ).ready(function() {
+    $("#datetimepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+    });
+    $("#datetimepicker").datepicker('setDate', new Date());
+    showMap(false);
 
-//Animation du menu et affichage de la page courante dans le header
-function setPath(){
-    var path = $('[ng-controller="ctrl"]').scope().currentPage;
-    var page = path.replace("/","#!");
-    $("a.menu-item:not(a[href='"+page+"'])").css("font-weight","normal");
-    $("a.menu-item:not(a[href='"+page+"'])").css("color","white");
-    $("a[href='"+page+"']").css("font-weight","700");
-    $("a[href='"+page+"']").css("color","#FFDB38");
-    switch(path){
-        case "/" :
-            path = "Acceuil"
-            break;
-        case "/rooms":
-            path = "Locaux"
-            break;
-        case "/book":
-            path = "Réserver"
-            break;
-        case "/my-bookings":
-            path = "Mes réservations"
-            break;
-        case "/management":
-            path = "Gestion"
-            break;
-    }
-    $("header span").text(path);
-
-}
-
-//Routes pour l'affichage des pages
-var app = angular.module("optiroom", ["ngRoute"]);
-app.config(function($routeProvider) {
-    $routeProvider
-        .when("/", {
-            templateUrl : "overview.html",
-        })
-        .when("/rooms", {
-            templateUrl : "rooms.php"
-        })
-        .when("/book", {
-            templateUrl : "book.html"
-        })
-        .when("/my-bookings",{
-            templateUrl : "my-bookings.html"
-        })
-        .when("/management",{
-            templateUrl : "management.html"
-        });
-});
-app.controller('ctrl', function($scope,$location) {
-    $scope.$on('$routeChangeSuccess', function () {
-        $scope.currentPage = $location.path();
-        setPath();
-        showMenu();
+    $(window).scroll(function() {
+        var height = $(window).scrollTop();
+        if(height > 316){
+            $('#google-map').css('top', $(this).scrollTop()-310);
+        }
     });
 });
 
+function userAuthentificated(vm){
+    $(".visible-offline").hide();
+    $(".visible-online").show();
+    $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
+    $("#username").html("Mon compte ("+vm.username+")");
+}
 
-//Gestion du menu sur mobile et tablette
-var mobileMenu;
-
-function showMenu(){
-    if(mobileMenu){
-        rotateMenuImg();
-        $("#menu").removeClass("visible-xs");
-        $("#menu").removeClass("visible-sm");
-        $("#menu").addClass("hidden-sm");
-        $("#menu").addClass("hidden-xs");
-        $("#content").removeClass("hidden-sm");
-        $("#content").removeClass("hidden-xs");
-        $("#content").addClass("visible-sm");
-        $("#content").addClass("visible-xs");
-        mobileMenu = false;
+function showMap(bool) {
+    if(bool){
+        $("#google-map").show();
+        google.maps.event.trigger(map, 'resize');
     }else{
-        rotateMenuImg();
-        $("#menu").removeClass("hidden-xs");
-        $("#menu").removeClass("hidden-sm");
-        $("#menu").addClass("visible-sm");
-        $("#menu").addClass("visible-xs");
-        $("#content").removeClass("visible-sm");
-        $("#content").removeClass("visible-xs");
-        $("#content").addClass("hidden-sm");
-        $("#content").addClass("hidden-xs");
-        mobileMenu = true;
+        $("#google-map").hide();
     }
-
-}
-
-function rotateMenuImg(){
-    $("#mobile-menu img").rotate({
-        duration:500,
-        angle: 0,
-        animateTo:180
-    });
 }
