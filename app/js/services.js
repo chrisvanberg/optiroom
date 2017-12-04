@@ -7,7 +7,7 @@ workspaceService.$inject = ['$http'];
 
 function authService($http,$window) {
 
-    const baseURL = 'https://dev.optiroom.net/api/';
+    const baseURL = 'https://www.optiroom.net/api/';
 
     //Connexion
     this.login = function(user) {
@@ -40,7 +40,7 @@ function authService($http,$window) {
 }
 function signupService($http) {
 
-    const baseURL = 'https://dev.optiroom.net/api/';
+    const baseURL = 'https://www.optiroom.net/api/';
 
     this.sendSignupForm = function (signupdata) {
         return $http({
@@ -54,7 +54,7 @@ function signupService($http) {
 }
 function workspaceService($http){
 
-    const baseURL = 'https://dev.optiroom.net/api/';
+    const baseURL = 'https://www.optiroom.net/api/';
 
     this.addWorkspace = function(workspacedata){
         return $http({
