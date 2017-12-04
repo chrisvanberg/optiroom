@@ -2,6 +2,7 @@
 opti_api/opti_api-Cheatsheet
 
 #jetBrains IDE
+.idea
 /app/.idea
 /opti_api/.idea
 
