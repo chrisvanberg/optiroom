@@ -11,6 +11,8 @@ from flask_jwt_extended import *
 from datetime import timedelta, datetime
 from dateutil import parser
 from enum import Enum
+from flask_mail import Mail, Message
+
 import os
 global _debug_
 global _version_
@@ -25,7 +27,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.6"
+_version_ = "0.3.7"
 _brutMargin_ = float(0.30)
 _vat_ = float(0.21)
 
@@ -39,6 +41,17 @@ app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
 app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
 app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+
+
+app.config['MAIL_SERVER']='ssl0.ovh.net'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'no-reply@optiroom.net'
+app.config['MAIL_PASSWORD'] = '4pfXkqXj9xRPI0loj1eWr0UPQ9R5G6'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+
+mail = Mail(app)
 mysql.init_app(app)
 jwt = JWTManager(app)
 
@@ -51,6 +64,14 @@ class bookingStatus(Enum):
 @app.route('/system', methods=['GET'])
 def system():
     return jsonify({'state': 'up','version': _version_, 'motd': 'N/A'})
+
+
+@app.route("/mail")
+def index():
+   msg = Message('Hello', sender=("Optiroom", "no-reply@optiroom.net"), recipients = ['contact@chrisv.be'])
+   msg.body = "Hello World ! Hello Optiroom !"
+   mail.send(msg)
+   return jsonify({"Message": "Sent"})
 
 @app.route('/motd')
 def motd():
@@ -407,6 +428,11 @@ def Signin():
         cur = mysql.connection.cursor()
         cur.callproc('sign_up', data)
         mysql.connection.commit()
+
+        msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_username)])
+        msg.body = "Bonjour "+posted_firstname+" "+posted_name+" !\n\nVous êtes inscrit sur la plateforme de location/mise en location d'espace de co-working et bien plus encore !"
+        mail.send(msg)
+
         return jsonify({'Status': 'Success'}), 201
     except Exception as e:
         if "Duplicate entry" in str(e):
