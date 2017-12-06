@@ -27,7 +27,7 @@ api.init_app(app)
 bcrypt = Bcrypt(app)
 
 _debug_ = os.environ['DEBUG']
-_version_ = "0.3.7"
+_version_ = "0.3.8"
 _brutMargin_ = float(0.30)
 _vat_ = float(0.21)
 
@@ -47,6 +47,7 @@ app.config['MAIL_SERVER']='ssl0.ovh.net'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'no-reply@optiroom.net'
 app.config['MAIL_PASSWORD'] = '4pfXkqXj9xRPI0loj1eWr0UPQ9R5G6'
+app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@optiroom.net'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
@@ -70,6 +71,7 @@ def system():
 def index():
    msg = Message('Hello', sender=("Optiroom", "no-reply@optiroom.net"), recipients = ['contact@chrisv.be'])
    msg.body = "Hello World ! Hello Optiroom !"
+
    mail.send(msg)
    return jsonify({"Message": "Sent"})
 
@@ -430,7 +432,21 @@ def Signin():
         mysql.connection.commit()
 
         msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_username)])
-        msg.body = "Bonjour "+posted_firstname+" "+posted_name+" !\n\nVous êtes inscrit sur la plateforme de location/mise en location d'espace de co-working et bien plus encore !"
+
+
+
+        #msg.body = "Bonjour "+posted_firstname+" "+posted_name+" !\n\nVous êtes inscrit sur la plateforme de location/mise en location d'espace de co-working et bien plus encore !"
+
+        msg.html = '<div leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0">'
+        msg.html +=' <tbody style="font-family: Helvetica, sans-serif">'
+        msg.html +=' <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr>'
+        msg.html +=' <tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/optiroom-white.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;"> Bienvenue sur Optiroom "'+posted_firstname+' ' +posted_name+'" ! </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr>'
+        msg.html +='<tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonjour, nous sommes très heureux de confirmer votre inscription chez Optiroom. Nous sommes une plateforme en ligne de location d\'espaces de travail et de mise en location des vos espaces de travail. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr>'
+        msg.html +=' <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Rendez-vous sur Optiroom pour plus d\'informations. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div><!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mon compte Optiroom</center> </v:roundrect> <![endif]--><a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650; border-radius:50px; color:#228b22; display:inline-block;'
+        msg.html +='font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mon compte Optiroom</a></div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;<hr/></td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> <h4>Qu\'est ce qu\'optiroom ?</h4> Vous êtes à la recherche d’un espace de travail ? Notre plateforme vous permet de trouver un espace qui répond à vos besoins en quelques secondes. Il vous suffit d’effectuer une recherche et de choisir l\'espace qui vous convient le mieux selon son prix, son nombre de place et une multitude d\'autres'
+        msg.html +=' critères. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonne journée, <br/>L\'équipe Optiroom. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise'
+        msg.html += 'use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </div>'
+
         mail.send(msg)
 
         return jsonify({'Status': 'Success'}), 201
