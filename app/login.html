@@ -6,20 +6,20 @@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-user"></span>
                     </span>
-            <input type='text' class="form-control" placeholder="E-mail" ng-model="authLoginCtrl.user.username" required>
+            <input id='login' type='text' class="form-control" placeholder="E-mail" ng-model="authLoginCtrl.user.username" required>
         </div>
         <div class="input-group row">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-lock"></span>
                     </span>
-            <input type="password" class="form-control" placeholder="Mot de passe" ng-model="authLoginCtrl.user.password" required>
+            <input id="pswd" type="password" class="form-control" placeholder="Mot de passe" ng-model="authLoginCtrl.user.password" required>
         </div>
  <!--       <div class="input-group row">
             <input id=stay-logged name="stay-logged" type="checkbox">
             <label for="stay-logged">Rester connecté</label>
         </div>-->
         <div class="input-group row">
-            <button type="submit" class="btn btn-success btn-sm form-control">Log in</button><br>
+            <button id='submit' type="submit" class="btn btn-success btn-sm form-control">Log in</button><br>
         </div>
         <div class="input-group row">
             <span class="login-form-link"><a href="#">Mot de passe oublié</a></span><br>
