@@ -70,11 +70,11 @@ def system():
 @app.route("/mail")
 def index():
 
+    msg = Message('Hello', sender=("Optiroom", "no-reply@optiroom.net"), recipients = ['contact@chrisv.be'])
+    msg.body = "Hello World ! Hello Optiroom !"
+    mail.send(msg)
 
-   #mail.send(msg)
-
-
-   return jsonify({"Message": "Sent"})
+    return jsonify({"Message": "Sent"})
 
 @app.route('/motd')
 def motd():
@@ -273,6 +273,9 @@ def workspaceBook():
 
 
         booker_name=str(bookerInfo[1])
+        booker_fullName=str(bookerInfo[1]+" "+bookerInfo[2])
+        booker_mail=str(bookerInfo[3])
+        booker_tel=str(bookerInfo[4])
         cur.close()
 
         cur = mysql.connection.cursor()
@@ -280,14 +283,15 @@ def workspaceBook():
         ownerInfo = cur.fetchone()
 
         ownerId = str(ownerInfo[0])
-        ownerName = str(ownerInfo[1]+" "+ownerInfo[2])
+        ownerFirstName = str(ownerInfo[1])
+        ownerFullName = str(ownerInfo[1]+" "+ownerInfo[2])
         ownerEmail = str(ownerInfo[3])
         ownerTel = str(ownerInfo[4])
 
         cur.close()
 
 
-        msg = Message('Votre réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = ["contact@chrisv.be"])
+        msg = Message('Votre réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(get_jwt_identity())])
 
         msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"> <tbody style="font-family: Helvetica, sans-serif"> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/optiroom-white.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
         msg.html += "Bonjour "+booker_name
@@ -296,14 +300,119 @@ def workspaceBook():
         msg.html += "Vous avez réservé l'espace de travail \""+str(result[0])+"\"<br> à partir du "+str(posted_startDateTime)+"<br>jusqu'au "+str(posted_endDateTime)+"<br>Adresse : "+str(result[5])+" "+str(result[6])+", "+str(result[7])+" "+str(result[8])+", "+str(result[9])+"<br>Prix : "+str(price)
 
         msg.html += """€</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div> <!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mes réservations</center> </v:roundrect> <![endif]--> <a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650;border-radius:50px;color:#228b22;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mes réservations</a> </div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp; <hr/> </td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> Informations de contacts : </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> <table align="center"> <tbody> <tr> <td>"""
-        msg.html += "<span style=\"color:white;text-align:center;\">"+ownerName+"</span><br><span style=\"color:white;text-align:center;\">"+ownerTel+"</span><br><span style=\"color:white;text-align:center;\">"+ownerEmail+"</span>"
+        msg.html += "<span style=\"color:white;text-align:center;\">"+ownerFullName+"</span><br><span style=\"color:white;text-align:center;\">"+ownerTel+"</span><br><span style=\"color:white;text-align:center;\">"+ownerEmail+"</span>"
 
         msg.html += """ </td> <td height="30" style="font-size: 30px; line-height: 30px; width: 7%; padding-left: 20%; padding-right: 20%">&nbsp;</td> <td> <img alt="Room" src="https://raw.githubusercontent.com/NathVoss/optiroom/dev/app/img/default-room.jpg" width="300" border="0" style="border-radius: 25px"></img> </td> </tr> </tbody> </table> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </body></html>"""
 
         mail.send(msg)
 
-        #Mail for owner
+        ownerMsg = Message('Nouvelle réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [ownerEmail])
 
+        ownerMsg.html = """<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE html
+                PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+        <head>
+            <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+            <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta>
+        </head>
+        <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0">
+        <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody style="font-family: Helvetica, sans-serif">
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px;"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <a href="https://dev.optiroom.net">
+                        <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/optiroom-white.png" width="300" border="0"></img>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">
+                    Bonjour """+ownerFirstName+""" !
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" style="text-align: center">
+                    <div><!--[if mso]>
+                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0">
+                            <w:anchorlock/>
+                            <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mes workspaces</center>
+                        </v:roundrect>
+                        <![endif]--><a href="https://dev.optiroom.net"
+                                       style="background-color:#FDE9E0;border:1px solid #1e3650;border-radius:50px;color:#228b22;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mes workspaces</a></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right" style="font-family: Helvetica, sans-serif; color: white; text-align: right; line-height: 28px;">
+                      <div style="margin:1em;">
+                        Votre espace de travail \""""+str(result[0])+"""\" à été réservé :<br/>
+                      Date de début : """+str(posted_startDateTime)+"""<br/>
+                      Date de fin : """+str(posted_endDateTime)+"""<br/>
+                      Prix : """+str(price)+"""<br/>
+                      Adresse : """+str(result[5])+""" """+str(result[6])+""", """+str(result[7])+""" """+str(result[8])+""", """+str(result[9])+"""<br/>
+                    </div>
+                </td>
+                <td align="left" style="text-align:left">
+                    <img alt="Room" src="https://raw.githubusercontent.com/NathVoss/optiroom/dev/app/img/default-room.jpg" width="300" border="0" style="border-radius: 25px"></img>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%"><hr></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;">
+                    <h3>Informations de contacts :</h3>
+                    """+booker_fullName+"""<br/>
+                    """+booker_tel+"""<br/>
+                    """+str(get_jwt_identity())+"""<br/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;">
+                    Bien à vous<br/>
+                    L'équipe d'Optiroom !
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+        <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%">
+            This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you.
+        </p>
+        <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder">
+            Please consider your environmental responsibility before printing this e-mail
+        </p>
+        </body>
+        </html>
+
+"""
+
+        mail.send(ownerMsg)
 
         return jsonify({'Status': 'ok'}),201
 
@@ -519,6 +628,10 @@ def Signin():
 #@app.route('/workspace/<int:workspace_id>/bookings')
 #def getBookingByWorkspaceID(workspace_id):
 
+@app.route('/identity')
+@jwt_required
+def identity():
+    return jsonify({'identity': str(get_jwt_identity())})
 
 @app.route('/workspace/update', methods=['POST'])
 @jwt_required
