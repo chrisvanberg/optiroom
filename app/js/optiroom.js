@@ -13,8 +13,8 @@ $( document ).ready(function() {
         }
     });
 });
-
-function userAuthentificated(vm){
+//Ce qui change dans le header si l'user est connecté
+function userAuthenticated(vm){
     $(".visible-offline").hide();
     $(".visible-online").show();
     $("#user-avatar").html("<img src='img/default-avatar.png'>");

@@ -1,3 +1,8 @@
+/**
+ *
+ * Ce fichier gère tous ce qui a trait au router angular
+ *
+ */
 angular.module('tokenAuthApp.config', ['ui.router']).config(appConfig).run(routeStart);
 
 //Router pour les différentes vues pouvant être affichées
@@ -57,9 +62,9 @@ function appConfig($stateProvider, $urlRouterProvider){
             }
 
         })
-        .state('add-optiroom', {
-            url: '/add-optiroom',
-            templateUrl: 'add-optiroom.html',
+        .state('add-workspace', {
+            url: '/add-workspace',
+            templateUrl: 'add-workspace.html',
             controller: 'workspaceController',
             controllerAs: 'workspaceCtrl',
             restrictions: {

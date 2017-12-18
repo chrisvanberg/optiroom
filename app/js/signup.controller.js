@@ -1,12 +1,17 @@
+/**
+ *
+ * Ce fichier gère tous ce qui a trait aux inscriptions
+ *
+ */
 angular.module('tokenAuthApp.signup', [])
     .controller('signupController', signupController);
 
 signupController.$inject = ['signupService'];
-
+//Controlleur de l'inscription
 function signupController(signupService){
     const vm = this;
     vm.signupdata = {};
-
+    //Fonction appellée à l'envoi du formulaire d'inscription
     vm.onSignupFormSend = function() {
         signupService.sendSignupForm(vm.signupdata).then(function(returnMessage) {
             console.log(returnMessage);
@@ -18,7 +23,6 @@ function signupController(signupService){
             }else{
                 notify("Il y a une erreur dans vos données","red");
             }
-            console.log(err);
         });
     };
 }

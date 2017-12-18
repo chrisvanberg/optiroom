@@ -1,9 +1,15 @@
+/**
+ *
+ * Ce fichier gère tous ce qui a trait aux workspaces
+ *
+ */
 var workspaceID;
 angular.module('tokenAuthApp.workspace', [])
     .controller('workspaceController', workspaceController);
 
 workspaceController.$inject = ['workspaceService','$scope','$stateParams','$location'];
 
+//Controlleur des workspaces
 function workspaceController(workspaceService, scope, params, $location){
     const vm = this;
     vm.workspaceData = {};
@@ -13,6 +19,7 @@ function workspaceController(workspaceService, scope, params, $location){
     if(typeof (workspaceID) !== undefined && workspaceID > 0){
         editWorkspace();
     }
+    //Fonction d'ajout des workspaces appellée par le DOM
     vm.onAddWorkspace = function() {
         workspaceService.getCoordsByAddress(composeGoogleAPIUrl(vm.workspaceData.postcode, vm.workspaceData.city, vm.workspaceData.street, vm.workspaceData.number, vm.workspaceData.country)).then(function(data){
             vm.workspaceData.latitude = data.data.results[0].geometry.location.lat;
@@ -41,7 +48,6 @@ function workspaceController(workspaceService, scope, params, $location){
                 "hasProjector" : vm.workspaceData.hasProjector,
                 "minPrice" : vm.workspaceData.minPrice,
             };
-            console.log(vm.workspaceToAdd);
             workspaceService.addWorkspace(vm.workspaceToAdd);
             $("#formulaireAjout").css("display","none");
             notify("Le workspace a bien été ajouté", "green");
@@ -50,7 +56,7 @@ function workspaceController(workspaceService, scope, params, $location){
         };;
     };
 }
-
+//Fonction générant la liste des workspaces dans l'onglet "Mes workspaces"
 function buildWorkspaceList(){
     angular.element(document.body).injector().get("workspaceService").getWorkspacesByUser().then(function(ws) {
         for (i in ws.data) {
@@ -80,6 +86,7 @@ function buildWorkspaceList(){
         }
     });
 }
+//Fonction appellée quand on réserve un workspace
 function bookWorkspace(id){
     var date = ($("#datetimepicker").val());
     var hour = $("*[data-workspaceBeginning=workspace"+id+"]").val();
@@ -94,6 +101,7 @@ function bookWorkspace(id){
         notify("Il y a eu une erreur","red");
     };
 }
+//Fonction appellée quand on accède à l'onglet "Mes réservations"
 function getBookings(){
     angular.element(document.body).injector().get("workspaceService").getBookings().then(function(ws) {
         angular.forEach(ws.data, function(value, i) {
