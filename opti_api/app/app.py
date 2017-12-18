@@ -12,37 +12,38 @@ from datetime import timedelta, datetime
 from dateutil import parser
 from enum import Enum
 from flask_mail import Mail, Message
-
 import os
-global _debug_
-global _version_
-global _margin_
-global _vat_
-api = Api()
 
+global DEBUG
+global VERSION
+global _margin_
+global VAT
+
+DEBUG = os.environ['DEBUG']
+VERSION = "0.4"
+BRUT_MARGIN = float(0.30)
+VAT = float(0.21)
+
+api = Api()
 app = Flask(__name__)
-#api = Api(app, doc='/api/')
 api.init_app(app)
 
 bcrypt = Bcrypt(app)
 
-_debug_ = os.environ['DEBUG']
-_version_ = "0.3.9"
-_brutMargin_ = float(0.30)
-_vat_ = float(0.21)
-
+#MySQLConfig
 mysql = MySQL()
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
-
-app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
-
 app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
 app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
 app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
 app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
+mysql.init_app(app)
+
+#JWTConfig
+app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+jwt = JWTManager(app)
 
-
+#MailConfig
 app.config['MAIL_SERVER']='ssl0.ovh.net'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'no-reply@optiroom.net'
@@ -50,11 +51,11 @@ app.config['MAIL_PASSWORD'] = '4pfXkqXj9xRPI0loj1eWr0UPQ9R5G6'
 app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@optiroom.net'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-
-
 mail = Mail(app)
-mysql.init_app(app)
-jwt = JWTManager(app)
+
+if DEBUG:
+    #Cors let the API being accessed localy when developping a client who respect Cors policy
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 class bookingStatus(Enum):
     OK = 1
@@ -64,21 +65,257 @@ class bookingStatus(Enum):
 
 @app.route('/system', methods=['GET'])
 def system():
-    return jsonify({'state': 'up','version': _version_, 'motd': 'N/A'})
+    return jsonify({'state': 'up','version': VERSION})
+
+@app.route('/auth/signup', methods=['POST'])
+def Signin():
+
+    json_data = request.get_json(force=True)
+    posted_username = json_data['mail']
+    posted_name = json_data['name']
+    posted_firstname = json_data['firstname']
+    posted_password = json_data['password']
+    posted_phone = json_data['phone']
+    hashedPwd = bcrypt.generate_password_hash(posted_password)
+
+    data = [posted_firstname, posted_name, posted_username, posted_phone, hashedPwd.decode('UTF-8')]
+
+    try:
+        cur = mysql.connection.cursor()
+        cur.callproc('sign_up', data)
+        mysql.connection.commit()
+
+        msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_username)])
+
+        msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"><tbody style="font-family: Helvetica, sans-serif"><tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr><tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/logo_christmas.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
+        msg.html += "Bienvenue sur Optiroom "+posted_firstname+" "+posted_name
+        msg.html += """ ! </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr><tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonjour, nous sommes très heureux de confirmer votre inscription chez Optiroom. Nous sommes une plateforme en ligne de location d\'espaces de travail et de mise en location des vos espaces de travail. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr><tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Rendez-vous sur Optiroom pour plus d\'informations. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div><!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mon compte Optiroom</center> </v:roundrect> <![endif]--><a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650; border-radius:50px; color:#228b22; display:inline-block; font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mon compte Optiroom</a></div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;<hr/></td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> <h4>Qu\'est ce qu\'optiroom ?</h4> Vous êtes à la recherche d’un espace de travail ? Notre plateforme vous permet de trouver un espace qui répond à vos besoins en quelques secondes. Il vous suffit d’effectuer une recherche et de choisir l\'espace qui vous convient le mieux selon son prix, son nombre de place et une multitude d\'autres critères. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonne journée, <br/>L\'équipe Optiroom. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </body></html>"""
+
+        mail.send(msg)
+
+        return jsonify({'Status': 'Success'}), 201
+    except Exception as e:
+        if "Duplicate entry" in str(e):
+            return jsonify({'Status': 'Error', 'Code': 'S001'}), 409
+        elif DEBUG:
+            return jsonify({'Status': 'Error', 'e': str(e)}), 409
+        else:
+            return jsonify({'Status': 'Error'}), 409
+
+@app.route('/auth/login', methods=['POST'])
+def login():
+    json_data = request.get_json(force=True)
+    email = json_data['username']
+    password = json_data['password']
+
+    cur = mysql.connection.cursor()
+    cur.callproc('getHash', [email])
+
+    if cur.rowcount is not 0:
+        result = cur.fetchone()
+        firstname = result[0]
+        lastname = result[1]
+        hash = result[2]
+
+        if bcrypt.check_password_hash(hash, password) :
+            token = create_access_token(identity=email)
+            return jsonify({'access_token': token}), 200
+        else:
+            return jsonify({'Status': 'Error', 'Code': 'L002'}), 401
+    else:
+        return jsonify({'Status': 'Error', 'Code': 'L001'}), 401
+
+@app.route('/workspaces')
+def Workspaces(self):
+    workspaces = []
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM get_workspace")
+    for workspace in cur:
+        workspace = {
+        'address_id': workspace[0],
+        'building_name': workspace[1],
+        'country': workspace[2],
+        'city': workspace[3],
+        'street': workspace[4],
+        'postcode': workspace[5],
+        'building_number': workspace[6],
+        'workspace_id': workspace[7],
+        'workspace_name': workspace[8],
+        'nbPlace': workspace[9],
+        'description': workspace[10],
+        'hasProjector': workspace[11],
+        'hasWifi': workspace[12] }
+        workspaces.append(workspace)
+    return jsonify(workspaces)
+
+@app.route('/workspace/add', methods=['POST'])
+@jwt_required
+def WorkspaceAdd():
+    cur = mysql.connection.cursor()
+    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
+    result = cur.fetchone()
+    customer_id = result[0]
+    cur.close()
+
+    json_data = request.get_json(force=True)
+    jsonAddress = json_data['address']
+    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
+    jsonWorkspace = json_data['workspace']
 
 
-@app.route("/mail")
-def index():
+    cur = mysql.connection.cursor()
+    cur.callproc('checkIfAddressExist', address)
 
-    msg = Message('Hello', sender=("Optiroom", "no-reply@optiroom.net"), recipients = ['contact@chrisv.be'])
-    msg.body = "Hello World ! Hello Optiroom !"
-    mail.send(msg)
+    if cur.rowcount is not 0:
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
 
-    return jsonify({"Message": "Sent"})
 
-@app.route('/motd')
-def motd():
-    return jsonify({'motd': 'N/A'})
+        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+    else:
+        cur.close()
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspaceAddress', address)
+        mysql.connection.commit()
+        cur.close()
+
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAddressExist', address)
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
+
+        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+@app.route('/workspace/update', methods=['POST'])
+@jwt_required
+def workspaceUpdate():
+    json_data = request.get_json(force=True)
+    jsonAddress = json_data['address']
+    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
+    jsonWorkspace = json_data['workspace']
+
+
+    cur = mysql.connection.cursor()
+    cur.callproc('checkIfAddressExist', address)
+
+    if cur.rowcount is not 0:
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
+
+        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('updateWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+    else:
+        cur.close()
+        cur = mysql.connection.cursor()
+        cur.callproc('addWorkspaceAddress', address)
+        mysql.connection.commit()
+        cur.close()
+
+        cur = mysql.connection.cursor()
+        cur.callproc('checkIfAddressExist', address)
+        result = cur.fetchone()
+        addressId = result[0]
+        cur.close()
+
+        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('updateWorkspace', workspace)
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({}),201
+
+
+
+@app.route('/workspace/<int:workspace_id>')
+def workspaceId(workspace_id):
+
+    cur = mysql.connection.cursor()
+    cur.callproc('get_workspace_byWorkspaceId', [workspace_id])
+    result = cur.fetchone()
+
+    workspace = {
+        'workspace_name': result[0],
+        'description': result[1],
+        'building_name': result[2],
+        'latitude': str(result[3]),
+        'longitude': str(result[4]),
+        'street': result[5],
+        'building_number': result[6],
+        'postcode': result[7],
+        'city': result[8],
+        'country': result[9],
+        'minPrice': str(result[10]),
+        'price': str(round((float(result[10])/(1-BRUT_MARGIN))*(1+VAT),2)),
+        'nbSeats': result[11],
+        'hasProjector': result[12],
+        'hasWifi': result[13] }
+
+    return jsonify(workspace)
+
+@app.route('/workspace/<int:workspace_id>/availability')
+def getWorkspaceAvailability(workspace_id):
+    posted_workspace_id = int(workspace_id)
+    cur = mysql.connection.cursor()
+    cur.callproc('checkIfAvailabilityExist', [posted_workspace_id])
+
+    if cur.rowcount is not 0:
+        cur.close()
+        cur = mysql.connection.cursor()
+        cur.callproc('get_availability_byWorkspaceId', [posted_workspace_id])
+        result = cur.fetchone()
+
+        availability = {
+            'workspace_id' : result[0],
+            'openingDays' : result[1],
+            'monOpeningHour' : str(result[2]),
+            'monClosingHour' : str(result[3]),
+            'tueOpeningHour' : str(result[4]),
+            'tueClosingHour' : str(result[5]),
+            'wedOpeningHour' : str(result[6]),
+            'wedClosingHour' : str(result[7]),
+            'thuOpeningHour' : str(result[8]),
+            'thuClosingHour' : str(result[9]),
+            'friOpeningHour' : str(result[10]),
+            'friClosingHour' : str(result[11]),
+            'satOpeningHour' : str(result[12]),
+            'satClosingHour' : str(result[13]),
+            'sunOpeningHour' : str(result[14]),
+            'sunClosingHour' : str(result[15])}
+        return jsonify(availability)
+    else:
+        return jsonify({'status': 'error', 'code': 'A001'}), 404
+
 
 @app.route('/workspace/availability')
 @jwt_required
@@ -137,56 +374,6 @@ def addAvailability():
             return jsonify({'Status': 'Error', 'Code': 'A001'}), 404
 
 
-@app.route('/workspace/<int:workspace_id>/availability')
-def getWorkspaceAvailability(workspace_id):
-    posted_workspace_id = int(workspace_id)
-    cur = mysql.connection.cursor()
-    cur.callproc('checkIfAvailabilityExist', [posted_workspace_id])
-
-    if cur.rowcount is not 0:
-        cur.close()
-        cur = mysql.connection.cursor()
-        cur.callproc('get_availability_byWorkspaceId', [posted_workspace_id])
-        result = cur.fetchone()
-
-        availability = {
-            'workspace_id' : result[0],
-            'openingDays' : result[1],
-            'monOpeningHour' : str(result[2]),
-            'monClosingHour' : str(result[3]),
-            'tueOpeningHour' : str(result[4]),
-            'tueClosingHour' : str(result[5]),
-            'wedOpeningHour' : str(result[6]),
-            'wedClosingHour' : str(result[7]),
-            'thuOpeningHour' : str(result[8]),
-            'thuClosingHour' : str(result[9]),
-            'friOpeningHour' : str(result[10]),
-            'friClosingHour' : str(result[11]),
-            'satOpeningHour' : str(result[12]),
-            'satClosingHour' : str(result[13]),
-            'sunOpeningHour' : str(result[14]),
-            'sunClosingHour' : str(result[15])}
-        return jsonify(availability)
-    else:
-        return jsonify({'status': 'error', 'code': 'A001'}), 404
-
-@app.route('/workspace/book/status', methods=['POST'])
-@jwt_required
-def workSpaceBookStatus():
-    json_data = request.get_json(force=True)
-
-    posted_booking_id = json_data['booking_id']
-    posted_status = json_data['status']
-
-    data = [posted_booking_id, posted_status]
-
-    cur = mysql.connection.cursor()
-    cur.callproc('updateBookingStatus', data)
-    mysql.connection.commit()
-    cur.close
-
-    return jsonify({'Status': 'ok'}),201
-
 
 @app.route('/workspace/book', methods=['POST'])
 @jwt_required
@@ -210,7 +397,7 @@ def workspaceBook():
     data = [posted_workspace_id]
     cur.callproc('getMinPriceByWorkspaceId', data)
     result = cur.fetchone()
-    price = str(round((float(result[0])/(1-_brutMargin_))*(1+_vat_),2))
+    price = str(round((float(result[0])/(1-BRUT_MARGIN))*(1+VAT),2))
     cur.close()
 
 
@@ -261,7 +448,7 @@ def workspaceBook():
             'city': result[8],
             'country': result[9],
             'minPrice': str(result[10]),
-            'price': str(round((float(result[10])/(1-_brutMargin_))*(1+_vat_),2)),
+            'price': str(round((float(result[10])/(1-BRUT_MARGIN))*(1+VAT),2)),
             'nbSeats': result[11],
             'hasProjector': result[12],
             'hasWifi': result[13] }
@@ -402,7 +589,7 @@ def workspaceBook():
             </tbody>
         </table>
         <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%">
-            This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you.
+            Thish communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you.
         </p>
         <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder">
             Please consider your environmental responsibility before printing this e-mail
@@ -417,33 +604,22 @@ def workspaceBook():
         return jsonify({'Status': 'ok'}),201
 
 
+@app.route('/workspace/book/status', methods=['POST'])
+@jwt_required
+def workSpaceBookStatus():
+    json_data = request.get_json(force=True)
 
+    posted_booking_id = json_data['booking_id']
+    posted_status = json_data['status']
 
-@app.route('/workspace/<int:workspace_id>')
-def workspaceId(workspace_id):
+    data = [posted_booking_id, posted_status]
 
     cur = mysql.connection.cursor()
-    cur.callproc('get_workspace_byWorkspaceId', [workspace_id])
-    result = cur.fetchone()
+    cur.callproc('updateBookingStatus', data)
+    mysql.connection.commit()
+    cur.close
 
-    workspace = {
-        'workspace_name': result[0],
-        'description': result[1],
-        'building_name': result[2],
-        'latitude': str(result[3]),
-        'longitude': str(result[4]),
-        'street': result[5],
-        'building_number': result[6],
-        'postcode': result[7],
-        'city': result[8],
-        'country': result[9],
-        'minPrice': str(result[10]),
-        'price': str(round((float(result[10])/(1-_brutMargin_))*(1+_vat_),2)),
-        'nbSeats': result[11],
-        'hasProjector': result[12],
-        'hasWifi': result[13] }
-
-    return jsonify(workspace)
+    return jsonify({'Status': 'ok'}),201
 
 
 
@@ -475,7 +651,7 @@ def UserWorkspaces():
             'postcode': workspace[8],
             'city': workspace[9],
             'country': workspace[10],
-            'price': str(round((float(workspace[11])/(1-_brutMargin_))*(1+_vat_),2)),
+            'price': str(round((float(workspace[11])/(1-BRUT_MARGIN))*(1+VAT),2)),
             'nbSeats': workspace[12],
             'hasProjector': workspace[13],
             'hasWifi': workspace[14] }
@@ -484,8 +660,36 @@ def UserWorkspaces():
 
     return jsonify(workspaces)
 
+@app.route('/user/bookings')
+@jwt_required
+def userBookings():
+    cur = mysql.connection.cursor()
+    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
+    result = cur.fetchone()
+    customer_id = result[0]
+    cur.close()
+    bookings = []
 
-#/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<int:day>/<int:minSeats>
+    cur = mysql.connection.cursor()
+    cur.callproc('getBookingByCustomerId', [customer_id])
+
+    for booking in cur:
+        booking = {
+        'booking_id': booking[0],
+        'workspace_id': booking[1],
+        'customer_id': booking[2],
+        'startDate': booking[3],
+        'endDate': booking[4],
+        'price': str(booking[5]),
+        'firstname': booking[6],
+        'lastname': booking[7],
+        'email': booking[8],
+        'phone': booking[9]
+        }
+
+        bookings.append(booking)
+    return jsonify(bookings)
+
 @app.route('/search/<float:centerLatitude>/<float:centerLongitude>/<int:rangeInKm>/<string:day>/<int:minSeats>')
 def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
     rangeInDegree = (rangeInKm / 40000) * 360
@@ -528,7 +732,7 @@ def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
             'description' : workspace[12],
             'hasProjector' : workspace[13],
             'hasWifi' : workspace[14],
-            'price' : str(round((float(workspace[15])/(1-_brutMargin_))*(1+_vat_),2)),
+            'price' : str(round((float(workspace[15])/(1-BRUT_MARGIN))*(1+VAT),2)),
             'openingDays' : workspace[16],
             'monOpeningHour' : str(workspace[17]),
             'monClosingHour' : str(workspace[18]),
@@ -552,242 +756,5 @@ def Search(centerLatitude, centerLongitude, rangeInKm, day, minSeats):
 
     return jsonify(workspaces)
 
-@app.route('/user/bookings')
-@jwt_required
-def userBookings():
-    cur = mysql.connection.cursor()
-    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
-    result = cur.fetchone()
-    customer_id = result[0]
-    cur.close()
-    bookings = []
-
-    cur = mysql.connection.cursor()
-    cur.callproc('getBookingByCustomerId', [customer_id])
-
-    for booking in cur:
-        booking = {
-        'booking_id': booking[0],
-        'workspace_id': booking[1],
-        'customer_id': booking[2],
-        'startDate': booking[3],
-        'endDate': booking[4],
-        'price': str(booking[5]),
-        'firstname': booking[6],
-        'lastname': booking[7],
-        'email': booking[8],
-        'phone': booking[9]
-        }
-
-        bookings.append(booking)
-    return jsonify(bookings)
-
-
-
-
-
-@app.route('/signup', methods=['POST'])
-def Signin():
-
-    json_data = request.get_json(force=True)
-    posted_username = json_data['mail']
-    posted_name = json_data['name']
-    posted_firstname = json_data['firstname']
-    posted_password = json_data['password']
-    posted_phone = json_data['phone']
-    hashedPwd = bcrypt.generate_password_hash(posted_password)
-
-    data = [posted_firstname, posted_name, posted_username, posted_phone, hashedPwd.decode('UTF-8')]
-
-    try:
-        cur = mysql.connection.cursor()
-        cur.callproc('sign_up', data)
-        mysql.connection.commit()
-
-        msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_username)])
-
-
-
-        #msg.body = "Bonjour "+posted_firstname+" "+posted_name+" !\n\nVous êtes inscrit sur la plateforme de location/mise en location d'espace de co-working et bien plus encore !"
-
-        msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"><tbody style="font-family: Helvetica, sans-serif"><tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr><tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/logo_christmas.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
-        msg.html += "Bienvenue sur Optiroom "+posted_firstname+" "+posted_name
-        msg.html += """ ! </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr><tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonjour, nous sommes très heureux de confirmer votre inscription chez Optiroom. Nous sommes une plateforme en ligne de location d\'espaces de travail et de mise en location des vos espaces de travail. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr><tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Rendez-vous sur Optiroom pour plus d\'informations. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div><!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mon compte Optiroom</center> </v:roundrect> <![endif]--><a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650; border-radius:50px; color:#228b22; display:inline-block; font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mon compte Optiroom</a></div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;<hr/></td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> <h4>Qu\'est ce qu\'optiroom ?</h4> Vous êtes à la recherche d’un espace de travail ? Notre plateforme vous permet de trouver un espace qui répond à vos besoins en quelques secondes. Il vous suffit d’effectuer une recherche et de choisir l\'espace qui vous convient le mieux selon son prix, son nombre de place et une multitude d\'autres critères. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: #FDE9E0; text-align: center; line-height: 28px; padding-left: 10%; padding-right: 10%"> Bonne journée, <br/>L\'équipe Optiroom. </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </body></html>"""
-
-        mail.send(msg)
-
-        return jsonify({'Status': 'Success'}), 201
-    except Exception as e:
-        if "Duplicate entry" in str(e):
-            return jsonify({'Status': 'Error', 'Code': 'S001'}), 409
-        elif _debug_:
-            return jsonify({'Status': 'Error', 'e': str(e)}), 409
-        else:
-            return jsonify({'Status': 'Error'}), 409
-
-#@app.route('/workspace/<int:workspace_id>/bookings')
-#def getBookingByWorkspaceID(workspace_id):
-
-@app.route('/identity')
-@jwt_required
-def identity():
-    return jsonify({'identity': str(get_jwt_identity())})
-
-@app.route('/workspace/update', methods=['POST'])
-@jwt_required
-def workspaceUpdate():
-    json_data = request.get_json(force=True)
-    jsonAddress = json_data['address']
-    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
-    jsonWorkspace = json_data['workspace']
-
-
-    cur = mysql.connection.cursor()
-    cur.callproc('checkIfAddressExist', address)
-
-    if cur.rowcount is not 0:
-        result = cur.fetchone()
-        addressId = result[0]
-        cur.close()
-
-        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
-
-
-        cur = mysql.connection.cursor()
-        cur.callproc('updateWorkspace', workspace)
-        mysql.connection.commit()
-        cur.close()
-
-        return jsonify({}),201
-
-    else:
-        cur.close()
-        cur = mysql.connection.cursor()
-        cur.callproc('addWorkspaceAddress', address)
-        mysql.connection.commit()
-        cur.close()
-
-        cur = mysql.connection.cursor()
-        cur.callproc('checkIfAddressExist', address)
-        result = cur.fetchone()
-        addressId = result[0]
-        cur.close()
-
-        workspace = [jsonWorkspace['workspace_id'], jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'], addressId]
-
-
-        cur = mysql.connection.cursor()
-        cur.callproc('updateWorkspace', workspace)
-        mysql.connection.commit()
-        cur.close()
-
-        return jsonify({}),201
-
-
-@app.route('/workspaces')
-def Workspaces(self):
-    workspaces = []
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM get_workspace")
-    for workspace in cur:
-        workspace = {
-        'address_id': workspace[0],
-        'building_name': workspace[1],
-        'country': workspace[2],
-        'city': workspace[3],
-        'street': workspace[4],
-        'postcode': workspace[5],
-        'building_number': workspace[6],
-        'workspace_id': workspace[7],
-        'workspace_name': workspace[8],
-        'nbPlace': workspace[9],
-        'description': workspace[10],
-        'hasProjector': workspace[11],
-        'hasWifi': workspace[12] }
-        workspaces.append(workspace)
-    return jsonify(workspaces)
-
-@app.route('/workspace/add', methods=['POST'])
-@jwt_required
-def WorkspaceAdd():
-
-    cur = mysql.connection.cursor()
-    cur.callproc('getUserIdByUserEmail', [str(get_jwt_identity())])
-    result = cur.fetchone()
-    customer_id = result[0]
-    cur.close()
-
-    json_data = request.get_json(force=True)
-    jsonAddress = json_data['address']
-    address = [jsonAddress['buildingName'], jsonAddress['street'], jsonAddress['number'], jsonAddress['postcode'], jsonAddress['city'], jsonAddress['country'], jsonAddress['latitude'], jsonAddress['longitude']]
-    jsonWorkspace = json_data['workspace']
-
-
-    cur = mysql.connection.cursor()
-    cur.callproc('checkIfAddressExist', address)
-
-    if cur.rowcount is not 0:
-        result = cur.fetchone()
-        addressId = result[0]
-        cur.close()
-
-
-        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasWifi'],jsonWorkspace['minPrice'], addressId]
-
-
-        cur = mysql.connection.cursor()
-        cur.callproc('addWorkspace', workspace)
-        mysql.connection.commit()
-        cur.close()
-
-        return jsonify({}),201
-
-    else:
-        cur.close()
-        cur = mysql.connection.cursor()
-        cur.callproc('addWorkspaceAddress', address)
-        mysql.connection.commit()
-        cur.close()
-
-        cur = mysql.connection.cursor()
-        cur.callproc('checkIfAddressExist', address)
-        result = cur.fetchone()
-        addressId = result[0]
-        cur.close()
-
-        workspace = [customer_id, jsonWorkspace['workspaceName'], jsonWorkspace['seats'], jsonWorkspace['description'], jsonWorkspace['hasProjector'], jsonWorkspace['hasProjector'],jsonWorkspace['minPrice'], addressId]
-
-
-        cur = mysql.connection.cursor()
-        cur.callproc('addWorkspace', workspace)
-        mysql.connection.commit()
-        cur.close()
-
-        return jsonify({}),201
-
-@app.route('/auth/login', methods=['POST'])
-def login():
-    json_data = request.get_json(force=True)
-    email = json_data['username']
-    password = json_data['password']
-
-    cur = mysql.connection.cursor()
-    cur.callproc('getHash', [email])
-
-    if cur.rowcount is not 0:
-
-        result = cur.fetchone()
-        firstname = result[0]
-        lastname = result[1]
-        hash = result[2]
-
-        if bcrypt.check_password_hash(hash, password) :
-            token = create_access_token(identity=email)
-            return jsonify({'access_token': token}), 200
-        else:
-            return jsonify({'Status': 'Error', 'Code': 'L002'}), 401
-    else:
-        return jsonify({'Status': 'Error', 'Code': 'L001'}), 401
-
 if __name__ == '__main__':
-    app.run(debug=_debug_, host='0.0.0.0', port=5000)
+    app.run(debug=DEBUG, host='0.0.0.0', port=5000)
