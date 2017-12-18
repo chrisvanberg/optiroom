@@ -97,6 +97,12 @@ def Signin():
     except Exception as e:
         if "Duplicate entry" in str(e):
             return jsonify({'Status': 'Error', 'Code': 'S001'}), 409
+        elif "Recipient address rejected" in str(e):
+            cur = mysql.connection.cursor()
+            cur.callproc('deleteUserByUserEmail', [posted_username])
+            mysql.connection.commit()
+
+            return jsonify({'Status': 'Error', 'Code': 'S002'}), 409
         elif DEBUG:
             return jsonify({'Status': 'Error', 'e': str(e)}), 409
         else:
