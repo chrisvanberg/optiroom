@@ -1,3 +1,4 @@
+//Ce qui est initialisé au chargement
 $( document ).ready(function() {
     $("#datetimepicker").datepicker({
         dateFormat: 'yy-mm-dd',
@@ -7,8 +8,8 @@ $( document ).ready(function() {
 
     $(window).scroll(function() {
         var height = $(window).scrollTop();
-        if(height > 316){
-            $('#google-map').css('top', $(this).scrollTop()-310);
+        if(height > $("#homepage-header").height()){
+            $('#google-map').css('top', $(this).scrollTop()-$("#homepage-header").height());
         }
     });
 });
@@ -16,10 +17,10 @@ $( document ).ready(function() {
 function userAuthentificated(vm){
     $(".visible-offline").hide();
     $(".visible-online").show();
-    $("#user-avatar").html("<img src='img/default-avatar.png'>"); //Faudra get l'avatar dans la bdd si possible
+    $("#user-avatar").html("<img src='img/default-avatar.png'>");
     $("#username").html("Mon compte ("+vm.username+")");
 }
-
+//Sert à afficher ou non la map en fonction de la vue
 function showMap(bool) {
     if(bool){
         $("#google-map").show();

@@ -1,3 +1,8 @@
+/**
+ *
+ * Ce fichier gère tous ce qui a trait à l'API Google Maps
+ *
+ */
 var markers;
 var place;
 var map;
