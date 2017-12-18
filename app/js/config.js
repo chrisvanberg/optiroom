@@ -1,5 +1,6 @@
 angular.module('tokenAuthApp.config', ['ui.router']).config(appConfig).run(routeStart);
 
+//Router pour les différentes vues pouvant être affichées
 function appConfig($stateProvider, $urlRouterProvider){
     $stateProvider
         .state('homepage', {
@@ -105,8 +106,9 @@ function appConfig($stateProvider, $urlRouterProvider){
         $urlRouterProvider.otherwise('/');
 };
 
-
+//Fonction qui se lancent quand la route change
 function routeStart($transitions) {
+    $("#notification").hide();
     $transitions.onStart({}, function (trans) {
         if(trans.to().url != "/map"){
             showMap(false);

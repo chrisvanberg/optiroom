@@ -11,9 +11,14 @@ function signupController(signupService){
         signupService.sendSignupForm(vm.signupdata).then(function(returnMessage) {
             console.log(returnMessage);
             window.location.href = "#!/";
-            
+            notify("Votre compte a bien été crée !", "green");
         },function(err){
-            console.log("Erreur");
+            if(err.status == 409){
+                notify("Cette adresse mail est déjà prise","red");
+            }else{
+                notify("Il y a une erreur dans vos données","red");
+            }
+            console.log(err);
         });
     };
 }

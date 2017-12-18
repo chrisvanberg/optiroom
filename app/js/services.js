@@ -27,18 +27,7 @@ function authService($http,$window) {
             headers: {'Content-Type': 'application/json'}
         });
     };
-    //Verification si l'user est authentifié
-    this.ensureAuthenticated = function(token) {
-        return $http({
-            method: 'GET',
-            url: baseURL + 'user',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        });
-    };
-    //Parser de token
+    //Parser de token, sert à récupèrer les informations de l'utilisateur connecté
     this.parseJwt = function(token) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
@@ -59,7 +48,6 @@ function signupService($http) {
     }
 
 }
-
 //Service de gestion des workspaces
 function workspaceService($http){
     //Ajouter un workspace

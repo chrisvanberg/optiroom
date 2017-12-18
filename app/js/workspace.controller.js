@@ -43,9 +43,11 @@ function workspaceController(workspaceService, scope, params, $location){
             };
             console.log(vm.workspaceToAdd);
             workspaceService.addWorkspace(vm.workspaceToAdd);
-            $("#labase").css("display","none");
-            $("#retourEnvoi").css("display","block");
-        });
+            $("#formulaireAjout").css("display","none");
+            notify("Le workspace a bien été ajouté", "green");
+        }),function(err){
+            notify("Il y a eu une erreur","red");
+        };;
     };
 }
 
@@ -87,8 +89,10 @@ function bookWorkspace(id){
         "nbHours" : $("*[data-workspaceHour=workspace"+id+"]").val(),
     };
     angular.element(document.body).injector().get("workspaceService").bookWorkspace(bookingData).then(function(ws) {
-        alert("La réservation a bien été éffectuée");
-    });
+        notify("La réservation a bien été éffectuée","green");
+    }),function(err){
+        notify("Il y a eu une erreur","red");
+    };
 }
 function getBookings(){
     angular.element(document.body).injector().get("workspaceService").getBookings().then(function(ws) {

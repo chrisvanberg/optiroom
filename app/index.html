@@ -28,7 +28,6 @@
     <script type="text/javascript" src="js/signup.controller.js"></script>
     <script type="text/javascript" src="js/workspace.controller.js"></script>
     <script type="text/javascript" src="js/google-map.js"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body ng-app="tokenAuthApp">
@@ -88,6 +87,7 @@
     </div>
 
     <div id="lower-content" class="row">
+        <div class="col-md-12" id="notification"></div>
         <div ui-view></div>
         <div class='col-md-4' id="google-map"></div>
     </div>

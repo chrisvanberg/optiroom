@@ -29,3 +29,14 @@ function showMap(bool) {
         $("#google-map").hide();
     }
 }
+//Affiche les notifications d'erreur
+function notify(notif,color){
+    $("#notification").html(notif);
+    $("#notification").show();
+    if(color == "green"){
+        $("#notification").css("background-color","#82ff84");
+    }else if(color == "red"){
+        $("#notification").css("background-color","#f06862");
+    }
+    $(window).scrollTop(0);
+}
