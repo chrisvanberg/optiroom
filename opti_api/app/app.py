@@ -44,11 +44,11 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 #MailConfig
-app.config['MAIL_SERVER']='ssl0.ovh.net'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'no-reply@optiroom.net'
-app.config['MAIL_PASSWORD'] = '4pfXkqXj9xRPI0loj1eWr0UPQ9R5G6'
-app.config['MAIL_DEFAULT_SENDER'] = 'no-reply@optiroom.net'
+app.config['MAIL_SERVER']= os.environ['MAIL_SERVER']
+app.config['MAIL_PORT'] = int(os.environ['MAIL_PORT'])
+app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['MAIL_PASSWORD']
+app.config['MAIL_DEFAULT_SENDER'] = os.environ['MAIL_DEFAULT_SENDER']
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
