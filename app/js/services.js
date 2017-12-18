@@ -41,7 +41,7 @@ function signupService($http) {
     this.sendSignupForm = function (signupdata) {
         return $http({
             method: 'POST',
-            url: baseURL + 'signup',
+            url: baseURL + 'auth/signup',
             data: signupdata,
             headers: {'Content-Type': 'application/json'}
         });
