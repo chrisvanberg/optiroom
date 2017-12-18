@@ -1,0 +1,7 @@
+/var/log/nginx/access.log {
+copytruncate
+daily
+rotate 2
+compress
+size 100M
+}

@@ -1,0 +1,11 @@
+//
+// Do any local configuration here
+//
+zone "commando.optiroom.net" {
+	type master;
+	file "/var/lib/bind/optiroom.net.hosts";
+	};
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
