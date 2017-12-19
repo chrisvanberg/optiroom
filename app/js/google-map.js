@@ -1,3 +1,8 @@
+/**
+ *
+ * Ce fichier gère tous ce qui a trait à l'API Google Maps
+ *
+ */
 var markers;
 var place;
 var map;
@@ -14,6 +19,7 @@ weekdays[3]="thu";
 weekdays[4]="fri";
 weekdays[5]="sat";
 weekdays[6]="sun";
+//Callback quand la map est initialisée
 function initAutocomplete(){
     var options = {
         types: ['(regions)'],
@@ -38,7 +44,6 @@ function initAutocomplete(){
     autocomplete.addListener('place_changed', function() {
         place = autocomplete.getPlace();
     });
-
     document.getElementById("search-button").addEventListener("click",function(){
         window.location.href = '#!/map';
         showMap(true);
@@ -53,6 +58,7 @@ function initAutocomplete(){
 
     });
 }
+//Fonction appellée quand on clique sur le bouton recherche
 function search(){
     workspaces = [];
     var lat;
@@ -80,12 +86,10 @@ function search(){
         {
             getWorkspaces(lat,lng,range,dayOfWeek, seats);
         }, 1500);
-
 }
-
+//Dessine les marqueurs des lieus sur la carte
 function drawMarkers(workspacesSelection){
     var existingBuildings = [];
-
     angular.forEach(workspacesSelection, function(value, key) {
         if(($.inArray(workspacesSelection[key].title, existingBuildings) == -1)){
             existingBuildings.push(workspacesSelection[key].title);
@@ -109,6 +113,7 @@ function drawMarkers(workspacesSelection){
         }
     });
 }
+//Génére la liste des workspaces de la recherche
 function drawList(workspacesSelection){
     $("#workspace-list").html("");
     for(i in workspacesSelection){
@@ -147,6 +152,7 @@ function drawList(workspacesSelection){
     google.maps.event.trigger(map, 'resize');
 
 }
+//Permet d'obtenir une liste de workspaces en fonction de tous les paramètres indiqués
 function getWorkspaces(lat,lng,range,dayOfWeek, seats){
     workspacesRt = {};
     for (i in markers) {
@@ -182,6 +188,7 @@ function getWorkspaces(lat,lng,range,dayOfWeek, seats){
 
         });
 }
+//Sert à composer l'URL servant à geocoder les adresses
 function composeGoogleAPIUrl(postcode, city, street, number, country) {
     var googleAPIUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     googleAPIUrl += postcode +"+";

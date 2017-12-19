@@ -1,5 +1,4 @@
-<div id="labase">
-
+<div id="formulaireAjout">
     <div class="row">
         <h2 class="col-md-4 col-md-offset-4" style="text-align: center">Ajouter un workspace</h2>
     </div>
@@ -28,7 +27,7 @@
                 <input type='text' class="form-control" placeholder="Ville" ng-model="workspaceCtrl.workspaceData.city" required>
                 <input type='text' class="form-control" placeholder="Code postal" ng-model="workspaceCtrl.workspaceData.postcode" required>
                 <select class="form-control" ng-model="workspaceCtrl.workspaceData.country" required>
-                    <option value="" disabled selected>Pays</option>
+                    <option value="" disabled>Pays</option>
                     <option value="AFG">Afghanistan</option>
                     <option value="ALA">Åland Islands</option>
                     <option value="ALB">Albania</option>
@@ -50,7 +49,7 @@
                     <option value="BGD">Bangladesh</option>
                     <option value="BRB">Barbados</option>
                     <option value="BLR">Belarus</option>
-                    <option value="BEL">Belgium</option>
+                    <option value="BEL" selected>Belgium</option>
                     <option value="BLZ">Belize</option>
                     <option value="BMU">Bermuda</option>
                     <option value="BTN">Bhutan</option>
@@ -308,12 +307,5 @@
             </div>
 
         </form>
-    </div>
-</div>
-<div id="retourEnvoi" style="display: none">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <h3 style="text-align: center">Formulaire envoyé</h3>
-        </div>
     </div>
 </div>
