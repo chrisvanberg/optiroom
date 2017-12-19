@@ -73,7 +73,7 @@ def Signin():
     json_data = request.get_json(force=True)
     posted_email = json_data['mail']
     posted_last_name = json_data['name']
-    posted_first_name = json_data['first_name']
+    posted_first_name = json_data['firstname']
     posted_password = json_data['password']
     posted_phone = json_data['phone']
     hashed_password = (bcrypt.generate_password_hash(posted_password)).decode('UTF-8')
@@ -85,7 +85,7 @@ def Signin():
         opti_db.callproc('sign_up', user_data)
         mysql.connection.commit()
 
-        signup_msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_mail)])
+        signup_msg = Message('Bienvenue sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(posted_email)])
 
         signup_msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"><tbody style="font-family: Helvetica, sans-serif"><tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr><tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/logo_christmas.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
         signup_msg.html += "Bienvenue sur Optiroom "+posted_first_name+" "+posted_last_name
@@ -138,7 +138,7 @@ def login():
 
 
 @app.route('/workspaces')
-def Workspaces(self):
+def Workspaces():
     workspaces = []
     opti_db = mysql.connection.cursor()
     opti_db.execute("SELECT * FROM get_workspace")
@@ -329,13 +329,13 @@ def getWorkspaceAvailability(workspace_id):
         return jsonify({'status': 'error', 'code': 'A001'}), 404
 
 
-@app.route('/workspace/availability')
+@app.route('/workspace/availability', methods=['POST'])
 @jwt_required
 def addAvailability():
     json_data = request.get_json(force=True)
 
     posted_workspace_id = json_data['workspace_id']
-    posted_opening_days = json_data['opening_days']
+    posted_opening_days = json_data['openingDays']
     posted_mon_opening_hour = json_data['monOpeningHour']
     posted_mon_closing_hour = json_data['monClosingHour']
     posted_tue_opening_hour = json_data['tueOpeningHour']
@@ -397,7 +397,7 @@ def workspaceBook():
     opti_db.callproc('getMinPriceByWorkspaceId', [posted_workspace_id])
     result = opti_db.fetchone()
     min_price = result[0]
-    price = str(round((float(minPrice)/(1-BRUT_MARGIN))*(1+VAT),2))
+    price = str(round((float(min_price)/(1-BRUT_MARGIN))*(1+VAT),2))
     opti_db.close()
 
     opti_db = mysql.connection.cursor()
@@ -431,47 +431,32 @@ def workspaceBook():
         result = opti_db.fetchone()
 
         booked_workspace = {
-            'workspace_name': result[0],
-            'description': result[1],
-            'building_name': result[2],
+            'workspace_name': str(result[0]),
+            'description': str(result[1]),
+            'building_name': str(result[2]),
             'latitude': str(result[3]),
             'longitude': str(result[4]),
-            'street': result[5],
-            'building_number': result[6],
-            'postcode': result[7],
-            'city': result[8],
-            'country': result[9],
+            'street': str(result[5]),
+            'building_number': str(result[6]),
+            'postcode': str(result[7]),
+            'city': str(result[8]),
+            'country': str(result[9]),
             'minPrice': str(result[10]),
             'price': str(round((float(result[10])/(1-BRUT_MARGIN))*(1+VAT),2)),
-            'nbSeats': result[11],
-            'hasProjector': result[12],
-            'hasWifi': result[13] }
+            'nbSeats': str(result[11]),
+            'hasProjector': str(result[12]),
+            'hasWifi': str(result[13]) }
         opti_db.close()
 
         opti_db = mysql.connection.cursor()
         opti_db.callproc('getUserInfoByEmail', [str(get_jwt_identity())])
 
         booker_infos = opti_db.fetchone()
-        booker_first_name=str(bookerInfo[1])
-        booker_full_name=str(bookerInfo[1]+" "+bookerInfo[2])
-        booker_email=str(bookerInfo[3])
-        booker_phone=str(bookerInfo[4])
+        booker_first_name=str(booker_infos[1])
+        booker_full_name=str(booker_infos[1]+" "+booker_infos[2])
+        booker_email=str(booker_infos[3])
+        booker_phone=str(booker_infos[4])
         opti_db.close()
-
-        booker_msg = Message('Votre réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(get_jwt_identity())])
-
-        booker_msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"> <tbody style="font-family: Helvetica, sans-serif"> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/logo_christmas.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
-        booker_msg.html += "Bonjour "+booker_firstName
-        booker_msg.html += """ ! </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;">"""
-
-        booker_msg.html += "Vous avez réservé l'espace de travail \""+booked_workspace['workspace_name']+"\"<br> à partir du "+str(posted_start_datetime)+"<br>jusqu'au "+str(posted_end_datetime)+"<br>Adresse : "+booked_workspace['street']+" "+booked_workspace['building_number']+", "+booked_workspace['postcode']+" "+booked_workspace['city']+", "+booked_workspace['country']+"<br>Prix : "+booked_workspace['price']
-
-        booker_msg.html += """€</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div> <!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mes réservations</center> </v:roundrect> <![endif]--> <a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650;border-radius:50px;color:#228b22;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mes réservations</a> </div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp; <hr/> </td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> Informations de contacts : </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> <table align="center"> <tbody> <tr> <td>"""
-        booker_msg.html += "<span style=\"color:white;text-align:center;\">"+owner_full_name+"</span><br><span style=\"color:white;text-align:center;\">"+owner_phone+"</span><br><span style=\"color:white;text-align:center;\">"+owner_email+"</span>"
-
-        booker_msg.html += """ </td> <td height="30" style="font-size: 30px; line-height: 30px; width: 7%; padding-left: 20%; padding-right: 20%">&nbsp;</td> <td> <img alt="Room" src="https://raw.githubusercontent.com/NathVoss/optiroom/dev/app/img/default-room.jpg" width="300" border="0" style="border-radius: 25px"></img> </td> </tr> </tbody> </table> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </body></html>"""
-
-        mail.send(booker_msg)
 
         opti_db = mysql.connection.cursor()
         opti_db.callproc('getUserInfoByWorkspaceId', [posted_workspace_id])
@@ -483,6 +468,22 @@ def workspaceBook():
         owner_email = str(owner_infos[3])
         owner_phone = str(owner_infos[4])
         opti_db.close()
+
+
+        booker_msg = Message('Votre réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [str(get_jwt_identity())])
+
+        booker_msg.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <head> <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta> <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0"></meta> </head> <body leftmargin="0" topmargin="0" marginwidth="0" margheight="0"> <table bgcolor="#228b22" width="100%" border="0" cellpadding="0" cellspacing="0"> <tbody style="font-family: Helvetica, sans-serif"> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td style="text-align: center"> <a href="https://dev.optiroom.net"> <img alt="Logo Optiroom" src="https://dev.optiroom.net/img/logo_christmas.png" width="300" border="0"></img> </a> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px;">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; font-size: 40px; color: white; text-align: center; line-height: 40px;">"""
+        booker_msg.html += "Bonjour "+booker_first_name
+        booker_msg.html += """ ! </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;">"""
+
+        booker_msg.html += "Vous avez réservé l'espace de travail \""+booked_workspace['workspace_name']+"\"<br> à partir du "+str(posted_start_datetime)+"<br>jusqu'au "+str(posted_end_datetime)+"<br>Adresse : "+booked_workspace['street']+" "+booked_workspace['building_number']+", "+booked_workspace['postcode']+" "+booked_workspace['city']+", "+booked_workspace['country']+"<br>Prix : "+booked_workspace['price']
+
+        booker_msg.html += """€</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="text-align: center"> <div> <!--[if mso]> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://dev.optiroom.net" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="125%" strokecolor="#1e3650" fillcolor="#FDE9E0"> <w:anchorlock/> <center style="color:#228b22;font-family:sans-serif;font-size:13px;font-weight:bold;">Mes réservations</center> </v:roundrect> <![endif]--> <a href="https://dev.optiroom.net" style="background-color:#FDE9E0;border:1px solid #1e3650;border-radius:50px;color:#228b22;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Mes réservations</a> </div> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp; <hr/> </td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> Informations de contacts : </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;"> <table align="center"> <tbody> <tr> <td>"""
+        booker_msg.html += "<span style=\"color:white;text-align:center;\">"+owner_full_name+"</span><br><span style=\"color:white;text-align:center;\">"+owner_phone+"</span><br><span style=\"color:white;text-align:center;\">"+owner_email+"</span>"
+
+        booker_msg.html += """ </td> <td height="30" style="font-size: 30px; line-height: 30px; width: 7%; padding-left: 20%; padding-right: 20%">&nbsp;</td> <td> <img alt="Room" src="https://raw.githubusercontent.com/NathVoss/optiroom/dev/app/img/default-room.jpg" width="300" border="0" style="border-radius: 25px"></img> </td> </tr> </tbody> </table> </td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> <tr> <td height="30" style="font-size: 30px; line-height: 30px; width: 60%; padding-left: 20%; padding-right: 20%">&nbsp;</td> </tr> </tbody> </table> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%"> This communication may contain privileged or other confidential information. If you are not the intended recipient , or believe that you may have received this communication in error, please reply to the sender indicating that fact and delete the copy you received. In addition, if you are not the intended recipient, you should not print, copy, retransmit, disseminate, or otherwise use the information contained in this communication. Thank you. </p> <p align="center" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; color: green; font-weight: bolder"> Please consider your environmental responsibility before printing this e-mail </p> </body></html>"""
+
+        mail.send(booker_msg)
 
         owner_msg = Message('Nouvelle réservation sur Optiroom !', sender=("Optiroom", "no-reply@optiroom.net"), recipients = [owner_email])
 
@@ -560,7 +561,7 @@ def workspaceBook():
             <tr>
                 <td colspan="2" align="center" style="font-family: Helvetica, sans-serif; color: white; text-align: center; line-height: 28px;">
                     <h3>Informations de contacts :</h3>
-                    """+booker_fullName+"""<br/>
+                    """+booker_full_name+"""<br/>
                     """+booker_phone+"""<br/>
                     """+str(get_jwt_identity())+"""<br/>
                 </td>
