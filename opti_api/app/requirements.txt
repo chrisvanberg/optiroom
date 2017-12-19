@@ -3,3 +3,4 @@ flask-mysqldb
 Flask-Cors
 flask-bcrypt
 flask-jwt-extended
+Flask_mail
