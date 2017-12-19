@@ -2,6 +2,7 @@
 $( document ).ready(function() {
     $("#datetimepicker").datepicker({
         dateFormat: 'yy-mm-dd',
+        minDate : 0
     });
     $("#datetimepicker").datepicker('setDate', new Date());
     showMap(false);
