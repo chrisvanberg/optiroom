@@ -1,7 +1,0 @@
-/var/log/nginx/error.log {
-copytruncate
-daily
-rotate 2
-compress
-size 100M
-}
