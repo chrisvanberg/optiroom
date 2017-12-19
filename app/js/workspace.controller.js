@@ -98,7 +98,11 @@ function bookWorkspace(id){
     angular.element(document.body).injector().get("workspaceService").bookWorkspace(bookingData).then(function(ws) {
         notify("La réservation a bien été éffectuée","green");
     }),function(err){
-        notify("Il y a eu une erreur","red");
+        if(err.Code == "B001"){
+            notify("Ce créneau horaire est déjà prit","red");
+        }else{
+            notify("Il y a eu une erreur dans la réservation","red");
+        }
     };
 }
 //Fonction appellée quand on accède à l'onglet "Mes réservations"
@@ -114,7 +118,7 @@ function getBookings(){
                 $("#my-bookings-list>.booking"+i).append("<hr style='border-bottom:1px solid #CCCCCC'>");
                 $("#my-bookings-list>.booking"+i).prepend("Workspace: " + address.data.workspace_name);
             });
-            $("#my-bookings-list>.booking"+i).append("<br>Contact: "+ ws.data[i].firstname + " "+ ws.data[i].lastname);
+            $("#my-bookings-list>.booking"+i).append("<br>Contact: "+ ws.data[i].firstName + " "+ ws.data[i].lastName);
             $("#my-bookings-list>.booking"+i).append("<br>Email: "+ ws.data[i].email);
             $("#my-bookings-list>.booking"+i).append("<br>Telephone: "+ ws.data[i].phone);
 

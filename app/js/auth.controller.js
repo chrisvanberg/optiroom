@@ -20,6 +20,7 @@ function authLoginController(authService){
             window.location.href = '#!/';
         },function(err){
             if(err.status == "401"){
+                notify("Login ou mot de passe éroné","red");
                 $("#login-form :input").blur();
                 $("#login-form").effect("shake");
                 $("#login-form :input:text").css("background-color","#ff988a");

@@ -14,7 +14,6 @@ function signupController(signupService){
     //Fonction appellée à l'envoi du formulaire d'inscription
     vm.onSignupFormSend = function() {
         signupService.sendSignupForm(vm.signupdata).then(function(returnMessage) {
-            console.log(returnMessage);
             window.location.href = "#!/";
             notify("Votre compte a bien été crée !", "green");
         },function(err){

@@ -113,8 +113,8 @@ function appConfig($stateProvider, $urlRouterProvider){
 
 //Fonction qui se lancent quand la route change
 function routeStart($transitions) {
-    $("#notification").hide();
     $transitions.onStart({}, function (trans) {
+        $("#notification").fadeOut("slow");
         if(trans.to().url != "/map"){
             showMap(false);
         }else{

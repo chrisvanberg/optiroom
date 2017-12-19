@@ -34,7 +34,7 @@ function notify(notif,color){
     $("#notification").html(notif);
     $("#notification").show();
     if(color == "green"){
-        $("#notification").css("background-color","#82ff84");
+        $("#notification").css("background-color","#5DBD37");
     }else if(color == "red"){
         $("#notification").css("background-color","#f06862");
     }
