@@ -671,8 +671,8 @@ def userBookings():
         'startDate': booking[3],
         'endDate': booking[4],
         'price': str(booking[5]),
-        'first_name': booking[6],
-        'last_name': booking[7],
+        'firstName': booking[6],
+        'lastName': booking[7],
         'email': booking[8],
         'phone': booking[9]
         }
@@ -742,8 +742,8 @@ def Search(center_latitude, center_longitude, range_in_km, day, min_seats):
             'sunOpeningHour' : str(workspace[29]),
             'sunClosingHour' : str(workspace[30]),
             'owner_id' : workspace[31],
-            'first_name' : workspace[32],
-            'last_name' : workspace[33],
+            'firstName' : workspace[32],
+            'lastName' : workspace[33],
             'email' : workspace[34] }
         workspaces.append(workspace)
 
